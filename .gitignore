@@ -1,0 +1,42 @@
+# dependencies
+/node_modules
+
+# build output
+/.next/
+/out/
+
+# testing
+/coverage
+
+# env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# claude code
+.claude/
+.codex/
+skills/
+
+# temp files
+character-audit-temp/
+test-results/
+
+# python
+.venv/
+
+# development/testing
+tests/
+scripts/
+docs/
+AGENTS.md
+CLAUDE.md
+prompts.txt
+*.spec.ts
+playwright.config.ts
+vitest.config.ts
