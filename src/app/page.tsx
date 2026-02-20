@@ -261,7 +261,7 @@ export default function Home() {
                 {/* Guess grid */}
                 {guesses.length > 0 && (
                   <div
-                    className="game-card mb-7 overflow-hidden p-3 md:p-4"
+                    className="game-card scrollbar-thin mb-7 overflow-x-auto p-3 md:p-4"
                     role="grid"
                     aria-label="Guess history"
                   >
