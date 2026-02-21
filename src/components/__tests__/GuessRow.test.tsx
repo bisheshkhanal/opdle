@@ -121,10 +121,29 @@ describe("GuessRow", () => {
       isCorrect: false,
     };
 
-    const { container } = render(<GuessRow guess={mockGuess} isLatest={true} />);
+    const { container } = render(
+      <GuessRow guess={mockGuess} isLatest={true} />
+    );
 
     const gridContainer = container.querySelector(".guess-table");
     expect(gridContainer).toHaveClass("guess-row-enter");
+  });
+
+  it("does not apply row-sweep class to latest guess", () => {
+    const mockGuess: GuessResult = {
+      characterId: "test",
+      characterName: "Test",
+      imageUrl: "https://example.com/test.jpg",
+      categories: [],
+      isCorrect: false,
+    };
+
+    const { container } = render(
+      <GuessRow guess={mockGuess} isLatest={true} />
+    );
+
+    const gridContainer = container.querySelector(".guess-table");
+    expect(gridContainer).not.toHaveClass("row-sweep");
   });
 
   it("does not apply animation class when not latest guess", () => {
@@ -136,7 +155,9 @@ describe("GuessRow", () => {
       isCorrect: false,
     };
 
-    const { container } = render(<GuessRow guess={mockGuess} isLatest={false} />);
+    const { container } = render(
+      <GuessRow guess={mockGuess} isLatest={false} />
+    );
 
     const gridContainer = container.querySelector(".guess-table");
     expect(gridContainer).not.toHaveClass("guess-row-enter");

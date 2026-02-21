@@ -12,10 +12,32 @@
     --color-border: 227 212 184;
     --color-accent: 184 134 11;
 
+    /* Tile colors for light mode */
+    --tile-correct: 46 125 50;
+    --tile-partial: 230 167 0;
+    --tile-wrong: 198 40 40;
+    --tile-unknown: 84 110 122;
+
     /* Bouncy timing functions */
     --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Dark Mode - Night Sea Theme */
+  .dark {
+    --color-bg: 10 18 32;
+    --color-bg-card: 15 26 46;
+    --color-text: 224 231 255;
+    --color-text-muted: 165 180 210;
+    --color-border: 35 55 90;
+    --color-accent: 244 196 48;
+
+    /* Tile colors adjusted for dark mode */
+    --tile-correct: 56 160 66;
+    --tile-partial: 255 183 0;
+    --tile-wrong: 239 83 80;
+    --tile-unknown: 96 125 139;
   }
 
   html {
@@ -124,6 +146,42 @@
     mix-blend-mode: multiply;
   }
 
+  .dark body::before {
+    opacity: 0.3;
+    background-image:
+      linear-gradient(
+        90deg,
+        rgba(244, 196, 48, 0.06) 0%,
+        rgba(244, 196, 48, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        0deg,
+        rgba(244, 196, 48, 0.06) 0%,
+        rgba(244, 196, 48, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(96, 165, 250, 0.04) 0%,
+        rgba(96, 165, 250, 0.04) 1.5px,
+        transparent 1.5px
+      ),
+      linear-gradient(
+        0deg,
+        rgba(96, 165, 250, 0.04) 0%,
+        rgba(96, 165, 250, 0.04) 1.5px,
+        transparent 1.5px
+      ),
+      radial-gradient(rgba(244, 196, 48, 0.15) 1.5px, transparent 1.5px),
+      radial-gradient(
+        circle at 0% 100%,
+        rgba(244, 196, 48, 0.05) 0%,
+        transparent 35%
+      );
+    mix-blend-mode: screen;
+  }
+
   body::after {
     content: "";
     position: fixed;
@@ -159,6 +217,59 @@
     opacity: 0.45;
   }
 
+  .dark body {
+    background:
+      radial-gradient(
+        circle at 15% 15%,
+        rgba(244, 196, 48, 0.08) 0%,
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 85% 85%,
+        rgba(15, 35, 70, 0.4) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 50% 30%,
+        rgba(20, 40, 80, 0.3) 0%,
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 90% 10%,
+        rgba(96, 165, 250, 0.05) 0%,
+        transparent 40%
+      ),
+      linear-gradient(135deg, rgba(244, 196, 48, 0.05) 0%, transparent 40%),
+      linear-gradient(
+        180deg,
+        rgba(10, 18, 32, 1) 0%,
+        rgba(12, 22, 40, 1) 40%,
+        rgba(15, 26, 46, 1) 100%
+      );
+  }
+
+  .dark body::after {
+    background:
+      radial-gradient(
+        ellipse at 50% 50%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.3) 70%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      radial-gradient(
+        circle at 0% 0%,
+        rgba(244, 196, 48, 0.03) 0%,
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 100% 100%,
+        rgba(244, 196, 48, 0.03) 0%,
+        transparent 40%
+      );
+    mix-blend-mode: normal;
+    opacity: 0.6;
+  }
+
   /* Focus styles for accessibility */
   :focus-visible {
     @apply rounded-sm outline-2 outline-offset-2 outline-navy-600;
@@ -181,6 +292,7 @@
   .game-card {
     @apply rounded-2xl bg-parchment-50/95 shadow-card backdrop-blur-sm;
     @apply border-2 border-parchment-400/70;
+    @apply dark:border-slate-600/70 dark:bg-slate-800/95;
     position: relative;
     overflow: hidden;
   }
@@ -206,6 +318,16 @@
     pointer-events: none;
   }
 
+  .dark .game-card::before {
+    background: linear-gradient(
+      135deg,
+      rgba(244, 196, 48, 0.25),
+      transparent 40%,
+      rgba(96, 165, 250, 0.15) 80%,
+      rgba(244, 196, 48, 0.2)
+    );
+  }
+
   .game-card::after {
     content: "";
     position: absolute;
@@ -216,9 +338,14 @@
     opacity: 0.7;
   }
 
+  .dark .game-card::after {
+    border-color: rgba(244, 196, 48, 0.2);
+  }
+
   .game-stage {
     @apply relative rounded-[28px] border-2 border-parchment-400/80 bg-parchment-50/90;
     @apply shadow-float;
+    @apply dark:border-slate-600/80 dark:bg-slate-800/90;
     padding: 28px;
     overflow: hidden;
     isolation: isolate;
@@ -250,6 +377,16 @@
     pointer-events: none;
   }
 
+  .dark .game-stage::before {
+    background: linear-gradient(
+      160deg,
+      rgba(244, 196, 48, 0.3),
+      transparent 35%,
+      rgba(96, 165, 250, 0.15) 70%,
+      rgba(244, 196, 48, 0.25)
+    );
+  }
+
   .game-stage::after {
     content: "";
     position: absolute;
@@ -266,6 +403,16 @@
       transparent 100%
     );
     opacity: 0.9;
+  }
+
+  .dark .game-stage::after {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(244, 196, 48, 0.5) 30%,
+      rgba(244, 196, 48, 0.5) 70%,
+      transparent 100%
+    );
   }
 
   .game-stage .stage-overlay {
@@ -441,6 +588,7 @@
     @apply focus-visible:ring-2 focus-visible:ring-navy-500/40 focus-visible:ring-offset-2;
     @apply active:translate-y-0 active:scale-[0.98];
     @apply disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:bg-navy-700;
+    @apply dark:bg-slate-600 dark:hover:bg-slate-500;
   }
 
   /* Secondary Button - refined parchment */
@@ -453,6 +601,7 @@
     @apply hover:border-parchment-400 hover:bg-parchment-200 hover:shadow-card;
     @apply focus-visible:ring-2 focus-visible:ring-navy-500/40 focus-visible:ring-offset-2;
     @apply active:scale-[0.98];
+    @apply dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:border-slate-500 dark:hover:bg-slate-600;
   }
 
   /* Success Button - refined green */
@@ -530,6 +679,7 @@
 
   .tile-neutral {
     @apply border-2 border-parchment-300 bg-parchment-100 text-navy-700;
+    @apply dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200;
   }
 }
 
@@ -538,6 +688,10 @@
   .scrollbar-thin {
     scrollbar-width: thin;
     scrollbar-color: rgb(217, 208, 188) transparent;
+  }
+
+  .dark .scrollbar-thin {
+    scrollbar-color: rgb(71, 85, 105) transparent;
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -554,8 +708,16 @@
     border-radius: 3px;
   }
 
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgb(71, 85, 105);
+  }
+
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background: rgb(201, 150, 46);
+  }
+
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgb(244, 196, 48);
   }
 
   /* Text balance for better headings */
@@ -636,6 +798,7 @@
   @apply min-h-[104px] rounded-lg px-2.5 py-3;
   @apply border-2 border-parchment-300/70 bg-parchment-100/80;
   @apply transition-all duration-200;
+  @apply dark:border-slate-600/70 dark:bg-slate-700/80;
 }
 
 @media (min-width: 640px) {

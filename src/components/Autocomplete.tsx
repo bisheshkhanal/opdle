@@ -94,14 +94,14 @@ export function Autocomplete({
         selectedIndex
       ] as HTMLElement;
       if (selectedItem) {
-        selectedItem.scrollIntoView({ block: "nearest" });
+        selectedItem.scrollIntoView({ block: "nearest", behavior: "smooth" });
       }
     }
   }, [selectedIndex, isOpen]);
 
   return (
     <div className="relative w-full max-w-md">
-      <div className="relative group">
+      <div className="group relative">
         {/* Search icon with gold accent on focus */}
         <svg
           className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gold-600 transition-colors duration-200 group-focus-within:text-gold-500"
@@ -126,15 +126,16 @@ export function Autocomplete({
           onBlur={() => setTimeout(() => setIsOpen(false), 150)}
           disabled={disabled}
           placeholder="Search for a pirate..."
-          className="w-full rounded-2xl border-2 border-parchment-400 bg-parchment-100/95 py-4 pl-12 pr-4 text-[15px] font-medium text-navy-700 placeholder-navy-500/60 shadow-inner-soft backdrop-blur-sm transition-all duration-300 focus:border-gold-500 focus:bg-parchment-50 focus:shadow-glow focus:outline-none focus:ring-2 focus:ring-gold-400/40 disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full rounded-2xl border-2 border-parchment-400 bg-parchment-100/95 py-4 pl-12 pr-4 text-[15px] font-medium text-navy-700 placeholder-navy-500/60 shadow-inner-soft backdrop-blur-sm transition-all duration-300 focus:border-gold-500 focus:bg-parchment-50 focus:shadow-glow focus:outline-none focus:ring-2 focus:ring-gold-400/40 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800/95 dark:text-slate-100 dark:placeholder-slate-400/60 dark:focus:border-gold-400 dark:focus:bg-slate-800"
           aria-label="Search for a character"
           spellCheck={false}
           aria-autocomplete="list"
           aria-controls="character-list"
-          style={{
-            backgroundImage:
-              "linear-gradient(135deg, rgba(253,248,240,0.95) 0%, rgba(240,228,209,0.9) 100%)",
-          }}
+          aria-activedescendant={
+            isOpen && results.length > 0
+              ? `character-option-${results[selectedIndex].id}`
+              : undefined
+          }
         />
         {/* Decorative inner border */}
         <div className="pointer-events-none absolute inset-[6px] rounded-xl border border-dashed border-gold-400/30 opacity-0 transition-opacity duration-300 group-focus-within:opacity-100" />
@@ -145,22 +146,19 @@ export function Autocomplete({
           ref={listRef}
           id="character-list"
           role="listbox"
-          className="scrollbar-thin absolute z-50 mt-3 max-h-80 w-full overflow-auto rounded-2xl border-2 border-parchment-400/80 bg-parchment-50/98 py-2 shadow-float backdrop-blur-md"
-          style={{
-            backgroundImage:
-              "linear-gradient(180deg, rgba(253,248,240,0.98) 0%, rgba(249,240,227,0.98) 100%)",
-          }}
+          className="scrollbar-thin bg-parchment-50/98 dark:bg-slate-800/98 absolute z-50 mt-3 max-h-80 w-full overflow-auto rounded-2xl border-2 border-parchment-400/80 py-2 shadow-float backdrop-blur-md dark:border-slate-600/80"
         >
           {results.map((character, index) => (
             <li
               key={character.id}
+              id={`character-option-${character.id}`}
               role="option"
               aria-selected={index === selectedIndex}
               onClick={() => handleSelect(character)}
               className={`flex cursor-pointer items-center gap-3 px-4 py-3 transition-all duration-200 ${
                 index === selectedIndex
-                  ? "bg-navy-700 text-white shadow-md"
-                  : "text-navy-700 hover:bg-gold-100/60 hover:pl-5"
+                  ? "bg-navy-700 text-white shadow-md dark:bg-slate-600"
+                  : "text-navy-700 hover:bg-gold-100/60 hover:pl-5 dark:text-slate-200 dark:hover:bg-slate-700/60"
               }`}
             >
               <img
@@ -170,7 +168,7 @@ export function Autocomplete({
                 className={`h-10 w-10 rounded-full object-cover object-top shadow-soft transition-all duration-200 ${
                   index === selectedIndex
                     ? "ring-2 ring-gold-400"
-                    : "ring-2 ring-parchment-400/70"
+                    : "ring-2 ring-parchment-400/70 dark:ring-slate-600/70"
                 }`}
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =

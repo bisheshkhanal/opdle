@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Alegreya, DM_Sans, Pirata_One } from "next/font/google";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -59,8 +60,27 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${dmSans.variable} ${alegreya.variable} ${pirataOne.variable}`}
+      suppressHydrationWarning
     >
-      <body className="font-sans">{children}</body>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var stored = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = stored || (prefersDark ? 'dark' : 'light');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -9,14 +9,14 @@ interface ModeTabsProps {
 
 export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
   return (
-    <div className="inline-flex rounded-2xl border-2 border-parchment-400/80 bg-parchment-200/80 p-1.5 shadow-inner backdrop-blur-sm">
+    <div className="inline-flex rounded-2xl border-2 border-parchment-400/80 bg-parchment-200/80 p-1.5 shadow-inner backdrop-blur-sm dark:border-slate-600/80 dark:bg-slate-800/80">
       {/* Daily Mode - Today's Bounty */}
       <button
         onClick={() => onModeChange("daily")}
         className={`relative rounded-xl px-5 py-3 text-sm font-bold transition-all duration-300 ${
           mode === "daily"
-            ? "bg-navy-700 text-white shadow-card ring-2 ring-gold-400/50"
-            : "text-navy-600 hover:bg-parchment-300/80 hover:text-navy-800"
+            ? "bg-navy-700 text-white shadow-card ring-2 ring-gold-400/50 dark:bg-slate-600 dark:ring-gold-500/60"
+            : "text-navy-600 hover:bg-parchment-300/80 hover:text-navy-800 dark:text-slate-300 dark:hover:bg-slate-700/80 dark:hover:text-slate-100"
         }`}
         aria-pressed={mode === "daily"}
       >
@@ -42,7 +42,7 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
           <span>Daily</span>
         </span>
         {mode === "daily" && (
-          <span className="absolute -top-1 -right-1 flex h-3 w-3">
+          <span className="absolute -right-1 -top-1 flex h-3 w-3">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-400 opacity-75"></span>
             <span className="relative inline-flex h-3 w-3 rounded-full bg-gold-500"></span>
           </span>
@@ -54,8 +54,8 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
         onClick={() => onModeChange("infinite")}
         className={`relative rounded-xl px-5 py-3 text-sm font-bold transition-all duration-300 ${
           mode === "infinite"
-            ? "bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-card ring-2 ring-gold-300/60"
-            : "text-navy-600 hover:bg-parchment-300/80 hover:text-navy-800"
+            ? "bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-card ring-2 ring-gold-300/60 dark:from-gold-400 dark:to-gold-500 dark:ring-gold-400/60"
+            : "text-navy-600 hover:bg-parchment-300/80 hover:text-navy-800 dark:text-slate-300 dark:hover:bg-slate-700/80 dark:hover:text-slate-100"
         }`}
         aria-pressed={mode === "infinite"}
       >
@@ -77,7 +77,7 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
           <span>Infinite</span>
         </span>
         {mode === "infinite" && (
-          <span className="absolute -top-1 -right-1 flex h-3 w-3">
+          <span className="absolute -right-1 -top-1 flex h-3 w-3">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60"></span>
             <span className="relative inline-flex h-3 w-3 rounded-full bg-white"></span>
           </span>

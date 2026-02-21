@@ -37,7 +37,7 @@ function getTileClass(status: TileStatus): string {
 export function GuessRow({ guess, isLatest = false }: GuessRowProps) {
   return (
     <div
-      className={`guess-table ${isLatest ? "guess-row-enter row-sweep" : ""}`}
+      className={`guess-table ${isLatest ? "guess-row-enter" : ""}`}
       role="row"
     >
       {/* Character portrait and name - first column */}
@@ -45,7 +45,7 @@ export function GuessRow({ guess, isLatest = false }: GuessRowProps) {
         className={`character-cell ${guess.isCorrect ? "portrait-stamp" : ""}`}
         role="cell"
       >
-        <div className="relative h-16 w-16 overflow-hidden rounded-full shadow-sm ring-2 ring-parchment-300/60 sm:h-[72px] sm:w-[72px] md:h-[84px] md:w-[84px]">
+        <div className="relative h-16 w-16 overflow-hidden rounded-full shadow-sm ring-2 ring-parchment-300/60 dark:ring-slate-600/60 sm:h-[72px] sm:w-[72px] md:h-[84px] md:w-[84px]">
           <Image
             src={guess.imageUrl}
             alt={guess.characterName}
@@ -58,7 +58,7 @@ export function GuessRow({ guess, isLatest = false }: GuessRowProps) {
             }}
           />
         </div>
-        <span className="line-clamp-2 text-center text-[11px] font-semibold leading-tight text-navy-800 sm:text-[13px] md:text-sm">
+        <span className="line-clamp-2 text-center text-[11px] font-semibold leading-tight text-navy-800 dark:text-slate-100 sm:text-[13px] md:text-sm">
           {guess.characterName}
         </span>
       </div>
@@ -101,10 +101,10 @@ export function GuessRowHeader() {
     <div className="guess-table" role="row">
       {/* Character header */}
       <div
-        className="plaque-header flex items-center justify-center rounded-lg p-2 md:rounded-xl"
+        className="plaque-header flex items-center justify-center rounded-lg p-2 dark:bg-slate-700 md:rounded-xl"
         role="columnheader"
       >
-        <span className="text-center font-display text-[10px] font-bold uppercase tracking-wide text-parchment-200 sm:text-[10.5px] md:text-xs">
+        <span className="text-center font-display text-[10px] font-bold uppercase tracking-wide text-parchment-200 dark:text-slate-200 sm:text-[10.5px] md:text-xs">
           Character
         </span>
       </div>
@@ -113,10 +113,10 @@ export function GuessRowHeader() {
       {categories.map((cat) => (
         <div
           key={cat.key}
-          className="plaque-header flex items-center justify-center rounded-lg p-1.5 md:rounded-xl md:p-2"
+          className="plaque-header flex items-center justify-center rounded-lg p-1.5 dark:bg-slate-700 md:rounded-xl md:p-2"
           role="columnheader"
         >
-          <span className="text-center font-display text-[9px] font-bold uppercase tracking-wide text-parchment-200 sm:text-[9.5px] md:text-[10px]">
+          <span className="text-center font-display text-[9px] font-bold uppercase tracking-wide text-parchment-200 dark:text-slate-200 sm:text-[9.5px] md:text-[10px]">
             {cat.label}
           </span>
         </div>

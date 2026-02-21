@@ -70,7 +70,7 @@ export function ResultsShare({
           </>
         )}
       </button>
-      <span className="text-xs font-medium text-navy-500">
+      <span className="text-xs font-medium text-navy-500 dark:text-slate-400">
         {mode === "daily" ? "Daily Challenge" : "Infinite Mode"}
       </span>
     </div>

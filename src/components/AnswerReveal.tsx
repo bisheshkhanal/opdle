@@ -20,12 +20,12 @@ export function AnswerReveal({
   streak,
 }: AnswerRevealProps) {
   return (
-    <div className="game-card w-full max-w-sm p-7 sm:p-8 win-celebrate">
+    <div className="game-card win-celebrate w-full max-w-sm p-7 sm:p-8">
       {/* Result message */}
       <div className="mb-6 text-center">
         {isWon ? (
           <>
-            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-tile-correct/20 ring-4 ring-tile-correct/30 shadow-tile-correct">
+            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-tile-correct/20 shadow-tile-correct ring-4 ring-tile-correct/30">
               <svg
                 className="h-9 w-9 text-tile-correct"
                 fill="none"
@@ -43,13 +43,13 @@ export function AnswerReveal({
             <h2 className="font-pirate text-4xl tracking-wide text-tile-correct sm:text-5xl">
               Victory!
             </h2>
-            <p className="mt-2 text-[15px] font-medium text-navy-600">
+            <p className="mt-2 text-[15px] font-medium text-navy-600 dark:text-slate-300">
               Found in {guessCount} {guessCount === 1 ? "guess" : "guesses"}
             </p>
           </>
         ) : (
           <>
-            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-tile-wrong/20 ring-4 ring-tile-wrong/30 shadow-tile-wrong">
+            <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-tile-wrong/20 shadow-tile-wrong ring-4 ring-tile-wrong/30">
               <svg
                 className="h-9 w-9 text-tile-wrong"
                 fill="none"
@@ -67,7 +67,7 @@ export function AnswerReveal({
             <h2 className="font-pirate text-4xl tracking-wide text-tile-wrong sm:text-5xl">
               Defeated
             </h2>
-            <p className="mt-2 text-[15px] font-medium text-navy-600">
+            <p className="mt-2 text-[15px] font-medium text-navy-600 dark:text-slate-300">
               The target was:
             </p>
           </>
@@ -80,16 +80,18 @@ export function AnswerReveal({
           <div
             className={`rounded-[28px] p-4 shadow-card ${
               isWon
-                ? "bg-gradient-to-br from-gold-100 to-gold-200/80 ring-4 ring-gold-400/60"
-                : "bg-parchment-100/80 ring-4 ring-parchment-400/60"
+                ? "bg-gradient-to-br from-gold-100 to-gold-200/80 ring-4 ring-gold-400/60 dark:from-gold-900/40 dark:to-gold-800/30 dark:ring-gold-500/40"
+                : "bg-parchment-100/80 ring-4 ring-parchment-400/60 dark:bg-slate-700/80 dark:ring-slate-500/60"
             }`}
           >
             <img
               src={character.imageUrl}
               alt={character.name}
               className={`h-36 w-36 rounded-2xl bg-parchment-50/90 object-contain object-top ${
-                isWon ? "ring-4 ring-gold-500/50" : "ring-4 ring-parchment-300/70"
-              }`}
+                isWon
+                  ? "ring-4 ring-gold-500/50 dark:ring-gold-400/40"
+                  : "ring-4 ring-parchment-300/70 dark:ring-slate-500/50"
+              } dark:bg-slate-600/90`}
               onError={(e) => {
                 (e.target as HTMLImageElement).src =
                   "https://via.placeholder.com/144?text=?";
@@ -97,7 +99,7 @@ export function AnswerReveal({
             />
           </div>
           {isWon && (
-            <div className="absolute -right-3 -top-3 flex h-11 w-11 items-center justify-center rounded-full bg-tile-correct text-white shadow-tile-correct ring-4 ring-parchment-50">
+            <div className="absolute -right-3 -top-3 flex h-11 w-11 items-center justify-center rounded-full bg-tile-correct text-white shadow-tile-correct ring-4 ring-parchment-50 dark:ring-slate-800">
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
@@ -108,11 +110,11 @@ export function AnswerReveal({
             </div>
           )}
         </div>
-        <h3 className="mt-5 font-pirate text-3xl tracking-wide text-navy-800">
+        <h3 className="mt-5 font-pirate text-3xl tracking-wide text-navy-800 dark:text-slate-100">
           {character.name}
         </h3>
         {character.aliases.length > 0 && (
-          <p className="mt-1.5 text-[15px] italic text-navy-500">
+          <p className="mt-1.5 text-[15px] italic text-navy-500 dark:text-slate-400">
             &ldquo;{character.aliases.slice(0, 2).join(", ")}&rdquo;
           </p>
         )}
@@ -125,16 +127,16 @@ export function AnswerReveal({
             <div className="text-treasure text-4xl font-bold tracking-tight">
               {streak}
             </div>
-            <div className="mt-1.5 text-xs font-bold uppercase tracking-wider text-navy-500">
+            <div className="mt-1.5 text-xs font-bold uppercase tracking-wider text-navy-500 dark:text-slate-400">
               Streak
             </div>
           </div>
         )}
         <div className="text-center">
-          <div className="text-4xl font-bold tracking-tight text-navy-700">
+          <div className="text-4xl font-bold tracking-tight text-navy-700 dark:text-slate-200">
             {guessCount}/6
           </div>
-          <div className="mt-1.5 text-xs font-bold uppercase tracking-wider text-navy-500">
+          <div className="mt-1.5 text-xs font-bold uppercase tracking-wider text-navy-500 dark:text-slate-400">
             Guesses
           </div>
         </div>
