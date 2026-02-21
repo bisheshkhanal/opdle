@@ -2,7 +2,12 @@
  * localStorage persistence with schema versioning
  */
 
-import type { DailyState, InfiniteState, StorageSchema, GuessResult } from "./types";
+import type {
+  DailyState,
+  InfiniteState,
+  StorageSchema,
+  GuessResult,
+} from "./types";
 import { getUTCDateString } from "./daily";
 import { generateRoundId } from "./infinite";
 import { getLocalCharacterImageUrl } from "./images";
@@ -87,14 +92,18 @@ export function loadStorage(): StorageSchema {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) {
-      return getDefaultSchema();
+      const defaultStorage = getDefaultSchema();
+      saveStorage(defaultStorage);
+      return defaultStorage;
     }
 
     const parsed = JSON.parse(stored) as StorageSchema;
 
     // Version migration if needed
     if (parsed.version !== CURRENT_VERSION) {
-      return migrateStorage(parsed);
+      const migratedStorage = migrateStorage(parsed);
+      saveStorage(migratedStorage);
+      return migratedStorage;
     }
 
     const changed = normalizeStorageImages(parsed);
@@ -104,7 +113,9 @@ export function loadStorage(): StorageSchema {
 
     return parsed;
   } catch {
-    return getDefaultSchema();
+    const defaultStorage = getDefaultSchema();
+    saveStorage(defaultStorage);
+    return defaultStorage;
   }
 }
 
@@ -177,7 +188,10 @@ export function saveDailyState(state: DailyState): void {
 /**
  * Check if a character has already been guessed in daily mode
  */
-export function isDailyDuplicate(characterId: string, dateString?: string): boolean {
+export function isDailyDuplicate(
+  characterId: string,
+  dateString?: string
+): boolean {
   const state = getDailyState(dateString);
   return state.guessedIds.includes(characterId);
 }
@@ -185,7 +199,10 @@ export function isDailyDuplicate(characterId: string, dateString?: string): bool
 /**
  * Add a guess to daily state
  */
-export function addDailyGuess(guess: GuessResult, dateString?: string): DailyState {
+export function addDailyGuess(
+  guess: GuessResult,
+  dateString?: string
+): DailyState {
   const date = dateString || getUTCDateString();
   const state = getDailyState(date);
 
