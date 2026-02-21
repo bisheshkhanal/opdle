@@ -206,7 +206,7 @@ export default function Home() {
               <div className="game-stage">
                 <div className="stage-overlay" aria-hidden="true" />
                 <svg
-                  className="stage-compass text-navy-700 dark:text-slate-500"
+                  className="stage-compass text-navy-700 dark:text-slate-300"
                   viewBox="0 0 200 200"
                   aria-hidden="true"
                 >

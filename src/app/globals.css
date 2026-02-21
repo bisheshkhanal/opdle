@@ -458,6 +458,46 @@
     opacity: 0.6;
   }
 
+  .dark .game-stage .stage-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(96, 165, 250, 0.06) 0%,
+        rgba(96, 165, 250, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        0deg,
+        rgba(96, 165, 250, 0.06) 0%,
+        rgba(96, 165, 250, 0.06) 1px,
+        transparent 1px
+      ),
+      radial-gradient(rgba(244, 196, 48, 0.08) 1px, transparent 1px),
+      radial-gradient(
+        circle at 15% 20%,
+        rgba(96, 165, 250, 0.08),
+        transparent 45%
+      ),
+      radial-gradient(
+        circle at 85% 85%,
+        rgba(96, 165, 250, 0.06),
+        transparent 50%
+      );
+    background-size:
+      72px 72px,
+      72px 72px,
+      120px 120px,
+      420px 420px,
+      520px 520px;
+    background-position:
+      0 0,
+      0 0,
+      30px 36px,
+      0 0,
+      0 0;
+    opacity: 0.4;
+  }
+
   .game-stage .stage-compass {
     position: absolute;
     top: -15%;
@@ -468,6 +508,12 @@
     pointer-events: none;
     mix-blend-mode: multiply;
     filter: sepia(0.3);
+  }
+
+  .dark .game-stage .stage-compass {
+    opacity: 0.07;
+    mix-blend-mode: screen;
+    filter: brightness(1.2) saturate(0);
   }
 
   .plaque-header {
@@ -512,6 +558,21 @@
     pointer-events: none;
   }
 
+  .dark .legend-card::before {
+    background:
+      radial-gradient(
+        circle at 15% 20%,
+        rgba(244, 196, 48, 0.05),
+        transparent 55%
+      ),
+      radial-gradient(
+        circle at 85% 80%,
+        rgba(96, 165, 250, 0.06),
+        transparent 55%
+      );
+    opacity: 0.3;
+  }
+
   .legend-card::after {
     content: "";
     position: absolute;
@@ -525,8 +586,21 @@
     pointer-events: none;
   }
 
+  .dark .legend-card::after {
+    background: radial-gradient(
+      circle at 70% 20%,
+      rgba(96, 165, 250, 0.05),
+      transparent 45%
+    );
+    opacity: 0.3;
+  }
+
   .legend-mark {
     @apply absolute -right-6 -top-6 h-24 w-24 opacity-15;
+  }
+
+  .dark .legend-mark {
+    opacity: 0.08;
   }
 
   .reveal-stamp {
@@ -555,7 +629,7 @@
     background: linear-gradient(
       120deg,
       transparent 0%,
-      rgba(250, 242, 227, 0.35) 40%,
+      rgba(100, 130, 180, 0.25) 40%,
       transparent 70%
     );
     opacity: 0;
@@ -576,6 +650,10 @@
     animation: portraitStamp 0.8s ease-out forwards;
     opacity: 0;
     pointer-events: none;
+  }
+
+  .dark .portrait-stamp::after {
+    border-color: rgba(244, 196, 48, 0.4);
   }
 
   /* Primary Button - refined navy */
@@ -742,6 +820,10 @@
     border: 1px solid rgba(186, 150, 74, 0.35);
     opacity: 0.6;
     pointer-events: none;
+  }
+
+  .dark .ornate-border::before {
+    border-color: rgba(244, 196, 48, 0.2);
   }
 }
 

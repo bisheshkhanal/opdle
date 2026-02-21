@@ -104,7 +104,7 @@ export function Autocomplete({
       <div className="group relative">
         {/* Search icon with gold accent on focus */}
         <svg
-          className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gold-600 transition-colors duration-200 group-focus-within:text-gold-500"
+          className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gold-600 transition-colors duration-200 group-focus-within:text-gold-500 dark:text-gold-400 dark:group-focus-within:text-gold-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

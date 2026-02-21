@@ -3,7 +3,7 @@ export function GameLegend() {
     <div className="game-card legend-card sticky top-6 hidden p-6 lg:block">
       {/* Compass rose watermark */}
       <svg
-        className="legend-mark text-gold-600 dark:text-gold-500"
+        className="legend-mark text-gold-600 dark:text-slate-400"
         viewBox="0 0 100 100"
         aria-hidden="true"
       >
