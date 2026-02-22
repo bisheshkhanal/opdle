@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import type { Character } from "@/lib/types";
 import { searchCharacters } from "@/lib/search";
 
@@ -161,20 +162,27 @@ export function Autocomplete({
                   : "text-navy-700 hover:bg-gold-100/60 hover:pl-5 dark:text-slate-200 dark:hover:bg-slate-700/60"
               }`}
             >
-              <img
-                src={character.imageUrl}
-                alt=""
+              <div
                 aria-hidden="true"
-                className={`h-10 w-10 rounded-full object-cover object-top shadow-soft transition-all duration-200 ${
+                className={`relative h-10 w-10 shrink-0 overflow-hidden rounded-full shadow-soft transition-all duration-200 ${
                   index === selectedIndex
                     ? "ring-2 ring-gold-400"
                     : "ring-2 ring-parchment-400/70 dark:ring-slate-600/70"
                 }`}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "https://via.placeholder.com/40?text=?";
-                }}
-              />
+              >
+                <Image
+                  src={character.imageUrl}
+                  alt=""
+                  fill
+                  sizes="40px"
+                  quality={90}
+                  className="object-cover object-top"
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "https://via.placeholder.com/40?text=?";
+                  }}
+                />
+              </div>
               <span className="font-semibold tracking-tight">
                 {character.name}
               </span>
