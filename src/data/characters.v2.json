@@ -19,7 +19,19 @@
       "Fire Fist",
       "Ace"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 550000000,
+        "arc": "Arabasta"
+      }
+    ],
+    "devilFruitRevealedInArc": "Arabasta",
+    "hakiRevealedInArc": {
+      "O": "Arabasta",
+      "A": "Arabasta",
+      "C": "Arabasta"
+    }
   },
   {
     "id": "akainu",
@@ -40,7 +52,13 @@
       "Akainu",
       "Red Dog"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Marineford",
+    "hakiRevealedInArc": {
+      "O": "Marineford",
+      "A": "Marineford"
+    }
   },
   {
     "id": "alvida",
@@ -57,7 +75,10 @@
     "aliases": [
       "Iron Mace"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Romance Dawn",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "aokiji",
@@ -78,7 +99,13 @@
       "Aokiji",
       "Blue Pheasant"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Long Ring Long Land",
+    "hakiRevealedInArc": {
+      "O": "Long Ring Long Land",
+      "A": "Long Ring Long Land"
+    }
   },
   {
     "id": "apoo",
@@ -95,7 +122,15 @@
     "aliases": [
       "Roar of the Sea"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 350000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "arlong",
@@ -112,7 +147,15 @@
     "aliases": [
       "Arlong the Saw"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 20000000,
+        "arc": "Arlong Park"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "bartolomeo",
@@ -132,7 +175,18 @@
     "aliases": [
       "Cannibal"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 200000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa"
+    }
   },
   {
     "id": "bellamy",
@@ -152,7 +206,18 @@
     "aliases": [
       "Bellamy the Hyena"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 195000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya"
+    }
   },
   {
     "id": "bepo",
@@ -167,7 +232,10 @@
     "origin": "Grand Line",
     "firstArc": "Sabaody Archipelago",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "big-mom",
@@ -188,7 +256,19 @@
     "aliases": [
       "Big Mom"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 4388000000,
+        "arc": "Fish-Man Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Fish-Man Island",
+    "hakiRevealedInArc": {
+      "O": "Fish-Man Island",
+      "A": "Fish-Man Island",
+      "C": "Fish-Man Island"
+    }
   },
   {
     "id": "blackbeard",
@@ -208,7 +288,18 @@
     "aliases": [
       "Blackbeard"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 3996000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya"
+    }
   },
   {
     "id": "boa-hancock",
@@ -230,7 +321,19 @@
       "Snake Princess",
       "Pirate Empress"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1659000000,
+        "arc": "Amazon Lily"
+      }
+    ],
+    "devilFruitRevealedInArc": "Amazon Lily",
+    "hakiRevealedInArc": {
+      "O": "Amazon Lily",
+      "A": "Amazon Lily",
+      "C": "Amazon Lily"
+    }
   },
   {
     "id": "bon-clay",
@@ -248,7 +351,15 @@
       "Mr. 2 Bon Clay",
       "Mr. 2 Bon Kurei"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 32000000,
+        "arc": "Little Garden"
+      }
+    ],
+    "devilFruitRevealedInArc": "Little Garden",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "bonney",
@@ -266,7 +377,15 @@
       "Bonney",
       "Big Eater"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 320000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "brook",
@@ -284,7 +403,15 @@
       "Soul King",
       "Dead Bones"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 383000000,
+        "arc": "Thriller Bark"
+      }
+    ],
+    "devilFruitRevealedInArc": "Thriller Bark",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "buggy",
@@ -302,7 +429,15 @@
       "Buggy the Clown",
       "Star Clown"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 3189000000,
+        "arc": "Orange Town"
+      }
+    ],
+    "devilFruitRevealedInArc": "Orange Town",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "burgess",
@@ -322,7 +457,18 @@
     "aliases": [
       "Champion"
     ],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 20000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya"
+    }
   },
   {
     "id": "caesar-clown",
@@ -340,7 +486,10 @@
       "Master",
       "Gangster Gastino"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Punk Hazard",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "camie",
@@ -355,7 +504,10 @@
     "origin": "Grand Line",
     "firstArc": "Sabaody Archipelago",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "capone-bege",
@@ -375,7 +527,18 @@
     "aliases": [
       "Capone \"Gang\" Bege"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 350000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "carrot",
@@ -392,7 +555,12 @@
     "origin": "Grand Line",
     "firstArc": "Zou",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Zou"
+    }
   },
   {
     "id": "cavendish",
@@ -413,7 +581,18 @@
       "White Cavendish",
       "Hakuba"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 330000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa"
+    }
   },
   {
     "id": "chopper",
@@ -433,27 +612,17 @@
       "Cotton Candy Lover",
       "Chopper"
     ],
-    "minTier": "casual"
-  },
-  {
-    "id": "coby",
-    "name": "Coby",
-    "imageUrl": "/characters/coby.png",
-    "gender": "Male",
-    "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
-    "haki": [
-      "O",
-      "A"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1000,
+        "arc": "Drum Island"
+      }
     ],
-    "bounty": null,
-    "heightCm": 167,
-    "origin": "East Blue",
-    "firstArc": "Romance Dawn",
-    "aliases": [
-      "Coby"
-    ],
-    "minTier": "casual"
+    "devilFruitRevealedInArc": "Drum Island",
+    "hakiRevealedInArc": {
+      "O": "Drum Island"
+    }
   },
   {
     "id": "coby",
@@ -474,7 +643,13 @@
       "Coby",
       "Hero Coby"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Romance Dawn",
+      "A": "Romance Dawn"
+    }
   },
   {
     "id": "cracker",
@@ -495,7 +670,18 @@
       "Thousand Arms",
       "Biscuit Knight"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 860000000,
+        "arc": "Whole Cake Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {
+      "O": "Whole Cake Island",
+      "A": "Whole Cake Island"
+    }
   },
   {
     "id": "crocodile",
@@ -516,7 +702,18 @@
       "Sir Crocodile",
       "Mr. 0"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1965000000,
+        "arc": "Little Garden"
+      }
+    ],
+    "devilFruitRevealedInArc": "Little Garden",
+    "hakiRevealedInArc": {
+      "O": "Little Garden",
+      "A": "Little Garden"
+    }
   },
   {
     "id": "crocus",
@@ -531,7 +728,10 @@
     "origin": "Grand Line",
     "firstArc": "Reverse Mountain",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "dalton",
@@ -546,7 +746,10 @@
     "origin": "Grand Line",
     "firstArc": "Drum Island",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Drum Island",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "doc-q",
@@ -563,7 +766,15 @@
     "aliases": [
       "Death God"
     ],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 72000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "doflamingo",
@@ -585,7 +796,19 @@
       "Joker",
       "Heavenly Yaksha"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 340000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya",
+      "C": "Jaya"
+    }
   },
   {
     "id": "dr-kureha",
@@ -603,7 +826,10 @@
       "Doctorine",
       "Witch"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "dragon",
@@ -625,7 +851,14 @@
       "Dragon",
       "World's Worst Criminal"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Loguetown",
+      "A": "Loguetown",
+      "C": "Loguetown"
+    }
   },
   {
     "id": "drake",
@@ -646,7 +879,18 @@
       "Diez Drake",
       "Red Flag"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 222000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "duval",
@@ -663,7 +907,10 @@
     "aliases": [
       "Handsome"
     ],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "enel",
@@ -682,7 +929,12 @@
     "aliases": [
       "God Enel"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Skypiea",
+    "hakiRevealedInArc": {
+      "O": "Skypiea"
+    }
   },
   {
     "id": "franky",
@@ -700,7 +952,15 @@
       "Cutty Flam",
       "Cyborg"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 394000000,
+        "arc": "Water 7"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "fujitora",
@@ -721,7 +981,13 @@
       "Fujitora",
       "Purple Tiger"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa"
+    }
   },
   {
     "id": "gan-fall",
@@ -738,7 +1004,10 @@
     "aliases": [
       "Sky Knight"
     ],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "garp",
@@ -761,7 +1030,14 @@
       "Hero of the Marines",
       "Garp the Fist"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Arlong Park",
+      "A": "Arlong Park",
+      "C": "Arlong Park"
+    }
   },
   {
     "id": "gloriosa",
@@ -778,7 +1054,10 @@
     "aliases": [
       "Elder Nyon"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "hawkins",
@@ -798,7 +1077,18 @@
     "aliases": [
       "Magician"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 320000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "hody-jones",
@@ -813,7 +1103,10 @@
     "origin": "Grand Line",
     "firstArc": "Fish-Man Island",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "iceburg",
@@ -828,7 +1121,10 @@
     "origin": "Grand Line",
     "firstArc": "Water 7",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "inuarashi",
@@ -848,7 +1144,13 @@
     "aliases": [
       "Duke Dogstorm"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Zou",
+      "A": "Zou"
+    }
   },
   {
     "id": "ivankov",
@@ -870,7 +1172,13 @@
       "Miracle Person",
       "Iva"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Impel Down",
+    "hakiRevealedInArc": {
+      "O": "Impel Down",
+      "A": "Impel Down"
+    }
   },
   {
     "id": "jack",
@@ -890,7 +1198,18 @@
     "aliases": [
       "Jack the Drought"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1000000000,
+        "arc": "Zou"
+      }
+    ],
+    "devilFruitRevealedInArc": "Zou",
+    "hakiRevealedInArc": {
+      "O": "Zou",
+      "A": "Zou"
+    }
   },
   {
     "id": "jinbe",
@@ -911,7 +1230,18 @@
       "Knight of the Sea",
       "First Son of the Sea"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1100000000,
+        "arc": "Impel Down"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Impel Down",
+      "A": "Impel Down"
+    }
   },
   {
     "id": "jozu",
@@ -931,7 +1261,13 @@
     "aliases": [
       "Diamond Jozu"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya"
+    }
   },
   {
     "id": "kaido",
@@ -953,7 +1289,19 @@
       "Kaido of the Beasts",
       "Strongest Creature"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 4611100000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa",
+      "C": "Dressrosa"
+    }
   },
   {
     "id": "kaku",
@@ -971,7 +1319,13 @@
     "origin": "East Blue",
     "firstArc": "Water 7",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Water 7",
+    "hakiRevealedInArc": {
+      "O": "Water 7",
+      "A": "Water 7"
+    }
   },
   {
     "id": "kalifa",
@@ -986,7 +1340,10 @@
     "origin": "Grand Line",
     "firstArc": "Water 7",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Water 7",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "katakuri",
@@ -1007,7 +1364,19 @@
     "aliases": [
       "Katakuri"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1057000000,
+        "arc": "Whole Cake Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {
+      "O": "Whole Cake Island",
+      "A": "Whole Cake Island",
+      "C": "Whole Cake Island"
+    }
   },
   {
     "id": "kid",
@@ -1029,7 +1398,19 @@
       "Kid",
       "Captain Kid"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 3000000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago",
+      "C": "Sabaody Archipelago"
+    }
   },
   {
     "id": "killer",
@@ -1049,7 +1430,18 @@
     "aliases": [
       "Massacre Soldier"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 200000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "kinemon",
@@ -1069,7 +1461,13 @@
     "aliases": [
       "Foxfire Kin'emon"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Punk Hazard",
+    "hakiRevealedInArc": {
+      "O": "Punk Hazard",
+      "A": "Punk Hazard"
+    }
   },
   {
     "id": "king",
@@ -1089,7 +1487,18 @@
     "aliases": [
       "King the Wildfire"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1390000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "O": "Wano Country",
+      "A": "Wano Country"
+    }
   },
   {
     "id": "kizaru",
@@ -1110,7 +1519,13 @@
       "Kizaru",
       "Yellow Monkey"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "koala",
@@ -1125,7 +1540,10 @@
     "origin": "Grand Line",
     "firstArc": "Fish-Man Island",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "kuma",
@@ -1146,7 +1564,18 @@
       "Tyrant",
       "PX-0"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 296000000,
+        "arc": "Thriller Bark"
+      }
+    ],
+    "devilFruitRevealedInArc": "Thriller Bark",
+    "hakiRevealedInArc": {
+      "O": "Thriller Bark",
+      "A": "Thriller Bark"
+    }
   },
   {
     "id": "kyros",
@@ -1163,7 +1592,10 @@
     "aliases": [
       "Thunder Soldier"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "laboon",
@@ -1178,7 +1610,10 @@
     "origin": "West Blue",
     "firstArc": "Reverse Mountain",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "law",
@@ -1199,7 +1634,18 @@
       "Law",
       "Surgeon of Death"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 3000000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "luffy",
@@ -1222,7 +1668,19 @@
       "Straw Hat",
       "Mugiwara"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 3000000000,
+        "arc": "Romance Dawn"
+      }
+    ],
+    "devilFruitRevealedInArc": "Romance Dawn",
+    "hakiRevealedInArc": {
+      "O": "Romance Dawn",
+      "A": "Romance Dawn",
+      "C": "Romance Dawn"
+    }
   },
   {
     "id": "magellan",
@@ -1239,7 +1697,12 @@
     "origin": "Grand Line",
     "firstArc": "Impel Down",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Impel Down",
+    "hakiRevealedInArc": {
+      "A": "Impel Down"
+    }
   },
   {
     "id": "marco",
@@ -1260,7 +1723,18 @@
       "Marco the Phoenix",
       "Phoenix"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1374000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya"
+    }
   },
   {
     "id": "mihawk",
@@ -1281,7 +1755,18 @@
       "Hawk Eyes",
       "Greatest Swordsman"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 3590000000,
+        "arc": "Baratie"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Baratie",
+      "A": "Baratie"
+    }
   },
   {
     "id": "momonosuke",
@@ -1300,7 +1785,12 @@
     "aliases": [
       "Momo"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Punk Hazard",
+    "hakiRevealedInArc": {
+      "O": "Punk Hazard"
+    }
   },
   {
     "id": "monet",
@@ -1315,7 +1805,10 @@
     "origin": "North Blue",
     "firstArc": "Punk Hazard",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Punk Hazard",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "moriah",
@@ -1332,7 +1825,15 @@
     "aliases": [
       "Gekko Moria"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 320000000,
+        "arc": "Thriller Bark"
+      }
+    ],
+    "devilFruitRevealedInArc": "Thriller Bark",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "nami",
@@ -1349,7 +1850,15 @@
     "aliases": [
       "Cat Burglar"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 366000000,
+        "arc": "Orange Town"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "nekomamushi",
@@ -1369,7 +1878,13 @@
     "aliases": [
       "Cat Viper"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Zou",
+      "A": "Zou"
+    }
   },
   {
     "id": "neptune",
@@ -1386,7 +1901,10 @@
     "aliases": [
       "King Neptune"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "oars",
@@ -1404,7 +1922,10 @@
       "Oars the Continent-Puller",
       "Continent-Puller"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "oden",
@@ -1425,7 +1946,14 @@
     "aliases": [
       "Oden"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Wano Country",
+      "A": "Wano Country",
+      "C": "Wano Country"
+    }
   },
   {
     "id": "paulie",
@@ -1440,7 +1968,10 @@
     "origin": "Grand Line",
     "firstArc": "Water 7",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "pell",
@@ -1455,7 +1986,10 @@
     "origin": "Grand Line",
     "firstArc": "Arabasta",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Arabasta",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "perona",
@@ -1472,7 +2006,10 @@
     "aliases": [
       "Ghost Princess"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Thriller Bark",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "perospero",
@@ -1489,7 +2026,15 @@
     "aliases": [
       "Perospero"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 700000000,
+        "arc": "Whole Cake Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "pudding",
@@ -1504,7 +2049,10 @@
     "origin": "Grand Line",
     "firstArc": "Whole Cake Island",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "queen",
@@ -1524,7 +2072,18 @@
     "aliases": [
       "Queen the Plague"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1320000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "O": "Wano Country",
+      "A": "Wano Country"
+    }
   },
   {
     "id": "raizo",
@@ -1544,7 +2103,13 @@
     "aliases": [
       "Raizo of the Mist"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Zou",
+    "hakiRevealedInArc": {
+      "O": "Zou",
+      "A": "Zou"
+    }
   },
   {
     "id": "rayleigh",
@@ -1566,7 +2131,14 @@
       "Dark King",
       "Rayleigh"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago",
+      "C": "Sabaody Archipelago"
+    }
   },
   {
     "id": "rebecca",
@@ -1583,7 +2155,10 @@
     "aliases": [
       "Gladiator"
     ],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "rob-lucci",
@@ -1603,7 +2178,13 @@
     "aliases": [
       "Lucci"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Water 7",
+    "hakiRevealedInArc": {
+      "O": "Water 7",
+      "A": "Water 7"
+    }
   },
   {
     "id": "robin",
@@ -1621,7 +2202,15 @@
       "Robin",
       "Devil Child"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 930000000,
+        "arc": "Whisky Peak"
+      }
+    ],
+    "devilFruitRevealedInArc": "Whisky Peak",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "sabo",
@@ -1641,7 +2230,18 @@
     "aliases": [
       "Flame Emperor"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 602000000,
+        "arc": "Post-War"
+      }
+    ],
+    "devilFruitRevealedInArc": "Post-War",
+    "hakiRevealedInArc": {
+      "O": "Post-War",
+      "A": "Post-War"
+    }
   },
   {
     "id": "sanji",
@@ -1662,7 +2262,18 @@
       "Sanji",
       "Black Leg"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1032000000,
+        "arc": "Baratie"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Baratie",
+      "A": "Baratie"
+    }
   },
   {
     "id": "saturn",
@@ -1683,7 +2294,14 @@
     "aliases": [
       "Saint Saturn"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Egghead",
+    "hakiRevealedInArc": {
+      "O": "Egghead",
+      "A": "Egghead",
+      "C": "Egghead"
+    }
   },
   {
     "id": "sengoku",
@@ -1704,7 +2322,14 @@
     "aliases": [
       "Sengoku the Buddha"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya",
+      "C": "Jaya"
+    }
   },
   {
     "id": "sentomaru",
@@ -1722,7 +2347,13 @@
     "origin": "Grand Line",
     "firstArc": "Sabaody Archipelago",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "shakky",
@@ -1739,7 +2370,10 @@
     "aliases": [
       "Shakky"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "shirahoshi",
@@ -1756,7 +2390,10 @@
     "aliases": [
       "Mermaid Princess"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "smoker",
@@ -1776,7 +2413,13 @@
     "aliases": [
       "White Hunter"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Loguetown",
+    "hakiRevealedInArc": {
+      "O": "Loguetown",
+      "A": "Loguetown"
+    }
   },
   {
     "id": "smoothie",
@@ -1794,7 +2437,18 @@
     "origin": "Grand Line",
     "firstArc": "Whole Cake Island",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 932000000,
+        "arc": "Whole Cake Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {
+      "O": "Whole Cake Island",
+      "A": "Whole Cake Island"
+    }
   },
   {
     "id": "spandam",
@@ -1809,7 +2463,10 @@
     "origin": "Grand Line",
     "firstArc": "Water 7",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "stussy",
@@ -1829,7 +2486,13 @@
     "aliases": [
       "Queen of the Pleasure District"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {
+      "O": "Whole Cake Island",
+      "A": "Whole Cake Island"
+    }
   },
   {
     "id": "tashigi",
@@ -1847,7 +2510,13 @@
     "origin": "East Blue",
     "firstArc": "Loguetown",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Loguetown",
+      "A": "Loguetown"
+    }
   },
   {
     "id": "tom",
@@ -1862,7 +2531,10 @@
     "origin": "Grand Line",
     "firstArc": "Water 7",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "tsuru",
@@ -1882,7 +2554,13 @@
     "aliases": [
       "Great Staff Officer"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Marineford",
+    "hakiRevealedInArc": {
+      "O": "Marineford",
+      "A": "Marineford"
+    }
   },
   {
     "id": "urouge",
@@ -1902,7 +2580,18 @@
     "aliases": [
       "Mad Monk"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 108000000,
+        "arc": "Sabaody Archipelago"
+      }
+    ],
+    "devilFruitRevealedInArc": "Sabaody Archipelago",
+    "hakiRevealedInArc": {
+      "O": "Sabaody Archipelago",
+      "A": "Sabaody Archipelago"
+    }
   },
   {
     "id": "usopp",
@@ -1922,7 +2611,17 @@
       "Sogeking",
       "God Usopp"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 500000000,
+        "arc": "Syrup Village"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Syrup Village"
+    }
   },
   {
     "id": "van-augur",
@@ -1939,7 +2638,15 @@
     "aliases": [
       "Supersonic"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 64000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "vegapunk",
@@ -1956,7 +2663,10 @@
     "aliases": [
       "Stella"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Punk Hazard",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "vergo",
@@ -1976,7 +2686,13 @@
     "aliases": [
       "Demon Bamboo"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Punk Hazard",
+      "A": "Punk Hazard"
+    }
   },
   {
     "id": "vista",
@@ -1996,7 +2712,13 @@
     "aliases": [
       "Flower Sword Vista"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya"
+    }
   },
   {
     "id": "vivi",
@@ -2014,7 +2736,10 @@
       "Vivi",
       "Miss Wednesday"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "wapol",
@@ -2031,7 +2756,10 @@
     "aliases": [
       "Tin-Plate Wapol"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Drum Island",
+    "hakiRevealedInArc": {}
   },
   {
     "id": "whitebeard",
@@ -2053,7 +2781,19 @@
       "Whitebeard",
       "Strongest Man in the World"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 5046000000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": "Jaya",
+    "hakiRevealedInArc": {
+      "O": "Jaya",
+      "A": "Jaya",
+      "C": "Jaya"
+    }
   },
   {
     "id": "wyper",
@@ -2068,7 +2808,10 @@
     "origin": "Sky Islands",
     "firstArc": "Skypiea",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   },
   {
     "id": "yamato",
@@ -2089,7 +2832,14 @@
     "aliases": [
       "Oni Princess"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "O": "Wano Country",
+      "A": "Wano Country",
+      "C": "Wano Country"
+    }
   },
   {
     "id": "zoro",
@@ -2111,7 +2861,19 @@
       "Zoro",
       "Pirate Hunter"
     ],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 1111000000,
+        "arc": "Romance Dawn"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Romance Dawn",
+      "A": "Romance Dawn",
+      "C": "Romance Dawn"
+    }
   },
   {
     "id": "zunisha",
@@ -2126,6 +2888,1941 @@
     "origin": "Grand Line",
     "firstArc": "Zou",
     "aliases": [],
-    "minTier": "casual"
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "aramaki",
+    "name": "Aramaki",
+    "aliases": [],
+    "imageUrl": "/characters/aramaki.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": "Logia",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 3000000000,
+    "heightCm": 308,
+    "origin": "South Blue (Taya Kingdom)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 3000000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    }
+  },
+  {
+    "id": "benn-beckman",
+    "name": "Benn Beckman",
+    "aliases": [],
+    "imageUrl": "/characters/benn-beckman.png",
+    "gender": "Male",
+    "affiliationPrimary": "Red Hair Pirates",
+    "devilFruitType": "None",
+    "haki": [
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 206,
+    "origin": "North Blue",
+    "firstArc": "Marineford",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Marineford"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "yasopp",
+    "name": "Yasopp",
+    "aliases": [
+      "\"Chaser\"|Cheisā"
+    ],
+    "imageUrl": "/characters/yasopp.png",
+    "gender": "Male",
+    "affiliationPrimary": "Red Hair Pirates",
+    "devilFruitType": "None",
+    "haki": [
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 183,
+    "origin": "East Blue (Gecko Islands)",
+    "firstArc": "Syrup Village",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Syrup Village"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "lucky-roux",
+    "name": "Lucky Roux",
+    "aliases": [],
+    "imageUrl": "/characters/lucky-roux.png",
+    "gender": "Male",
+    "affiliationPrimary": "Red Hair Pirates",
+    "devilFruitType": "None",
+    "haki": [
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 241,
+    "origin": "South Blue",
+    "firstArc": "Romance Dawn",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Romance Dawn"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "scopper-gaban",
+    "name": "Scopper Gaban",
+    "aliases": [
+      "\"Mountain-Eater\";\"Left Hand of the Pirate King\""
+    ],
+    "imageUrl": "/characters/scopper-gaban.png",
+    "gender": "Male",
+    "affiliationPrimary": "Roger Pirates (former)",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O",
+      "C"
+    ],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Orange Town",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Orange Town",
+      "O": "Orange Town",
+      "C": "Orange Town"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "shiryu",
+    "name": "Shiryu",
+    "aliases": [
+      "\"Shiryu of the Rain\""
+    ],
+    "imageUrl": "/characters/shiryu.png",
+    "gender": "Male",
+    "affiliationPrimary": "Blackbeard Pirates",
+    "devilFruitType": "Paramecia",
+    "haki": [
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 340,
+    "origin": "Grand Line",
+    "firstArc": "Impel Down",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Impel Down",
+    "hakiRevealedInArc": {
+      "A": "Impel Down"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "avalo-pizarro",
+    "name": "Avalo Pizarro",
+    "aliases": [
+      "\"Corrupt King\""
+    ],
+    "imageUrl": "/characters/avalo-pizarro.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Blackbeard Pirates",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 505,
+    "origin": "North Blue",
+    "firstArc": "Marineford",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Marineford",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "catarina-devon",
+    "name": "Catarina Devon",
+    "aliases": [
+      "\"Crescent Moon Hunter\""
+    ],
+    "imageUrl": "/characters/catarina-devon.png",
+    "gender": "Female",
+    "affiliationPrimary": "Blackbeard Pirates",
+    "devilFruitType": "Zoan",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 361,
+    "origin": "South Blue",
+    "firstArc": "Impel Down",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Impel Down",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "laffitte",
+    "name": "Laffitte",
+    "aliases": [
+      "\"Demon Sheriff\""
+    ],
+    "imageUrl": "/characters/laffitte.png",
+    "gender": "Male",
+    "affiliationPrimary": "Blackbeard Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": 42200000,
+    "heightCm": 340,
+    "origin": "West Blue",
+    "firstArc": "Jaya",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 42200000,
+        "arc": "Jaya"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "vasco-shot",
+    "name": "Vasco Shot",
+    "aliases": [
+      "\"Heavy Drinker\" Vasco Shot"
+    ],
+    "imageUrl": "/characters/vasco-shot.png",
+    "gender": "Male",
+    "affiliationPrimary": "Blackbeard Pirates",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 573,
+    "origin": "South Blue",
+    "firstArc": "Impel Down",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Impel Down",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "sanjuan-wolf",
+    "name": "Sanjuan Wolf",
+    "aliases": [
+      "\"Colossal Battleship\""
+    ],
+    "imageUrl": "/characters/sanjuan-wolf.png",
+    "gender": "Male",
+    "affiliationPrimary": "Blackbeard Pirates",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 17998,
+    "origin": "West Blue",
+    "firstArc": "Impel Down",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Impel Down",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "whos-who",
+    "name": "Who's-Who",
+    "aliases": [
+      "\"Who of the Droplets\""
+    ],
+    "imageUrl": "/characters/whos-who.png",
+    "gender": "Male",
+    "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 546000000,
+    "heightCm": 336,
+    "origin": "North Blue",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 546000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    }
+  },
+  {
+    "id": "sasaki",
+    "name": "Sasaki",
+    "aliases": [
+      "\"Overflowing Sasaki\""
+    ],
+    "imageUrl": "/characters/sasaki.png",
+    "gender": "Male",
+    "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 472000000,
+    "heightCm": 318,
+    "origin": "Grand Line",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 472000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    }
+  },
+  {
+    "id": "black-maria",
+    "name": "Black Maria",
+    "aliases": [],
+    "imageUrl": "/characters/black-maria.png",
+    "gender": "Female",
+    "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 480000000,
+    "heightCm": 820,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 480000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    }
+  },
+  {
+    "id": "ulti",
+    "name": "Ulti",
+    "aliases": [],
+    "imageUrl": "/characters/ulti.png",
+    "gender": "Female",
+    "affiliationPrimary": "Yamato",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 400000000,
+    "heightCm": 173,
+    "origin": "Grand Line",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 400000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    }
+  },
+  {
+    "id": "page-one",
+    "name": "Page One",
+    "aliases": [],
+    "imageUrl": "/characters/page-one.png",
+    "gender": "Male",
+    "affiliationPrimary": "Yamato",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 290000000,
+    "heightCm": 171,
+    "origin": "Grand Line",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 290000000,
+        "arc": "Wano Country"
+      }
+    ],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    }
+  },
+  {
+    "id": "nefertari-cobra",
+    "name": "Nefertari Cobra",
+    "aliases": [],
+    "imageUrl": "/characters/nefertari-cobra.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Arabasta Kingdom",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 182,
+    "origin": "Grand Line (Arabasta Kingdom)",
+    "firstArc": "Drum Island",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "igaram",
+    "name": "Igaram",
+    "aliases": [],
+    "imageUrl": "/characters/igaram.png",
+    "gender": "Male",
+    "affiliationPrimary": "Arabasta",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 218,
+    "origin": "Grand Line (Arabasta Kingdom)",
+    "firstArc": "Whisky Peak",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "chaka",
+    "name": "Chaka",
+    "aliases": [
+      "\"Chaka the Jackal\""
+    ],
+    "imageUrl": "/characters/chaka.png",
+    "gender": "Male",
+    "affiliationPrimary": "Arabasta Kingdom",
+    "devilFruitType": "Zoan",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 213,
+    "origin": "Grand Line (Arabasta Kingdom)",
+    "firstArc": "Arabasta",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Arabasta",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "daz-bonez",
+    "name": "Daz Bonez",
+    "aliases": [
+      "\"The Killer\""
+    ],
+    "imageUrl": "/characters/daz-bonez.png",
+    "gender": "Male",
+    "affiliationPrimary": "Cross Guild",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": 75000000,
+    "heightCm": 212,
+    "origin": "West Blue",
+    "firstArc": "Arabasta",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 75000000,
+        "arc": "Arabasta"
+      }
+    ],
+    "devilFruitRevealedInArc": "Arabasta",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "boa-marigold",
+    "name": "Boa Marigold",
+    "aliases": [],
+    "imageUrl": "/characters/boa-marigold.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Kuja Pirates (Gorgon Sisters)",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 40000000,
+    "heightCm": 432,
+    "origin": "Calm Belt (Amazon Lily)",
+    "firstArc": "Amazon Lily",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 40000000,
+        "arc": "Amazon Lily"
+      }
+    ],
+    "devilFruitRevealedInArc": "Amazon Lily",
+    "hakiRevealedInArc": {
+      "A": "Amazon Lily",
+      "O": "Amazon Lily"
+    }
+  },
+  {
+    "id": "boa-sandersonia",
+    "name": "Boa Sandersonia",
+    "aliases": [],
+    "imageUrl": "/characters/boa-sandersonia.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Kuja Pirates (Gorgon Sisters)",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 40000000,
+    "heightCm": 453,
+    "origin": "Calm Belt (Amazon Lily)",
+    "firstArc": "Amazon Lily",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 40000000,
+        "arc": "Amazon Lily"
+      }
+    ],
+    "devilFruitRevealedInArc": "Amazon Lily",
+    "hakiRevealedInArc": {
+      "A": "Amazon Lily",
+      "O": "Amazon Lily"
+    }
+  },
+  {
+    "id": "donquixote-rosinante",
+    "name": "Donquixote Rosinante",
+    "aliases": [],
+    "imageUrl": "/characters/donquixote-rosinante.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 293,
+    "origin": "Red Line (Mary Geoise)",
+    "firstArc": "Dressrosa",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Dressrosa",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "donquixote-homing",
+    "name": "Donquixote Homing",
+    "aliases": [],
+    "imageUrl": "/characters/donquixote-homing.png",
+    "gender": "Male",
+    "affiliationPrimary": "World Government (Former)",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Dressrosa",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "donquixote-mjosgard",
+    "name": "Donquixote Mjosgard",
+    "aliases": [],
+    "imageUrl": "/characters/donquixote-mjosgard.png",
+    "gender": "Male",
+    "affiliationPrimary": "World Government (Donquixote Family)",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 211,
+    "origin": "Unknown",
+    "firstArc": "Levely",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "kurozumi-orochi",
+    "name": "Kurozumi Orochi",
+    "aliases": [],
+    "imageUrl": "/characters/kurozumi-orochi.png",
+    "gender": "Male",
+    "affiliationPrimary": "Wano Country (Kurozumi Family)",
+    "devilFruitType": "Zoan",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 350,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Wano Country",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "kurozumi-kanjuro",
+    "name": "Kurozumi Kanjuro",
+    "aliases": [
+      "\"Evening Shower\";Ghost of Kibi"
+    ],
+    "imageUrl": "/characters/kurozumi-kanjuro.png",
+    "gender": "Male",
+    "affiliationPrimary": "Kurozumi Family",
+    "devilFruitType": "Paramecia",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 347,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "ashura-doji",
+    "name": "Ashura Doji",
+    "aliases": [
+      "Strongest Monster of Kuri"
+    ],
+    "imageUrl": "/characters/ashura-doji.png",
+    "gender": "Male",
+    "affiliationPrimary": "Mt. Atama Thieves",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 544,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "kawamatsu",
+    "name": "Kawamatsu",
+    "aliases": [
+      "\"Kawamatsu the Kappa\"",
+      "\"Yokozuna Kawamatsu\""
+    ],
+    "imageUrl": "/characters/kawamatsu.png",
+    "gender": "Male",
+    "affiliationPrimary": "Kouzuki Family",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 271,
+    "origin": "Grand Line (Ryugu Kingdom; Fish-Man Island)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "kikunojo",
+    "name": "Kikunojo",
+    "aliases": [
+      "\"Kikunojo of the Lingering Snow\""
+    ],
+    "imageUrl": "/characters/kikunojo.png",
+    "gender": "Female",
+    "affiliationPrimary": "Kouzuki Family",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 287,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "denjiro",
+    "name": "Denjiro",
+    "aliases": [
+      "\"Dozing Kyoshiro\""
+    ],
+    "imageUrl": "/characters/denjiro.png",
+    "gender": "Male",
+    "affiliationPrimary": "Kouzuki Family",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 306,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Wano Country",
+      "O": "Wano Country"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "izou",
+    "name": "Izou",
+    "aliases": [],
+    "imageUrl": "/characters/izou.png",
+    "gender": "Male",
+    "affiliationPrimary": "Whitebeard Pirates (former)",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 192,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Marineford",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Marineford",
+      "O": "Marineford"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "kouzuki-hiyori",
+    "name": "Kouzuki Hiyori",
+    "aliases": [],
+    "imageUrl": "/characters/kouzuki-hiyori.png",
+    "gender": "Female",
+    "affiliationPrimary": "Kouzuki Family",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 170,
+    "origin": "Grand Line (Moby Dick)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "kouzuki-toki",
+    "name": "Kouzuki Toki",
+    "aliases": [],
+    "imageUrl": "/characters/kouzuki-toki.png",
+    "gender": "Female",
+    "affiliationPrimary": "Kouzuki Family",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 190,
+    "origin": "Unknown",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": "Wano Country",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "kouzuki-sukiyaki",
+    "name": "Kouzuki Sukiyaki",
+    "aliases": [],
+    "imageUrl": "/characters/kouzuki-sukiyaki.png",
+    "gender": "Male",
+    "affiliationPrimary": "Kouzuki Family",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 214,
+    "origin": "Grand Line (Wano Country)",
+    "firstArc": "Wano Country",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "vinsmoke-judge",
+    "name": "Vinsmoke Judge",
+    "aliases": [
+      "\"Garuda\"|Garūda"
+    ],
+    "imageUrl": "/characters/vinsmoke-judge.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Vinsmoke Family",
+    "devilFruitType": "None",
+    "haki": [
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 272,
+    "origin": "North Blue (Germa Kingdom)",
+    "firstArc": "Whole Cake Island",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Whole Cake Island"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "vinsmoke-ichiji",
+    "name": "Vinsmoke Ichiji",
+    "aliases": [
+      "\"Sparking Red\""
+    ],
+    "imageUrl": "/characters/vinsmoke-ichiji.png",
+    "gender": "Male",
+    "affiliationPrimary": "Vinsmoke Family",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 186,
+    "origin": "North Blue (Germa Kingdom)",
+    "firstArc": "Whole Cake Island",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "vinsmoke-niji",
+    "name": "Vinsmoke Niji",
+    "aliases": [
+      "\"Dengeki Blue\""
+    ],
+    "imageUrl": "/characters/vinsmoke-niji.png",
+    "gender": "Male",
+    "affiliationPrimary": "Vinsmoke Family",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 185,
+    "origin": "North Blue (Germa Kingdom)",
+    "firstArc": "Whole Cake Island",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "vinsmoke-yonji",
+    "name": "Vinsmoke Yonji",
+    "aliases": [
+      "\"Winch Green\""
+    ],
+    "imageUrl": "/characters/vinsmoke-yonji.png",
+    "gender": "Male",
+    "affiliationPrimary": "Vinsmoke Family",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 194,
+    "origin": "North Blue (Germa Kingdom)",
+    "firstArc": "Whole Cake Island",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "pekoms",
+    "name": "Pekoms",
+    "aliases": [],
+    "imageUrl": "/characters/pekoms.png",
+    "gender": "Male",
+    "affiliationPrimary": "Big Mom Pirates",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 330000000,
+    "heightCm": 232,
+    "origin": "Unknown",
+    "firstArc": "Fish-Man Island",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 330000000,
+        "arc": "Fish-Man Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Fish-Man Island",
+    "hakiRevealedInArc": {
+      "A": "Fish-Man Island",
+      "O": "Fish-Man Island"
+    }
+  },
+  {
+    "id": "tamago",
+    "name": "Tamago",
+    "aliases": [
+      "\"Baron Tamago\""
+    ],
+    "imageUrl": "/characters/tamago.png",
+    "gender": "Male",
+    "affiliationPrimary": "Big Mom Pirates",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 429000000,
+    "heightCm": 301,
+    "origin": "Grand Line",
+    "firstArc": "Fish-Man Island",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 429000000,
+        "arc": "Fish-Man Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Fish-Man Island",
+    "hakiRevealedInArc": {
+      "A": "Fish-Man Island",
+      "O": "Fish-Man Island"
+    }
+  },
+  {
+    "id": "pedro",
+    "name": "Pedro",
+    "aliases": [
+      "\"Pedro of the Treetops\""
+    ],
+    "imageUrl": "/characters/pedro.png",
+    "gender": "Male",
+    "affiliationPrimary": "Mokomo Dukedom",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 233,
+    "origin": "Grand Line (Mokomo Dukedom)",
+    "firstArc": "Zou",
+    "minTier": "fan",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Zou",
+      "O": "Zou"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "charlotte-daifuku",
+    "name": "Charlotte Daifuku",
+    "aliases": [],
+    "imageUrl": "/characters/charlotte-daifuku.png",
+    "gender": "Male",
+    "affiliationPrimary": "Charlotte Family",
+    "devilFruitType": "Paramecia",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 300000000,
+    "heightCm": 489,
+    "origin": "Grand Line (On a boat)",
+    "firstArc": "Whole Cake Island",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 300000000,
+        "arc": "Whole Cake Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {
+      "A": "Whole Cake Island",
+      "O": "Whole Cake Island"
+    }
+  },
+  {
+    "id": "charlotte-oven",
+    "name": "Charlotte Oven",
+    "aliases": [],
+    "imageUrl": "/characters/charlotte-oven.png",
+    "gender": "Male",
+    "affiliationPrimary": "Charlotte Family",
+    "devilFruitType": "Paramecia",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 300000000,
+    "heightCm": 492,
+    "origin": "Grand Line (On a boat)",
+    "firstArc": "Whole Cake Island",
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 300000000,
+        "arc": "Whole Cake Island"
+      }
+    ],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {
+      "A": "Whole Cake Island",
+      "O": "Whole Cake Island"
+    }
+  },
+  {
+    "id": "dorry",
+    "name": "Dorry",
+    "aliases": [
+      "Dorry the Blue Ogre"
+    ],
+    "imageUrl": "/characters/dorry.png",
+    "gender": "Male",
+    "affiliationPrimary": "Giant Warrior Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 2260,
+    "origin": "Grand Line (Elbaph)",
+    "firstArc": "Little Garden",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 1800000000,
+        "arc": "Little Garden"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "brogy",
+    "name": "Brogy",
+    "aliases": [
+      "Brogy the Red Ogre"
+    ],
+    "imageUrl": "/characters/brogy.png",
+    "gender": "Male",
+    "affiliationPrimary": "Giant Warrior Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 2130,
+    "origin": "Grand Line (Elbaph)",
+    "firstArc": "Little Garden",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 1800000000,
+        "arc": "Little Garden"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "foxy",
+    "name": "Foxy",
+    "aliases": [
+      "\"Silver Fox\""
+    ],
+    "imageUrl": "/characters/foxy.png",
+    "gender": "Male",
+    "affiliationPrimary": "Foxy Pirates",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": 24000000,
+    "heightCm": 180,
+    "origin": "South Blue",
+    "firstArc": "Long Ring Long Land",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 24000000,
+        "arc": "Long Ring Long Land"
+      }
+    ],
+    "devilFruitRevealedInArc": "Long Ring Long Land",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "hina",
+    "name": "Hina",
+    "aliases": [
+      "\"Black Cage Hina\""
+    ],
+    "imageUrl": "/characters/hina.png",
+    "gender": "Female",
+    "affiliationPrimary": "Marines (Black Cage Corps)",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": 200000000,
+    "heightCm": 181,
+    "origin": "West Blue",
+    "firstArc": "Arabasta",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 200000000,
+        "arc": "Arabasta"
+      }
+    ],
+    "devilFruitRevealedInArc": "Arabasta",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "helmeppo",
+    "name": "Helmeppo",
+    "aliases": [],
+    "imageUrl": "/characters/helmeppo.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines (Headquarters",
+    "devilFruitType": "None",
+    "haki": [
+      "A"
+    ],
+    "bounty": 100000000,
+    "heightCm": 179,
+    "origin": "Unknown",
+    "firstArc": "Romance Dawn",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 100000000,
+        "arc": "Romance Dawn"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Romance Dawn"
+    }
+  },
+  {
+    "id": "fullbody",
+    "name": "Fullbody",
+    "aliases": [
+      "\"Double Ironfist Fullbody\"\"Ironfist Fullbody\" (former)"
+    ],
+    "imageUrl": "/characters/fullbody.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": 1000000,
+    "heightCm": 184,
+    "origin": "North Blue",
+    "firstArc": "Baratie",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 1000000,
+        "arc": "Baratie"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "jango",
+    "name": "Jango",
+    "aliases": [
+      "\"One-Two\" Jango (as a pirate);\"Jango the Turncoat\" (Marine)"
+    ],
+    "imageUrl": "/characters/jango.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 207,
+    "origin": "East Blue",
+    "firstArc": "Syrup Village",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 1000000,
+        "arc": "Syrup Village"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "kaya",
+    "name": "Kaya",
+    "aliases": [],
+    "imageUrl": "/characters/kaya.png",
+    "gender": "Female",
+    "affiliationPrimary": "Unknown",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 169,
+    "origin": "East Blue (Gecko Islands)",
+    "firstArc": "Syrup Village",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "nojiko",
+    "name": "Nojiko",
+    "aliases": [],
+    "imageUrl": "/characters/nojiko.png",
+    "gender": "Female",
+    "affiliationPrimary": "Bell-mère's mikan",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 170,
+    "origin": "East Blue",
+    "firstArc": "Arlong Park",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "genzo",
+    "name": "Genzo",
+    "aliases": [],
+    "imageUrl": "/characters/genzo.png",
+    "gender": "Male",
+    "affiliationPrimary": "Cocoyasi Village",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 173,
+    "origin": "East Blue (Conomi Islands)",
+    "firstArc": "Arlong Park",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "conis",
+    "name": "Conis",
+    "aliases": [],
+    "imageUrl": "/characters/conis.png",
+    "gender": "Female",
+    "affiliationPrimary": "Pumpkin Cafe",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 176,
+    "origin": "Grand Line (Skypiea)",
+    "firstArc": "Skypiea",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "pagaya",
+    "name": "Pagaya",
+    "aliases": [],
+    "imageUrl": "/characters/pagaya.png",
+    "gender": "Male",
+    "affiliationPrimary": "Unknown",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 179,
+    "origin": "Grand Line (Skypiea)",
+    "firstArc": "Skypiea",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "aisa",
+    "name": "Aisa",
+    "aliases": [],
+    "imageUrl": "/characters/aisa.png",
+    "gender": "Female",
+    "affiliationPrimary": "Shandia",
+    "devilFruitType": "None",
+    "haki": [
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 140,
+    "origin": "Sky Islands (Skypiea)",
+    "firstArc": "Skypiea",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Skypiea"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "kokoro",
+    "name": "Kokoro",
+    "aliases": [],
+    "imageUrl": "/characters/kokoro.png",
+    "gender": "Female",
+    "affiliationPrimary": "Tom's Workers",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 168,
+    "origin": "Grand Line (Ryugu Kingdom; Fish-Man Island)",
+    "firstArc": "Water 7",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "chimney",
+    "name": "Chimney",
+    "aliases": [],
+    "imageUrl": "/characters/chimney.png",
+    "gender": "Female",
+    "affiliationPrimary": "Kokoro",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 115,
+    "origin": "Grand Line (Water 7)",
+    "firstArc": "Water 7",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "lola-zombie",
+    "name": "Lola (Zombie)",
+    "aliases": [],
+    "imageUrl": "/characters/lola-zombie.png",
+    "gender": "Female",
+    "affiliationPrimary": "Thriller Bark Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Thriller Bark",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "hogback",
+    "name": "Hogback",
+    "aliases": [
+      "\"Doctor Hogback\"\"Genius Surgeon\""
+    ],
+    "imageUrl": "/characters/hogback.png",
+    "gender": "Male",
+    "affiliationPrimary": "Thriller Bark Pirates (Mysterious Four)",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 223,
+    "origin": "West Blue",
+    "firstArc": "Thriller Bark",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "absalom",
+    "name": "Absalom",
+    "aliases": [
+      "Absalom of the Graveyard"
+    ],
+    "imageUrl": "/characters/absalom.png",
+    "gender": "Male",
+    "affiliationPrimary": "Thriller Bark Pirates (Mysterious Four) (former)",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 195,
+    "origin": "West Blue",
+    "firstArc": "Thriller Bark",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": "Thriller Bark",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "bastille",
+    "name": "Bastille",
+    "aliases": [
+      "\"Shark Cutter\""
+    ],
+    "imageUrl": "/characters/bastille.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 500000000,
+    "heightCm": 291,
+    "origin": "Grand Line",
+    "firstArc": "Dressrosa",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 500000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Dressrosa",
+      "O": "Dressrosa"
+    }
+  },
+  {
+    "id": "belo-betty",
+    "name": "Belo Betty",
+    "aliases": [],
+    "imageUrl": "/characters/belo-betty.png",
+    "gender": "Female",
+    "affiliationPrimary": "Revolutionary Army (East Army)",
+    "devilFruitType": "Paramecia",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": 457000000,
+    "heightCm": 196,
+    "origin": "East Blue",
+    "firstArc": "Levely",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 457000000,
+        "arc": "Levely"
+      }
+    ],
+    "devilFruitRevealedInArc": "Levely",
+    "hakiRevealedInArc": {
+      "A": "Levely",
+      "O": "Levely"
+    }
+  },
+  {
+    "id": "bobby-funk",
+    "name": "Bobby Funk",
+    "aliases": [],
+    "imageUrl": "/characters/bobby-funk.png",
+    "gender": "Male",
+    "affiliationPrimary": "Mogaro Kingdom",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": 36000000,
+    "heightCm": 320,
+    "origin": "Grand Line (Mogaro Kingdom)",
+    "firstArc": "Dressrosa",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 36000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "bogard",
+    "name": "Bogard",
+    "aliases": [],
+    "imageUrl": "/characters/bogard.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Arlong Park",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "brannew",
+    "name": "Brannew",
+    "aliases": [],
+    "imageUrl": "/characters/brannew.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": 100000000,
+    "heightCm": 190,
+    "origin": "Grand Line",
+    "firstArc": "Loguetown",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 100000000,
+        "arc": "Loguetown"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "buchi",
+    "name": "Buchi",
+    "aliases": [
+      "\"Nyaban Brothers\"|Nyāban Burazāzu|English versions: \"Meowban Brothers\""
+    ],
+    "imageUrl": "/characters/buchi.png",
+    "gender": "Male",
+    "affiliationPrimary": "Black Cat Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": 7000000,
+    "heightCm": 216,
+    "origin": "East Blue",
+    "firstArc": "Syrup Village",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 7000000,
+        "arc": "Syrup Village"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "cabaji",
+    "name": "Cabaji",
+    "aliases": [
+      "\"Cabaji the Acrobat\""
+    ],
+    "imageUrl": "/characters/cabaji.png",
+    "gender": "Male",
+    "affiliationPrimary": "Cross Guild",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 208,
+    "origin": "East Blue",
+    "firstArc": "Orange Town",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "carne",
+    "name": "Carne",
+    "aliases": [],
+    "imageUrl": "/characters/carne.png",
+    "gender": "Male",
+    "affiliationPrimary": "Baratie",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 171,
+    "origin": "East Blue",
+    "firstArc": "Baratie",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "cerberus",
+    "name": "Cerberus",
+    "aliases": [],
+    "imageUrl": "/characters/cerberus.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Thriller Bark Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Thriller Bark",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "fukurou",
+    "name": "Fukurou",
+    "aliases": [
+      "\"Fukurou the Silent\""
+    ],
+    "imageUrl": "/characters/fukurou.png",
+    "gender": "Male",
+    "affiliationPrimary": "CP0",
+    "devilFruitType": "None",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 331,
+    "origin": "Grand Line",
+    "firstArc": "Enies Lobby",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "A": "Enies Lobby",
+      "O": "Enies Lobby"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "giolla",
+    "name": "Giolla",
+    "aliases": [],
+    "imageUrl": "/characters/giolla.png",
+    "gender": "Female",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 221,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": "Dressrosa",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "gladius",
+    "name": "Gladius",
+    "aliases": [],
+    "imageUrl": "/characters/gladius.png",
+    "gender": "Male",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 260,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": "Dressrosa",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "ideo",
+    "name": "Ideo",
+    "aliases": [
+      "\"Destruction Cannon\""
+    ],
+    "imageUrl": "/characters/ideo.png",
+    "gender": "Male",
+    "affiliationPrimary": "Ideo Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 225,
+    "origin": "Grand Line",
+    "firstArc": "Dressrosa",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "inazuma",
+    "name": "Inazuma",
+    "aliases": [],
+    "imageUrl": "/characters/inazuma.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Kamabakka Kingdom",
+    "devilFruitType": "Paramecia",
+    "haki": [],
+    "bounty": 100000000,
+    "heightCm": 228,
+    "origin": "South Blue",
+    "firstArc": "Impel Down",
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 100000000,
+        "arc": "Impel Down"
+      }
+    ],
+    "devilFruitRevealedInArc": "Impel Down",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "jabra",
+    "name": "Jabra",
+    "aliases": [],
+    "imageUrl": "/characters/jabra.png",
+    "gender": "Male",
+    "affiliationPrimary": "CP0",
+    "devilFruitType": "Zoan",
+    "haki": [
+      "A",
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 212,
+    "origin": "North Blue",
+    "firstArc": "Enies Lobby",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": "Enies Lobby",
+    "hakiRevealedInArc": {
+      "A": "Enies Lobby",
+      "O": "Enies Lobby"
+    },
+    "bountyHistory": []
+  },
+  {
+    "id": "johnny",
+    "name": "Johnny",
+    "aliases": [],
+    "imageUrl": "/characters/johnny.png",
+    "gender": "Male",
+    "affiliationPrimary": "Yosaku",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 186,
+    "origin": "East Blue",
+    "firstArc": "Baratie",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "joseph",
+    "name": "Joseph",
+    "aliases": [],
+    "imageUrl": "/characters/joseph.png",
+    "gender": "Male",
+    "affiliationPrimary": "CP0",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Dressrosa",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "kureha",
+    "name": "Kureha",
+    "aliases": [
+      "\"Witch\";\"Master of Doctors\""
+    ],
+    "imageUrl": "/characters/kureha.png",
+    "gender": "Female",
+    "affiliationPrimary": "Sakura Kingdom",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 188,
+    "origin": "Grand Line (Drum Kingdom)",
+    "firstArc": "Drum Island",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "lao-g",
+    "name": "Lao G",
+    "aliases": [],
+    "imageUrl": "/characters/lao-g.png",
+    "gender": "Male",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 157,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "marguerite",
+    "name": "Marguerite",
+    "aliases": [],
+    "imageUrl": "/characters/marguerite.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "Kuja Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 178,
+    "origin": "Calm Belt (Amazon Lily)",
+    "firstArc": "Amazon Lily",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "miss-fathers-day",
+    "name": "Miss Father's Day",
+    "aliases": [],
+    "imageUrl": "/characters/miss-fathers-day.png",
+    "gender": "Female",
+    "affiliationPrimary": "Baroque Works (former)",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Arabasta",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "miss-monday",
+    "name": "Miss Monday",
+    "aliases": [],
+    "imageUrl": "/characters/miss-monday.png",
+    "gender": "Female",
+    "affiliationPrimary": "Baroque Works (former)",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Grand Line",
+    "firstArc": "Whisky Peak",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "aladine",
+    "name": "Aladine",
+    "aliases": [],
+    "imageUrl": "/characters/aladine.png",
+    "gender": "Male",
+    "affiliationPrimary": "Sun Pirates",
+    "devilFruitType": "None",
+    "haki": [],
+    "bounty": null,
+    "heightCm": 627,
+    "origin": "Grand Line (Ryugu Kingdom)",
+    "firstArc": "Fish-Man Island",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": null,
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "babanuki",
+    "name": "Babanuki",
+    "aliases": [],
+    "imageUrl": "/characters/babanuki.png",
+    "gender": "Male",
+    "affiliationPrimary": "Beasts Pirates",
+    "devilFruitType": "Zoan",
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Unknown",
+    "firstArc": "Wano Country",
+    "minTier": "nakama",
+    "devilFruitRevealedInArc": "Wano Country",
+    "bountyHistory": [],
+    "hakiRevealedInArc": {}
   }
 ]

@@ -1,0 +1,13 @@
+Final character dataset counts
+==============================
+Total: 198
+Tiers:
+  casual: 74
+  fan: 74
+  nakama: 50
+
+Notes:
+  - Merged from characters.v2.json (113) + new-characters.json (87)
+  - Removed 1 Coby duplicate from existing (kept the one with Hero Coby alias)
+  - Removed King from new-characters (already existed in existing as Alber, minTier=casual)
+  - Final: 198 total characters
