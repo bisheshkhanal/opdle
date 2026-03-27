@@ -4824,5 +4824,68 @@
     "devilFruitRevealedInArc": "Wano Country",
     "bountyHistory": [],
     "hakiRevealedInArc": {}
+  },
+  {
+    "id": "shanks",
+    "name": "Shanks",
+    "aliases": [
+      "Red-Haired Shanks",
+      "Red Hair"
+    ],
+    "imageUrl": "/characters/shanks.png",
+    "gender": "Male",
+    "affiliationPrimary": "Red Hair Pirates",
+    "devilFruitType": "None",
+    "haki": [
+      "O",
+      "A",
+      "C"
+    ],
+    "bounty": 4048900000,
+    "heightCm": 199,
+    "origin": "West Blue",
+    "firstArc": "Romance Dawn",
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 4048900000,
+        "arc": "Romance Dawn"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Romance Dawn",
+      "A": "Romance Dawn",
+      "C": "Romance Dawn"
+    }
+  },
+  {
+    "id": "gol-d-roger",
+    "name": "Gol D. Roger",
+    "aliases": [
+      "Pirate King",
+      "Gold Roger"
+    ],
+    "imageUrl": "/characters/gol-d-roger.png",
+    "gender": "Male",
+    "affiliationPrimary": "Roger Pirates",
+    "devilFruitType": "None",
+    "haki": [
+      "O",
+      "A",
+      "C"
+    ],
+    "bounty": null,
+    "heightCm": 274,
+    "origin": "East Blue",
+    "firstArc": "Romance Dawn",
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Romance Dawn",
+      "A": "Romance Dawn",
+      "C": "Romance Dawn"
+    }
   }
 ]
