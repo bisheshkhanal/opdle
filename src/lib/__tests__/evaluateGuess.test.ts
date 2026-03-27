@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { evaluateGuess, getArrowIndicator, getStatusColorClass } from "../evaluateGuess";
+import {
+  evaluateGuess,
+  getArrowIndicator,
+  getStatusColorClass,
+} from "../evaluateGuess";
 import type { Character } from "../types";
 
 // Mock characters for testing with new schema
@@ -16,6 +20,7 @@ const targetCharacter: Character = {
   heightCm: 174,
   origin: "East Blue",
   firstArc: "Romance Dawn",
+  minTier: "casual",
 };
 
 const exactMatchCharacter: Character = { ...targetCharacter };
@@ -33,6 +38,7 @@ const partialHakiCharacter: Character = {
   heightCm: 180,
   origin: "North Blue",
   firstArc: "Baratie",
+  minTier: "casual",
 };
 
 const noHakiCharacter: Character = {
@@ -48,6 +54,7 @@ const noHakiCharacter: Character = {
   heightCm: 170,
   origin: "East Blue",
   firstArc: "Orange Town",
+  minTier: "casual",
 };
 
 const nullBountyCharacter: Character = {
@@ -63,6 +70,7 @@ const nullBountyCharacter: Character = {
   heightCm: 287,
   origin: "East Blue",
   firstArc: "Water 7",
+  minTier: "casual",
 };
 
 describe("evaluateGuess.ts", () => {
@@ -140,7 +148,10 @@ describe("evaluateGuess.ts", () => {
 
     it("should return correct when both height values are null", () => {
       const nullHeightGuess: Character = { ...targetCharacter, heightCm: null };
-      const nullHeightTarget: Character = { ...targetCharacter, heightCm: null };
+      const nullHeightTarget: Character = {
+        ...targetCharacter,
+        heightCm: null,
+      };
       const result = evaluateGuess(nullHeightGuess, nullHeightTarget);
       const heightResult = result.categories.find((c) => c.key === "heightCm");
       expect(heightResult?.status).toBe("correct");
@@ -191,7 +202,9 @@ describe("evaluateGuess.ts", () => {
 
     it("should return wrong for different devil fruit types", () => {
       const result = evaluateGuess(partialHakiCharacter, targetCharacter);
-      const dfResult = result.categories.find((c) => c.key === "devilFruitType");
+      const dfResult = result.categories.find(
+        (c) => c.key === "devilFruitType"
+      );
       expect(dfResult?.status).toBe("wrong");
     });
   });

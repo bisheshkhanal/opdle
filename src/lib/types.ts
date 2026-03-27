@@ -1,7 +1,13 @@
 import { isValidArc } from "./arcs";
 
 // Tile status for visual encoding
-export type TileStatus = "correct" | "partial" | "wrong" | "higher" | "lower" | "unknown";
+export type TileStatus =
+  | "correct"
+  | "partial"
+  | "wrong"
+  | "higher"
+  | "lower"
+  | "unknown";
 
 export interface CategoryResult {
   key: string;
@@ -31,6 +37,8 @@ export type CharacterStatus = "Alive" | "Deceased" | "Unknown";
 // Gender
 export type Gender = "Male" | "Female" | "Unknown" | "Other";
 
+export type Tier = "casual" | "fan" | "nakama";
+
 /**
  * Character schema for Classic mode
  * Required fields are enforced at runtime validation
@@ -48,6 +56,11 @@ export interface Character {
   heightCm: number | null;
   origin: string;
   firstArc: string;
+  minTier: Tier;
+  // Spoiler-free fields for future UI features
+  bountyHistory?: Array<{ amount: number; arc: string }>;
+  devilFruitRevealedInArc?: string | null;
+  hakiRevealedInArc?: Partial<Record<HakiType, string>>;
 }
 
 export type GameMode = "daily" | "infinite";
@@ -93,9 +106,35 @@ export interface StorageSchema {
   };
 }
 
+export interface DailyStats {
+  streak: number;
+  maxStreak: number;
+}
+
+export interface InfiniteStats {
+  totalWins: number;
+  totalGames: number;
+}
+
+export interface StorageSchemaV3 {
+  version: number;
+  tier: Tier;
+  hasSelectedTier: boolean;
+  daily: Record<string, DailyState>;
+  infinite: InfiniteState;
+  dailyStats: Record<Tier, DailyStats>;
+  infiniteStats: Record<Tier, InfiniteStats>;
+}
+
 const VALID_GENDERS: Gender[] = ["Male", "Female", "Unknown", "Other"];
-const VALID_DEVIL_FRUITS: DevilFruitType[] = ["Paramecia", "Zoan", "Logia", "None"];
+const VALID_DEVIL_FRUITS: DevilFruitType[] = [
+  "Paramecia",
+  "Zoan",
+  "Logia",
+  "None",
+];
 const VALID_HAKI: HakiType[] = ["O", "A", "C"];
+const VALID_TIERS: Tier[] = ["casual", "fan", "nakama"];
 
 /**
  * Runtime validation for Character
@@ -112,11 +151,15 @@ export function validateCharacter(obj: unknown): obj is Character {
   if (typeof c.origin !== "string") return false;
   if (typeof c.firstArc !== "string" || !isValidArc(c.firstArc)) return false;
 
+  // Tier enum
+  if (!VALID_TIERS.includes(c.minTier as Tier)) return false;
+
   // Gender enum
   if (!VALID_GENDERS.includes(c.gender as Gender)) return false;
 
   // Devil fruit type enum
-  if (!VALID_DEVIL_FRUITS.includes(c.devilFruitType as DevilFruitType)) return false;
+  if (!VALID_DEVIL_FRUITS.includes(c.devilFruitType as DevilFruitType))
+    return false;
 
   // Haki array
   if (!Array.isArray(c.haki)) return false;

@@ -22,6 +22,7 @@ const mockCharacters: Character[] = [
     heightCm: 174,
     origin: "East Blue",
     firstArc: "Romance Dawn",
+    minTier: "casual",
   },
   {
     id: "zoro",
@@ -36,6 +37,7 @@ const mockCharacters: Character[] = [
     heightCm: 181,
     origin: "East Blue",
     firstArc: "Romance Dawn",
+    minTier: "casual",
   },
   {
     id: "nami",
@@ -50,6 +52,7 @@ const mockCharacters: Character[] = [
     heightCm: 170,
     origin: "East Blue",
     firstArc: "Orange Town",
+    minTier: "casual",
   },
   {
     id: "law",
@@ -64,6 +67,7 @@ const mockCharacters: Character[] = [
     heightCm: 191,
     origin: "North Blue",
     firstArc: "Sabaody Archipelago",
+    minTier: "casual",
   },
 ];
 

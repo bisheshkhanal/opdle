@@ -23,6 +23,7 @@ const mockCharacters: Character[] = [
     heightCm: 174,
     origin: "East Blue",
     firstArc: "Romance Dawn",
+    minTier: "casual",
   },
   {
     id: "zoro",
@@ -37,6 +38,7 @@ const mockCharacters: Character[] = [
     heightCm: 181,
     origin: "East Blue",
     firstArc: "Romance Dawn",
+    minTier: "casual",
   },
   {
     id: "nami",
@@ -51,6 +53,7 @@ const mockCharacters: Character[] = [
     heightCm: 170,
     origin: "East Blue",
     firstArc: "Orange Town",
+    minTier: "casual",
   },
 ];
 
@@ -103,16 +106,7 @@ describe("infinite.ts", () => {
     });
 
     it("should select different characters for different roundIds (with high probability)", () => {
-      const roundIds = [
-        "1-1",
-        "2-2",
-        "3-3",
-        "4-4",
-        "5-5",
-        "6-6",
-        "7-7",
-        "8-8",
-      ];
+      const roundIds = ["1-1", "2-2", "3-3", "4-4", "5-5", "6-6", "7-7", "8-8"];
       const selections = roundIds.map(
         (id) => selectInfiniteCharacter(mockCharacters, id).id
       );

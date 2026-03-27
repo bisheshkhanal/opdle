@@ -23,6 +23,7 @@ const mockCharacters: Character[] = [
     heightCm: 174,
     origin: "East Blue",
     firstArc: "Romance Dawn",
+    minTier: "casual",
   },
   {
     id: "zoro",
@@ -37,6 +38,7 @@ const mockCharacters: Character[] = [
     heightCm: 181,
     origin: "East Blue",
     firstArc: "Romance Dawn",
+    minTier: "casual",
   },
   {
     id: "nami",
@@ -51,6 +53,7 @@ const mockCharacters: Character[] = [
     heightCm: 170,
     origin: "East Blue",
     firstArc: "Orange Town",
+    minTier: "casual",
   },
 ];
 
@@ -132,14 +135,9 @@ describe("daily.ts", () => {
     });
 
     it("should select different characters for different dates (with high probability)", () => {
-      const dates = [
-        "2024-01-01",
-        "2024-02-14",
-        "2024-07-04",
-        "2024-12-25",
-      ];
-      const selections = dates.map((d) =>
-        selectDailyCharacter(mockCharacters, d).id
+      const dates = ["2024-01-01", "2024-02-14", "2024-07-04", "2024-12-25"];
+      const selections = dates.map(
+        (d) => selectDailyCharacter(mockCharacters, d).id
       );
 
       const uniqueSelections = new Set(selections);

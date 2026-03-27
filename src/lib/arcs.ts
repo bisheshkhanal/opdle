@@ -5,7 +5,7 @@
  * Order is chronological by story appearance (not publication order where different)
  */
 
-export const ARC_ORDER: readonly string[] = [
+export const ARC_ORDER = [
   // East Blue Saga
   "Romance Dawn",
   "Orange Town",
@@ -62,23 +62,25 @@ export const ARC_ORDER: readonly string[] = [
   "Elbaph",
 ] as const;
 
+export type ArcName = (typeof ARC_ORDER)[number];
+
 /**
  * Common arc name aliases/misspellings
  */
 const ARC_ALIASES: Record<string, string> = {
-  "alabasta": "Arabasta",
-  "alabaster": "Arabasta",
+  alabasta: "Arabasta",
+  alabaster: "Arabasta",
   "post war": "Post-War",
-  "postwar": "Post-War",
+  postwar: "Post-War",
   "post-enies lobby": "Post-Enies Lobby",
   "post enies lobby": "Post-Enies Lobby",
   "fishman island": "Fish-Man Island",
   "fish man island": "Fish-Man Island",
   "whole cake": "Whole Cake Island",
-  "wci": "Whole Cake Island",
-  "wano": "Wano Country",
+  wci: "Whole Cake Island",
+  wano: "Wano Country",
   "return sabaody": "Return to Sabaody",
-  "sabaody": "Sabaody Archipelago",
+  sabaody: "Sabaody Archipelago",
 };
 
 /**
