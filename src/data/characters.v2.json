@@ -5904,5 +5904,122 @@
     "bountyHistory": [],
     "devilFruitRevealedInArc": null,
     "hakiRevealedInArc": {}
+  },
+  {
+    "id": "tama",
+    "name": "Tama",
+    "imageUrl": "/characters/tama.png",
+    "gender": "Female",
+    "affiliationPrimary": "Wano Country",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 108,
+    "origin": "New World",
+    "firstArc": "Wano Country",
+    "aliases": [
+      "Kozuki Tama",
+      "O-Tama"
+    ],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Wano Country",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "hyogoro",
+    "name": "Hyogoro",
+    "imageUrl": "/characters/hyogoro.png",
+    "gender": "Male",
+    "affiliationPrimary": "Wano Country",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 100,
+    "origin": "New World",
+    "firstArc": "Wano Country",
+    "aliases": [
+      "Hyogoro of the Flower"
+    ],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Wano Country",
+      "A": "Wano Country"
+    }
+  },
+  {
+    "id": "imu",
+    "name": "Imu",
+    "imageUrl": "/characters/imu.png",
+    "gender": "Unknown",
+    "affiliationPrimary": "World Government",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": null,
+    "origin": "Grand Line",
+    "firstArc": "Levely",
+    "aliases": [],
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "york",
+    "name": "York",
+    "imageUrl": "/characters/york.png",
+    "gender": "Female",
+    "affiliationPrimary": "World Government",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 482,
+    "origin": "New World",
+    "firstArc": "Egghead",
+    "aliases": [],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "t-bone",
+    "name": "T-Bone",
+    "imageUrl": "/characters/t-bone.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 200,
+    "origin": "Grand Line",
+    "firstArc": "Water 7",
+    "aliases": [],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Water 7",
+      "A": "Water 7"
+    }
   }
 ]
