@@ -5402,5 +5402,108 @@
     "bountyHistory": [],
     "devilFruitRevealedInArc": null,
     "hakiRevealedInArc": {}
+  },
+  {
+    "id": "karoo",
+    "name": "Karoo",
+    "imageUrl": "/characters/karoo.png",
+    "gender": "Male",
+    "affiliationPrimary": "Alabasta Kingdom",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 150,
+    "origin": "Grand Line",
+    "firstArc": "Arabasta",
+    "aliases": [
+      "Super Spot-Billed Duck"
+    ],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "galdino",
+    "name": "Galdino",
+    "imageUrl": "/characters/galdino.png",
+    "gender": "Male",
+    "affiliationPrimary": "Cross Guild",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [],
+    "bounty": 24000000,
+    "heightCm": 179,
+    "origin": "South Blue",
+    "firstArc": "Little Garden",
+    "aliases": [
+      "Mr. 3"
+    ],
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 24000000,
+        "arc": "Little Garden"
+      }
+    ],
+    "devilFruitRevealedInArc": "Little Garden",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "blueno",
+    "name": "Blueno",
+    "imageUrl": "/characters/blueno.png",
+    "gender": "Male",
+    "affiliationPrimary": "CP0",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 258,
+    "origin": "North Blue",
+    "firstArc": "Water 7",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Water 7",
+    "hakiRevealedInArc": {
+      "O": "Enies Lobby",
+      "A": "Enies Lobby"
+    }
+  },
+  {
+    "id": "ryuma",
+    "name": "Ryuma",
+    "imageUrl": "/characters/ryuma.png",
+    "gender": "Male",
+    "affiliationPrimary": "Wano Country",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": null,
+    "heightCm": 179,
+    "origin": "New World",
+    "firstArc": "Thriller Bark",
+    "aliases": [
+      "Sword God Ryuma"
+    ],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Thriller Bark",
+      "A": "Thriller Bark"
+    }
   }
 ]
