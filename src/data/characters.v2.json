@@ -5505,5 +5505,143 @@
       "O": "Thriller Bark",
       "A": "Thriller Bark"
     }
+  },
+  {
+    "id": "hannyabal",
+    "name": "Hannyabal",
+    "imageUrl": "/characters/hannyabal.png",
+    "gender": "Male",
+    "affiliationPrimary": "Impel Down",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 309,
+    "origin": "South Blue",
+    "firstArc": "Impel Down",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "makino",
+    "name": "Makino",
+    "imageUrl": "/characters/makino.png",
+    "gender": "Female",
+    "affiliationPrimary": "Partys Bar",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 166,
+    "origin": "East Blue",
+    "firstArc": "Romance Dawn",
+    "aliases": [],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "curly-dadan",
+    "name": "Curly Dadan",
+    "imageUrl": "/characters/curly-dadan.png",
+    "gender": "Female",
+    "affiliationPrimary": "Dadan Family",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": 7800000,
+    "heightCm": 221,
+    "origin": "East Blue",
+    "firstArc": "Post-War",
+    "aliases": [
+      "Mountain Bandit Dadan"
+    ],
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 7800000,
+        "arc": "Post-War"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "fisher-tiger",
+    "name": "Fisher Tiger",
+    "imageUrl": "/characters/fisher-tiger.png",
+    "gender": "Male",
+    "affiliationPrimary": "Sun Pirates",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": 230000000,
+    "heightCm": 520,
+    "origin": "Grand Line",
+    "firstArc": "Fish-Man Island",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 230000000,
+        "arc": "Fish-Man Island"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "otohime",
+    "name": "Otohime",
+    "imageUrl": "/characters/otohime.png",
+    "gender": "Female",
+    "affiliationPrimary": "Ryugu Kingdom",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [
+      "O"
+    ],
+    "bounty": null,
+    "heightCm": 224,
+    "origin": "Grand Line",
+    "firstArc": "Fish-Man Island",
+    "aliases": [
+      "Queen Otohime"
+    ],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Fish-Man Island"
+    }
+  },
+  {
+    "id": "vander-decken-ix",
+    "name": "Vander Decken IX",
+    "imageUrl": "/characters/vander-decken-ix.png",
+    "gender": "Male",
+    "affiliationPrimary": "Flying Pirates",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 352,
+    "origin": "Grand Line",
+    "firstArc": "Fish-Man Island",
+    "aliases": [],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Fish-Man Island",
+    "hakiRevealedInArc": {}
   }
 ]
