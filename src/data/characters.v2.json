@@ -5,7 +5,9 @@
     "imageUrl": "/characters/ace.png",
     "gender": "Male",
     "affiliationPrimary": "Whitebeard Pirates",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "O",
       "A",
@@ -39,12 +41,14 @@
     "imageUrl": "/characters/akainu.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "O",
       "A"
     ],
-    "bounty": null,
+    "bounty": 1800000000,
     "heightCm": 306,
     "origin": "North Blue",
     "firstArc": "Marineford",
@@ -66,7 +70,9 @@
     "imageUrl": "/characters/alvida.png",
     "gender": "Female",
     "affiliationPrimary": "Buggy Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 198,
@@ -77,7 +83,7 @@
     ],
     "minTier": "fan",
     "bountyHistory": [],
-    "devilFruitRevealedInArc": "Romance Dawn",
+    "devilFruitRevealedInArc": "Loguetown",
     "hakiRevealedInArc": {}
   },
   {
@@ -86,7 +92,9 @@
     "imageUrl": "/characters/aokiji.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "O",
       "A"
@@ -113,7 +121,9 @@
     "imageUrl": "/characters/apoo.png",
     "gender": "Male",
     "affiliationPrimary": "On Air Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 350000000,
     "heightCm": 256,
@@ -138,7 +148,9 @@
     "imageUrl": "/characters/arlong.png",
     "gender": "Male",
     "affiliationPrimary": "Arlong Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 20000000,
     "heightCm": 263,
@@ -163,11 +175,10 @@
     "imageUrl": "/characters/bartolomeo.png",
     "gender": "Male",
     "affiliationPrimary": "Barto Club",
-    "devilFruitType": "Paramecia",
-    "haki": [
-      "O",
-      "A"
+    "devilFruitType": [
+      "Paramecia"
     ],
+    "haki": [],
     "bounty": 200000000,
     "heightCm": 220,
     "origin": "East Blue",
@@ -183,10 +194,7 @@
       }
     ],
     "devilFruitRevealedInArc": "Dressrosa",
-    "hakiRevealedInArc": {
-      "O": "Dressrosa",
-      "A": "Dressrosa"
-    }
+    "hakiRevealedInArc": {}
   },
   {
     "id": "bellamy",
@@ -194,7 +202,9 @@
     "imageUrl": "/characters/bellamy.png",
     "gender": "Male",
     "affiliationPrimary": "Bellamy Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -225,7 +235,9 @@
     "imageUrl": "/characters/bepo.png",
     "gender": "Male",
     "affiliationPrimary": "Heart Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 240,
@@ -243,7 +255,9 @@
     "imageUrl": "/characters/big-mom.png",
     "gender": "Female",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A",
@@ -276,7 +290,10 @@
     "imageUrl": "/characters/blackbeard.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia",
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -307,7 +324,9 @@
     "imageUrl": "/characters/boa-hancock.png",
     "gender": "Female",
     "affiliationPrimary": "Kuja Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A",
@@ -341,7 +360,9 @@
     "imageUrl": "/characters/bon-clay.png",
     "gender": "Male",
     "affiliationPrimary": "Baroque Works",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 32000000,
     "heightCm": 238,
@@ -367,11 +388,13 @@
     "imageUrl": "/characters/bonney.png",
     "gender": "Female",
     "affiliationPrimary": "Bonney Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 320000000,
     "heightCm": 174,
-    "origin": "Red Line",
+    "origin": "South Blue",
     "firstArc": "Sabaody Archipelago",
     "aliases": [
       "Bonney",
@@ -393,7 +416,9 @@
     "imageUrl": "/characters/brook.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 383000000,
     "heightCm": 277,
@@ -419,7 +444,9 @@
     "imageUrl": "/characters/buggy.png",
     "gender": "Male",
     "affiliationPrimary": "Cross Guild",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 3189000000,
     "heightCm": 192,
@@ -445,7 +472,9 @@
     "imageUrl": "/characters/burgess.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -475,10 +504,12 @@
     "name": "Caesar Clown",
     "imageUrl": "/characters/caesar-clown.png",
     "gender": "Male",
-    "affiliationPrimary": "Caesar Clown",
-    "devilFruitType": "Logia",
+    "affiliationPrimary": "Neo MADS",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [],
-    "bounty": null,
+    "bounty": 300000000,
     "heightCm": 309,
     "origin": "Grand Line",
     "firstArc": "Punk Hazard",
@@ -497,7 +528,9 @@
     "imageUrl": "/characters/camie.png",
     "gender": "Female",
     "affiliationPrimary": "Fish-Man Island",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 197,
@@ -515,7 +548,9 @@
     "imageUrl": "/characters/capone-bege.png",
     "gender": "Male",
     "affiliationPrimary": "Fire Tank Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -546,10 +581,10 @@
     "imageUrl": "/characters/carrot.png",
     "gender": "Female",
     "affiliationPrimary": "Mink Tribe",
-    "devilFruitType": "None",
-    "haki": [
-      "O"
+    "devilFruitType": [
+      "None"
     ],
+    "haki": [],
     "bounty": null,
     "heightCm": 161,
     "origin": "Grand Line",
@@ -558,9 +593,7 @@
     "minTier": "fan",
     "bountyHistory": [],
     "devilFruitRevealedInArc": null,
-    "hakiRevealedInArc": {
-      "O": "Zou"
-    }
+    "hakiRevealedInArc": {}
   },
   {
     "id": "cavendish",
@@ -568,7 +601,9 @@
     "imageUrl": "/characters/cavendish.png",
     "gender": "Male",
     "affiliationPrimary": "Beautiful Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -600,10 +635,10 @@
     "imageUrl": "/characters/chopper.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "Zoan",
-    "haki": [
-      "O"
+    "devilFruitType": [
+      "Zoan"
     ],
+    "haki": [],
     "bounty": 1000,
     "heightCm": 90,
     "origin": "Drum Island",
@@ -620,9 +655,7 @@
       }
     ],
     "devilFruitRevealedInArc": "Drum Island",
-    "hakiRevealedInArc": {
-      "O": "Drum Island"
-    }
+    "hakiRevealedInArc": {}
   },
   {
     "id": "coby",
@@ -630,12 +663,11 @@
     "imageUrl": "/characters/coby.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
-    "haki": [
-      "O",
-      "A"
+    "devilFruitType": [
+      "None"
     ],
-    "bounty": null,
+    "haki": [],
+    "bounty": 500000000,
     "heightCm": 167,
     "origin": "East Blue",
     "firstArc": "Romance Dawn",
@@ -657,7 +689,9 @@
     "imageUrl": "/characters/cracker.png",
     "gender": "Male",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -689,11 +723,10 @@
     "imageUrl": "/characters/crocodile.png",
     "gender": "Male",
     "affiliationPrimary": "Cross Guild",
-    "devilFruitType": "Logia",
-    "haki": [
-      "O",
-      "A"
+    "devilFruitType": [
+      "Logia"
     ],
+    "haki": [],
     "bounty": 1965000000,
     "heightCm": 253,
     "origin": "Grand Line",
@@ -710,10 +743,7 @@
       }
     ],
     "devilFruitRevealedInArc": "Little Garden",
-    "hakiRevealedInArc": {
-      "O": "Little Garden",
-      "A": "Little Garden"
-    }
+    "hakiRevealedInArc": {}
   },
   {
     "id": "crocus",
@@ -721,7 +751,9 @@
     "imageUrl": "/characters/crocus.png",
     "gender": "Male",
     "affiliationPrimary": "Twin Cape",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 203,
@@ -739,7 +771,9 @@
     "imageUrl": "/characters/dalton.png",
     "gender": "Male",
     "affiliationPrimary": "Sakura Kingdom",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 218,
@@ -757,7 +791,9 @@
     "imageUrl": "/characters/doc-q.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 72000000,
     "heightCm": 342,
@@ -782,7 +818,9 @@
     "imageUrl": "/characters/doflamingo.png",
     "gender": "Male",
     "affiliationPrimary": "Donquixote Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A",
@@ -816,7 +854,9 @@
     "imageUrl": "/characters/dr-kureha.png",
     "gender": "Female",
     "affiliationPrimary": "Sakura Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 188,
@@ -837,7 +877,9 @@
     "imageUrl": "/characters/dragon.png",
     "gender": "Male",
     "affiliationPrimary": "Revolutionary Army",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A",
@@ -866,7 +908,9 @@
     "imageUrl": "/characters/drake.png",
     "gender": "Male",
     "affiliationPrimary": "SWORD",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -898,7 +942,9 @@
     "imageUrl": "/characters/duval.png",
     "gender": "Male",
     "affiliationPrimary": "Rosy Life Riders",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 470,
@@ -918,7 +964,9 @@
     "imageUrl": "/characters/enel.png",
     "gender": "Male",
     "affiliationPrimary": "Skypiea",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "O"
     ],
@@ -942,7 +990,9 @@
     "imageUrl": "/characters/franky.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 394000000,
     "heightCm": 240,
@@ -968,7 +1018,9 @@
     "imageUrl": "/characters/fujitora.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -995,7 +1047,9 @@
     "imageUrl": "/characters/gan-fall.png",
     "gender": "Male",
     "affiliationPrimary": "Skypiea",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 180,
@@ -1015,7 +1069,9 @@
     "imageUrl": "/characters/garp.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A",
@@ -1045,7 +1101,9 @@
     "imageUrl": "/characters/gloriosa.png",
     "gender": "Female",
     "affiliationPrimary": "Amazon Lily",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -1065,7 +1123,9 @@
     "imageUrl": "/characters/hawkins.png",
     "gender": "Male",
     "affiliationPrimary": "Hawkins Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -1096,7 +1156,9 @@
     "imageUrl": "/characters/hody-jones.png",
     "gender": "Male",
     "affiliationPrimary": "New Fish-Man Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 331,
@@ -1114,7 +1176,9 @@
     "imageUrl": "/characters/iceburg.png",
     "gender": "Male",
     "affiliationPrimary": "Galley-La",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 199,
@@ -1132,7 +1196,9 @@
     "imageUrl": "/characters/inuarashi.png",
     "gender": "Male",
     "affiliationPrimary": "Mink Tribe",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -1158,7 +1224,9 @@
     "imageUrl": "/characters/ivankov.png",
     "gender": "Male",
     "affiliationPrimary": "Revolutionary Army",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -1186,7 +1254,9 @@
     "imageUrl": "/characters/jack.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -1217,7 +1287,9 @@
     "imageUrl": "/characters/jinbe.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -1249,7 +1321,9 @@
     "imageUrl": "/characters/jozu.png",
     "gender": "Male",
     "affiliationPrimary": "Whitebeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -1275,7 +1349,9 @@
     "imageUrl": "/characters/kaido.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A",
@@ -1309,7 +1385,9 @@
     "imageUrl": "/characters/kaku.png",
     "gender": "Male",
     "affiliationPrimary": "CP0",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -1333,7 +1411,9 @@
     "imageUrl": "/characters/kalifa.png",
     "gender": "Female",
     "affiliationPrimary": "CP0",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 185,
@@ -1351,7 +1431,9 @@
     "imageUrl": "/characters/katakuri.png",
     "gender": "Male",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A",
@@ -1384,7 +1466,9 @@
     "imageUrl": "/characters/kid.png",
     "gender": "Male",
     "affiliationPrimary": "Kid Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A",
@@ -1418,7 +1502,9 @@
     "imageUrl": "/characters/killer.png",
     "gender": "Male",
     "affiliationPrimary": "Kid Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -1449,7 +1535,9 @@
     "imageUrl": "/characters/kinemon.png",
     "gender": "Male",
     "affiliationPrimary": "Kozuki Family",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -1475,7 +1563,9 @@
     "imageUrl": "/characters/king.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -1506,7 +1596,9 @@
     "imageUrl": "/characters/kizaru.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "O",
       "A"
@@ -1533,7 +1625,9 @@
     "imageUrl": "/characters/koala.png",
     "gender": "Female",
     "affiliationPrimary": "Revolutionary Army",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 160,
@@ -1551,7 +1645,9 @@
     "imageUrl": "/characters/kuma.png",
     "gender": "Male",
     "affiliationPrimary": "Revolutionary Army",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -1583,7 +1679,9 @@
     "imageUrl": "/characters/kyros.png",
     "gender": "Male",
     "affiliationPrimary": "Dressrosa Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 298,
@@ -1603,7 +1701,9 @@
     "imageUrl": "/characters/laboon.png",
     "gender": "Unknown",
     "affiliationPrimary": "Twin Cape",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -1621,7 +1721,9 @@
     "imageUrl": "/characters/law.png",
     "gender": "Male",
     "affiliationPrimary": "Heart Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -1653,7 +1755,9 @@
     "imageUrl": "/characters/luffy.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A",
@@ -1688,10 +1792,10 @@
     "imageUrl": "/characters/magellan.png",
     "gender": "Male",
     "affiliationPrimary": "Impel Down",
-    "devilFruitType": "Paramecia",
-    "haki": [
-      "A"
+    "devilFruitType": [
+      "Paramecia"
     ],
+    "haki": [],
     "bounty": null,
     "heightCm": 491,
     "origin": "Grand Line",
@@ -1700,9 +1804,7 @@
     "minTier": "fan",
     "bountyHistory": [],
     "devilFruitRevealedInArc": "Impel Down",
-    "hakiRevealedInArc": {
-      "A": "Impel Down"
-    }
+    "hakiRevealedInArc": {}
   },
   {
     "id": "marco",
@@ -1710,7 +1812,9 @@
     "imageUrl": "/characters/marco.png",
     "gender": "Male",
     "affiliationPrimary": "Whitebeard Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -1742,7 +1846,9 @@
     "imageUrl": "/characters/mihawk.png",
     "gender": "Male",
     "affiliationPrimary": "Cross Guild",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -1774,7 +1880,9 @@
     "imageUrl": "/characters/momonosuke.png",
     "gender": "Male",
     "affiliationPrimary": "Wano Country",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O"
     ],
@@ -1798,7 +1906,9 @@
     "imageUrl": "/characters/monet.png",
     "gender": "Female",
     "affiliationPrimary": "Donquixote Pirates",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 227,
@@ -1816,7 +1926,9 @@
     "imageUrl": "/characters/moriah.png",
     "gender": "Male",
     "affiliationPrimary": "Thriller Bark Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 320000000,
     "heightCm": 692,
@@ -1841,7 +1953,9 @@
     "imageUrl": "/characters/nami.png",
     "gender": "Female",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 366000000,
     "heightCm": 170,
@@ -1866,7 +1980,9 @@
     "imageUrl": "/characters/nekomamushi.png",
     "gender": "Male",
     "affiliationPrimary": "Mink Tribe",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -1892,7 +2008,9 @@
     "imageUrl": "/characters/neptune.png",
     "gender": "Male",
     "affiliationPrimary": "Ryugu Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 1220,
@@ -1912,7 +2030,9 @@
     "imageUrl": "/characters/oars.png",
     "gender": "Male",
     "affiliationPrimary": "Thriller Bark Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -1933,7 +2053,9 @@
     "imageUrl": "/characters/oden.png",
     "gender": "Male",
     "affiliationPrimary": "Kozuki Family",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A",
@@ -1961,7 +2083,9 @@
     "imageUrl": "/characters/paulie.png",
     "gender": "Male",
     "affiliationPrimary": "Galley-La",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 195,
@@ -1979,7 +2103,9 @@
     "imageUrl": "/characters/pell.png",
     "gender": "Male",
     "affiliationPrimary": "Arabasta Kingdom",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 189,
@@ -1997,7 +2123,9 @@
     "imageUrl": "/characters/perona.png",
     "gender": "Female",
     "affiliationPrimary": "Thriller Bark Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 160,
@@ -2017,7 +2145,9 @@
     "imageUrl": "/characters/perospero.png",
     "gender": "Male",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 700000000,
     "heightCm": 333,
@@ -2042,7 +2172,9 @@
     "imageUrl": "/characters/pudding.png",
     "gender": "Female",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 166,
@@ -2060,7 +2192,9 @@
     "imageUrl": "/characters/queen.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -2091,7 +2225,9 @@
     "imageUrl": "/characters/raizo.png",
     "gender": "Male",
     "affiliationPrimary": "Kozuki Family",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -2117,7 +2253,9 @@
     "imageUrl": "/characters/rayleigh.png",
     "gender": "Male",
     "affiliationPrimary": "Roger Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A",
@@ -2146,7 +2284,9 @@
     "imageUrl": "/characters/rebecca.png",
     "gender": "Female",
     "affiliationPrimary": "Dressrosa Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 171,
@@ -2166,7 +2306,9 @@
     "imageUrl": "/characters/rob-lucci.png",
     "gender": "Male",
     "affiliationPrimary": "CP0",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -2192,7 +2334,9 @@
     "imageUrl": "/characters/robin.png",
     "gender": "Female",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 930000000,
     "heightCm": 188,
@@ -2218,7 +2362,9 @@
     "imageUrl": "/characters/sabo.png",
     "gender": "Male",
     "affiliationPrimary": "Revolutionary Army",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "O",
       "A"
@@ -2249,7 +2395,9 @@
     "imageUrl": "/characters/sanji.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -2281,7 +2429,9 @@
     "imageUrl": "/characters/saturn.png",
     "gender": "Male",
     "affiliationPrimary": "World Government",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A",
@@ -2309,7 +2459,9 @@
     "imageUrl": "/characters/sengoku.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A",
@@ -2337,7 +2489,9 @@
     "imageUrl": "/characters/sentomaru.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -2361,7 +2515,9 @@
     "imageUrl": "/characters/shakky.png",
     "gender": "Female",
     "affiliationPrimary": "Kuja Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 186,
@@ -2381,7 +2537,9 @@
     "imageUrl": "/characters/shirahoshi.png",
     "gender": "Female",
     "affiliationPrimary": "Ryugu Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 1187,
@@ -2401,7 +2559,9 @@
     "imageUrl": "/characters/smoker.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "O",
       "A"
@@ -2427,7 +2587,9 @@
     "imageUrl": "/characters/smoothie.png",
     "gender": "Female",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -2456,7 +2618,9 @@
     "imageUrl": "/characters/spandam.png",
     "gender": "Male",
     "affiliationPrimary": "CP0",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 192,
@@ -2474,7 +2638,9 @@
     "imageUrl": "/characters/stussy.png",
     "gender": "Female",
     "affiliationPrimary": "Vegapunk",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A"
@@ -2500,7 +2666,9 @@
     "imageUrl": "/characters/tashigi.png",
     "gender": "Female",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -2524,7 +2692,9 @@
     "imageUrl": "/characters/tom.png",
     "gender": "Male",
     "affiliationPrimary": "Tom's Workers",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 296,
@@ -2542,7 +2712,9 @@
     "imageUrl": "/characters/tsuru.png",
     "gender": "Female",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
@@ -2568,14 +2740,16 @@
     "imageUrl": "/characters/urouge.png",
     "gender": "Male",
     "affiliationPrimary": "Fallen Monk Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A"
     ],
     "bounty": 108000000,
     "heightCm": 388,
-    "origin": "Sky Island",
+    "origin": "Sky Islands",
     "firstArc": "Sabaody Archipelago",
     "aliases": [
       "Mad Monk"
@@ -2599,7 +2773,9 @@
     "imageUrl": "/characters/usopp.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O"
     ],
@@ -2629,7 +2805,9 @@
     "imageUrl": "/characters/van-augur.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 64000000,
     "heightCm": 340,
@@ -2654,7 +2832,9 @@
     "imageUrl": "/characters/vegapunk.png",
     "gender": "Male",
     "affiliationPrimary": "World Government",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 314,
@@ -2674,7 +2854,9 @@
     "imageUrl": "/characters/vergo.png",
     "gender": "Male",
     "affiliationPrimary": "Donquixote Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -2700,7 +2882,9 @@
     "imageUrl": "/characters/vista.png",
     "gender": "Male",
     "affiliationPrimary": "Whitebeard Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A"
@@ -2726,7 +2910,9 @@
     "imageUrl": "/characters/vivi.png",
     "gender": "Female",
     "affiliationPrimary": "Arabasta Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 169,
@@ -2747,7 +2933,9 @@
     "imageUrl": "/characters/wapol.png",
     "gender": "Male",
     "affiliationPrimary": "Evil Black Drum Kingdom",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 207,
@@ -2767,7 +2955,9 @@
     "imageUrl": "/characters/whitebeard.png",
     "gender": "Male",
     "affiliationPrimary": "Whitebeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "O",
       "A",
@@ -2801,7 +2991,9 @@
     "imageUrl": "/characters/wyper.png",
     "gender": "Male",
     "affiliationPrimary": "Shandia",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 183,
@@ -2819,7 +3011,9 @@
     "imageUrl": "/characters/yamato.png",
     "gender": "Female",
     "affiliationPrimary": "Beasts Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "O",
       "A",
@@ -2847,7 +3041,9 @@
     "imageUrl": "/characters/zoro.png",
     "gender": "Male",
     "affiliationPrimary": "Straw Hat Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A",
@@ -2879,9 +3075,11 @@
     "id": "zunisha",
     "name": "Zunisha",
     "imageUrl": "/characters/zunisha.png",
-    "gender": "Unknown",
+    "gender": "Male",
     "affiliationPrimary": "Zou",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -2900,7 +3098,9 @@
     "imageUrl": "/characters/aramaki.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Logia",
+    "devilFruitType": [
+      "Logia"
+    ],
     "haki": [
       "A",
       "O"
@@ -2929,7 +3129,9 @@
     "imageUrl": "/characters/benn-beckman.png",
     "gender": "Male",
     "affiliationPrimary": "Red Hair Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A"
     ],
@@ -2948,12 +3150,14 @@
     "id": "yasopp",
     "name": "Yasopp",
     "aliases": [
-      "\"Chaser\"|Cheisā"
+      "\"Chaser\"|Cheis\u0101"
     ],
     "imageUrl": "/characters/yasopp.png",
     "gender": "Male",
     "affiliationPrimary": "Red Hair Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O"
     ],
@@ -2975,7 +3179,9 @@
     "imageUrl": "/characters/lucky-roux.png",
     "gender": "Male",
     "affiliationPrimary": "Red Hair Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A"
     ],
@@ -2999,7 +3205,9 @@
     "imageUrl": "/characters/scopper-gaban.png",
     "gender": "Male",
     "affiliationPrimary": "Roger Pirates (former)",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O",
@@ -3027,7 +3235,9 @@
     "imageUrl": "/characters/shiryu.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "A"
     ],
@@ -3049,9 +3259,11 @@
       "\"Corrupt King\""
     ],
     "imageUrl": "/characters/avalo-pizarro.png",
-    "gender": "Unknown",
+    "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 505,
@@ -3071,7 +3283,9 @@
     "imageUrl": "/characters/catarina-devon.png",
     "gender": "Female",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 361,
@@ -3091,7 +3305,9 @@
     "imageUrl": "/characters/laffitte.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 42200000,
     "heightCm": 340,
@@ -3116,7 +3332,9 @@
     "imageUrl": "/characters/vasco-shot.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 573,
@@ -3136,7 +3354,9 @@
     "imageUrl": "/characters/sanjuan-wolf.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 17998,
@@ -3156,7 +3376,9 @@
     "imageUrl": "/characters/whos-who.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3187,7 +3409,9 @@
     "imageUrl": "/characters/sasaki.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3216,7 +3440,9 @@
     "imageUrl": "/characters/black-maria.png",
     "gender": "Female",
     "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3245,7 +3471,9 @@
     "imageUrl": "/characters/ulti.png",
     "gender": "Female",
     "affiliationPrimary": "Yamato",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3274,7 +3502,9 @@
     "imageUrl": "/characters/page-one.png",
     "gender": "Male",
     "affiliationPrimary": "Yamato",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3301,9 +3531,11 @@
     "name": "Nefertari Cobra",
     "aliases": [],
     "imageUrl": "/characters/nefertari-cobra.png",
-    "gender": "Unknown",
+    "gender": "Male",
     "affiliationPrimary": "Arabasta Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 182,
@@ -3320,8 +3552,10 @@
     "aliases": [],
     "imageUrl": "/characters/igaram.png",
     "gender": "Male",
-    "affiliationPrimary": "Arabasta",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Arabasta Kingdom",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 218,
@@ -3341,7 +3575,9 @@
     "imageUrl": "/characters/chaka.png",
     "gender": "Male",
     "affiliationPrimary": "Arabasta Kingdom",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 213,
@@ -3361,7 +3597,9 @@
     "imageUrl": "/characters/daz-bonez.png",
     "gender": "Male",
     "affiliationPrimary": "Cross Guild",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 75000000,
     "heightCm": 212,
@@ -3382,9 +3620,11 @@
     "name": "Boa Marigold",
     "aliases": [],
     "imageUrl": "/characters/boa-marigold.png",
-    "gender": "Unknown",
+    "gender": "Female",
     "affiliationPrimary": "Kuja Pirates (Gorgon Sisters)",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3411,9 +3651,11 @@
     "name": "Boa Sandersonia",
     "aliases": [],
     "imageUrl": "/characters/boa-sandersonia.png",
-    "gender": "Unknown",
+    "gender": "Female",
     "affiliationPrimary": "Kuja Pirates (Gorgon Sisters)",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3442,7 +3684,9 @@
     "imageUrl": "/characters/donquixote-rosinante.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 293,
@@ -3460,7 +3704,9 @@
     "imageUrl": "/characters/donquixote-homing.png",
     "gender": "Male",
     "affiliationPrimary": "World Government (Former)",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -3478,7 +3724,9 @@
     "imageUrl": "/characters/donquixote-mjosgard.png",
     "gender": "Male",
     "affiliationPrimary": "World Government (Donquixote Family)",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 211,
@@ -3496,7 +3744,9 @@
     "imageUrl": "/characters/kurozumi-orochi.png",
     "gender": "Male",
     "affiliationPrimary": "Wano Country (Kurozumi Family)",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 350,
@@ -3516,7 +3766,9 @@
     "imageUrl": "/characters/kurozumi-kanjuro.png",
     "gender": "Male",
     "affiliationPrimary": "Kurozumi Family",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "A",
       "O"
@@ -3542,7 +3794,9 @@
     "imageUrl": "/characters/ashura-doji.png",
     "gender": "Male",
     "affiliationPrimary": "Mt. Atama Thieves",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
@@ -3568,8 +3822,10 @@
     ],
     "imageUrl": "/characters/kawamatsu.png",
     "gender": "Male",
-    "affiliationPrimary": "Kouzuki Family",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Kozuki Family",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
@@ -3594,8 +3850,10 @@
     ],
     "imageUrl": "/characters/kikunojo.png",
     "gender": "Female",
-    "affiliationPrimary": "Kouzuki Family",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Kozuki Family",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
@@ -3620,8 +3878,10 @@
     ],
     "imageUrl": "/characters/denjiro.png",
     "gender": "Male",
-    "affiliationPrimary": "Kouzuki Family",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Kozuki Family",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
@@ -3645,12 +3905,14 @@
     "imageUrl": "/characters/izou.png",
     "gender": "Male",
     "affiliationPrimary": "Whitebeard Pirates (former)",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
     ],
-    "bounty": null,
+    "bounty": 510000000,
     "heightCm": 192,
     "origin": "Grand Line (Wano Country)",
     "firstArc": "Marineford",
@@ -3668,12 +3930,14 @@
     "aliases": [],
     "imageUrl": "/characters/kouzuki-hiyori.png",
     "gender": "Female",
-    "affiliationPrimary": "Kouzuki Family",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Kozuki Family",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 170,
-    "origin": "Grand Line (Moby Dick)",
+    "origin": "Grand Line (Wano Country)",
     "firstArc": "Wano Country",
     "minTier": "fan",
     "devilFruitRevealedInArc": null,
@@ -3686,8 +3950,10 @@
     "aliases": [],
     "imageUrl": "/characters/kouzuki-toki.png",
     "gender": "Female",
-    "affiliationPrimary": "Kouzuki Family",
-    "devilFruitType": "Paramecia",
+    "affiliationPrimary": "Kozuki Family",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 190,
@@ -3704,8 +3970,10 @@
     "aliases": [],
     "imageUrl": "/characters/kouzuki-sukiyaki.png",
     "gender": "Male",
-    "affiliationPrimary": "Kouzuki Family",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Kozuki Family",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 214,
@@ -3720,12 +3988,14 @@
     "id": "vinsmoke-judge",
     "name": "Vinsmoke Judge",
     "aliases": [
-      "\"Garuda\"|Garūda"
+      "\"Garuda\"|Gar\u016bda"
     ],
     "imageUrl": "/characters/vinsmoke-judge.png",
-    "gender": "Unknown",
+    "gender": "Male",
     "affiliationPrimary": "Vinsmoke Family",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A"
     ],
@@ -3749,7 +4019,9 @@
     "imageUrl": "/characters/vinsmoke-ichiji.png",
     "gender": "Male",
     "affiliationPrimary": "Vinsmoke Family",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 186,
@@ -3769,7 +4041,9 @@
     "imageUrl": "/characters/vinsmoke-niji.png",
     "gender": "Male",
     "affiliationPrimary": "Vinsmoke Family",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 185,
@@ -3789,7 +4063,9 @@
     "imageUrl": "/characters/vinsmoke-yonji.png",
     "gender": "Male",
     "affiliationPrimary": "Vinsmoke Family",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 194,
@@ -3807,7 +4083,9 @@
     "imageUrl": "/characters/pekoms.png",
     "gender": "Male",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3838,7 +4116,9 @@
     "imageUrl": "/characters/tamago.png",
     "gender": "Male",
     "affiliationPrimary": "Big Mom Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -3869,12 +4149,14 @@
     "imageUrl": "/characters/pedro.png",
     "gender": "Male",
     "affiliationPrimary": "Mokomo Dukedom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
     ],
-    "bounty": null,
+    "bounty": 382000000,
     "heightCm": 233,
     "origin": "Grand Line (Mokomo Dukedom)",
     "firstArc": "Zou",
@@ -3893,7 +4175,9 @@
     "imageUrl": "/characters/charlotte-daifuku.png",
     "gender": "Male",
     "affiliationPrimary": "Charlotte Family",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "A",
       "O"
@@ -3922,7 +4206,9 @@
     "imageUrl": "/characters/charlotte-oven.png",
     "gender": "Male",
     "affiliationPrimary": "Charlotte Family",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "A",
       "O"
@@ -3953,9 +4239,11 @@
     "imageUrl": "/characters/dorry.png",
     "gender": "Male",
     "affiliationPrimary": "Giant Warrior Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
-    "bounty": null,
+    "bounty": 1800000000,
     "heightCm": 2260,
     "origin": "Grand Line (Elbaph)",
     "firstArc": "Little Garden",
@@ -3978,9 +4266,11 @@
     "imageUrl": "/characters/brogy.png",
     "gender": "Male",
     "affiliationPrimary": "Giant Warrior Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
-    "bounty": null,
+    "bounty": 1800000000,
     "heightCm": 2130,
     "origin": "Grand Line (Elbaph)",
     "firstArc": "Little Garden",
@@ -4003,7 +4293,9 @@
     "imageUrl": "/characters/foxy.png",
     "gender": "Male",
     "affiliationPrimary": "Foxy Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 24000000,
     "heightCm": 180,
@@ -4028,7 +4320,9 @@
     "imageUrl": "/characters/hina.png",
     "gender": "Female",
     "affiliationPrimary": "Marines (Black Cage Corps)",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 200000000,
     "heightCm": 181,
@@ -4050,8 +4344,10 @@
     "aliases": [],
     "imageUrl": "/characters/helmeppo.png",
     "gender": "Male",
-    "affiliationPrimary": "Marines (Headquarters",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A"
     ],
@@ -4080,7 +4376,9 @@
     "imageUrl": "/characters/fullbody.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 1000000,
     "heightCm": 184,
@@ -4105,7 +4403,9 @@
     "imageUrl": "/characters/jango.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 207,
@@ -4128,7 +4428,9 @@
     "imageUrl": "/characters/kaya.png",
     "gender": "Female",
     "affiliationPrimary": "Unknown",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 169,
@@ -4145,8 +4447,10 @@
     "aliases": [],
     "imageUrl": "/characters/nojiko.png",
     "gender": "Female",
-    "affiliationPrimary": "Bell-mère's mikan",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Cocoyasi Village",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 170,
@@ -4164,7 +4468,9 @@
     "imageUrl": "/characters/genzo.png",
     "gender": "Male",
     "affiliationPrimary": "Cocoyasi Village",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 173,
@@ -4182,7 +4488,9 @@
     "imageUrl": "/characters/conis.png",
     "gender": "Female",
     "affiliationPrimary": "Pumpkin Cafe",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 176,
@@ -4200,7 +4508,9 @@
     "imageUrl": "/characters/pagaya.png",
     "gender": "Male",
     "affiliationPrimary": "Unknown",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 179,
@@ -4218,7 +4528,9 @@
     "imageUrl": "/characters/aisa.png",
     "gender": "Female",
     "affiliationPrimary": "Shandia",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O"
     ],
@@ -4240,7 +4552,9 @@
     "imageUrl": "/characters/kokoro.png",
     "gender": "Female",
     "affiliationPrimary": "Tom's Workers",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 168,
@@ -4257,8 +4571,10 @@
     "aliases": [],
     "imageUrl": "/characters/chimney.png",
     "gender": "Female",
-    "affiliationPrimary": "Kokoro",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Water 7",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 115,
@@ -4276,7 +4592,9 @@
     "imageUrl": "/characters/lola-zombie.png",
     "gender": "Female",
     "affiliationPrimary": "Thriller Bark Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -4296,7 +4614,9 @@
     "imageUrl": "/characters/hogback.png",
     "gender": "Male",
     "affiliationPrimary": "Thriller Bark Pirates (Mysterious Four)",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 223,
@@ -4316,7 +4636,9 @@
     "imageUrl": "/characters/absalom.png",
     "gender": "Male",
     "affiliationPrimary": "Thriller Bark Pirates (Mysterious Four) (former)",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 195,
@@ -4336,7 +4658,9 @@
     "imageUrl": "/characters/bastille.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
@@ -4365,7 +4689,9 @@
     "imageUrl": "/characters/belo-betty.png",
     "gender": "Female",
     "affiliationPrimary": "Revolutionary Army (East Army)",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [
       "A",
       "O"
@@ -4394,7 +4720,9 @@
     "imageUrl": "/characters/bobby-funk.png",
     "gender": "Male",
     "affiliationPrimary": "Mogaro Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 36000000,
     "heightCm": 320,
@@ -4417,7 +4745,9 @@
     "imageUrl": "/characters/bogard.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -4435,7 +4765,9 @@
     "imageUrl": "/characters/brannew.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 100000000,
     "heightCm": 190,
@@ -4455,12 +4787,14 @@
     "id": "buchi",
     "name": "Buchi",
     "aliases": [
-      "\"Nyaban Brothers\"|Nyāban Burazāzu|English versions: \"Meowban Brothers\""
+      "\"Nyaban Brothers\"|Ny\u0101ban Buraz\u0101zu|English versions: \"Meowban Brothers\""
     ],
     "imageUrl": "/characters/buchi.png",
     "gender": "Male",
     "affiliationPrimary": "Black Cat Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": 7000000,
     "heightCm": 216,
@@ -4485,7 +4819,9 @@
     "imageUrl": "/characters/cabaji.png",
     "gender": "Male",
     "affiliationPrimary": "Cross Guild",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 208,
@@ -4503,7 +4839,9 @@
     "imageUrl": "/characters/carne.png",
     "gender": "Male",
     "affiliationPrimary": "Baratie",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 171,
@@ -4521,7 +4859,9 @@
     "imageUrl": "/characters/cerberus.png",
     "gender": "Unknown",
     "affiliationPrimary": "Thriller Bark Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -4541,7 +4881,9 @@
     "imageUrl": "/characters/fukurou.png",
     "gender": "Male",
     "affiliationPrimary": "CP0",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "A",
       "O"
@@ -4565,7 +4907,9 @@
     "imageUrl": "/characters/giolla.png",
     "gender": "Female",
     "affiliationPrimary": "Donquixote Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 221,
@@ -4583,7 +4927,9 @@
     "imageUrl": "/characters/gladius.png",
     "gender": "Male",
     "affiliationPrimary": "Donquixote Pirates",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 260,
@@ -4603,7 +4949,9 @@
     "imageUrl": "/characters/ideo.png",
     "gender": "Male",
     "affiliationPrimary": "Ideo Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 225,
@@ -4621,7 +4969,9 @@
     "imageUrl": "/characters/inazuma.png",
     "gender": "Unknown",
     "affiliationPrimary": "Kamabakka Kingdom",
-    "devilFruitType": "Paramecia",
+    "devilFruitType": [
+      "Paramecia"
+    ],
     "haki": [],
     "bounty": 100000000,
     "heightCm": 228,
@@ -4644,7 +4994,9 @@
     "imageUrl": "/characters/jabra.png",
     "gender": "Male",
     "affiliationPrimary": "CP0",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [
       "A",
       "O"
@@ -4667,8 +5019,10 @@
     "aliases": [],
     "imageUrl": "/characters/johnny.png",
     "gender": "Male",
-    "affiliationPrimary": "Yosaku",
-    "devilFruitType": "None",
+    "affiliationPrimary": "Freelance",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 186,
@@ -4686,7 +5040,9 @@
     "imageUrl": "/characters/joseph.png",
     "gender": "Male",
     "affiliationPrimary": "CP0",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -4706,7 +5062,9 @@
     "imageUrl": "/characters/kureha.png",
     "gender": "Female",
     "affiliationPrimary": "Sakura Kingdom",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 188,
@@ -4724,7 +5082,9 @@
     "imageUrl": "/characters/lao-g.png",
     "gender": "Male",
     "affiliationPrimary": "Donquixote Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 157,
@@ -4740,9 +5100,11 @@
     "name": "Marguerite",
     "aliases": [],
     "imageUrl": "/characters/marguerite.png",
-    "gender": "Unknown",
+    "gender": "Female",
     "affiliationPrimary": "Kuja Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 178,
@@ -4760,7 +5122,9 @@
     "imageUrl": "/characters/miss-fathers-day.png",
     "gender": "Female",
     "affiliationPrimary": "Baroque Works (former)",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -4778,7 +5142,9 @@
     "imageUrl": "/characters/miss-monday.png",
     "gender": "Female",
     "affiliationPrimary": "Baroque Works (former)",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -4796,7 +5162,9 @@
     "imageUrl": "/characters/aladine.png",
     "gender": "Male",
     "affiliationPrimary": "Sun Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": 627,
@@ -4814,7 +5182,9 @@
     "imageUrl": "/characters/babanuki.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates",
-    "devilFruitType": "Zoan",
+    "devilFruitType": [
+      "Zoan"
+    ],
     "haki": [],
     "bounty": null,
     "heightCm": null,
@@ -4835,7 +5205,9 @@
     "imageUrl": "/characters/shanks.png",
     "gender": "Male",
     "affiliationPrimary": "Red Hair Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A",
@@ -4869,13 +5241,15 @@
     "imageUrl": "/characters/gol-d-roger.png",
     "gender": "Male",
     "affiliationPrimary": "Roger Pirates",
-    "devilFruitType": "None",
+    "devilFruitType": [
+      "None"
+    ],
     "haki": [
       "O",
       "A",
       "C"
     ],
-    "bounty": null,
+    "bounty": 5564800000,
     "heightCm": 274,
     "origin": "East Blue",
     "firstArc": "Romance Dawn",
@@ -4887,5 +5261,146 @@
       "A": "Romance Dawn",
       "C": "Romance Dawn"
     }
+  },
+  {
+    "id": "kuro",
+    "name": "Kuro",
+    "imageUrl": "/characters/kuro.png",
+    "gender": "Male",
+    "affiliationPrimary": "Black Cat Pirates",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": 16000000,
+    "heightCm": 207,
+    "origin": "East Blue",
+    "firstArc": "Syrup Village",
+    "aliases": [
+      "Captain Kuro",
+      "Klahadore"
+    ],
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 16000000,
+        "arc": "Syrup Village"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "don-krieg",
+    "name": "Don Krieg",
+    "imageUrl": "/characters/don-krieg.png",
+    "gender": "Male",
+    "affiliationPrimary": "Krieg Pirates",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": 17000000,
+    "heightCm": 243,
+    "origin": "East Blue",
+    "firstArc": "Baratie",
+    "aliases": [
+      "Foul Play Krieg"
+    ],
+    "minTier": "casual",
+    "bountyHistory": [
+      {
+        "amount": 17000000,
+        "arc": "Baratie"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "captain-morgan",
+    "name": "Captain Morgan",
+    "imageUrl": "/characters/captain-morgan.png",
+    "gender": "Male",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 285,
+    "origin": "East Blue",
+    "firstArc": "Romance Dawn",
+    "aliases": [
+      "Axe-Hand Morgan"
+    ],
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "kuina",
+    "name": "Kuina",
+    "imageUrl": "/characters/kuina.png",
+    "gender": "Female",
+    "affiliationPrimary": "Isshin Dojo",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 150,
+    "origin": "East Blue",
+    "firstArc": "Romance Dawn",
+    "aliases": [
+      "Shimotsuki Kuina"
+    ],
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "zeff",
+    "name": "Zeff",
+    "imageUrl": "/characters/zeff.png",
+    "gender": "Male",
+    "affiliationPrimary": "Baratie",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 189,
+    "origin": "East Blue",
+    "firstArc": "Baratie",
+    "aliases": [
+      "Red Leg Zeff"
+    ],
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "bell-mere",
+    "name": "Bell-mere",
+    "imageUrl": "/characters/bell-mere.png",
+    "gender": "Female",
+    "affiliationPrimary": "Marines",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 186,
+    "origin": "East Blue",
+    "firstArc": "Arlong Park",
+    "aliases": [],
+    "minTier": "casual",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   }
 ]
