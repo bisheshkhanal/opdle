@@ -5811,5 +5811,98 @@
     "bountyHistory": [],
     "devilFruitRevealedInArc": "Dressrosa",
     "hakiRevealedInArc": {}
+  },
+  {
+    "id": "edward-weevil",
+    "name": "Edward Weevil",
+    "imageUrl": "/characters/edward-weevil.png",
+    "gender": "Male",
+    "affiliationPrimary": "Seven Warlords of the Sea",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": 480000000,
+    "heightCm": 680,
+    "origin": "Grand Line",
+    "firstArc": "Zou",
+    "aliases": [
+      "Whitebeard Jr."
+    ],
+    "minTier": "nakama",
+    "bountyHistory": [
+      {
+        "amount": 480000000,
+        "arc": "Zou"
+      }
+    ],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {
+      "O": "Zou",
+      "A": "Zou"
+    }
+  },
+  {
+    "id": "wanda",
+    "name": "Wanda",
+    "imageUrl": "/characters/wanda.png",
+    "gender": "Female",
+    "affiliationPrimary": "Mokomo Dukedom",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 181,
+    "origin": "New World",
+    "firstArc": "Zou",
+    "aliases": [],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "charlotte-brulee",
+    "name": "Charlotte Brulee",
+    "imageUrl": "/characters/charlotte-brulee.png",
+    "gender": "Female",
+    "affiliationPrimary": "Big Mom Pirates",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 350,
+    "origin": "New World",
+    "firstArc": "Whole Cake Island",
+    "aliases": [],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Whole Cake Island",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "zeus",
+    "name": "Zeus",
+    "imageUrl": "/characters/zeus.png",
+    "gender": "Male",
+    "affiliationPrimary": "Straw Hat Pirates",
+    "devilFruitType": [
+      "None"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 232,
+    "origin": "New World",
+    "firstArc": "Whole Cake Island",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": null,
+    "hakiRevealedInArc": {}
   }
 ]
