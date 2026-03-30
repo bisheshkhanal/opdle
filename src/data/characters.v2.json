@@ -5643,5 +5643,173 @@
     "bountyHistory": [],
     "devilFruitRevealedInArc": "Fish-Man Island",
     "hakiRevealedInArc": {}
+  },
+  {
+    "id": "trebol",
+    "name": "Trebol",
+    "imageUrl": "/characters/trebol.png",
+    "gender": "Male",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": 99000000,
+    "heightCm": 349,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 99000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa"
+    }
+  },
+  {
+    "id": "diamante",
+    "name": "Diamante",
+    "imageUrl": "/characters/diamante.png",
+    "gender": "Male",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": 99000000,
+    "heightCm": 525,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "aliases": [
+      "Hero of the Colosseum"
+    ],
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 99000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa"
+    }
+  },
+  {
+    "id": "pica",
+    "name": "Pica",
+    "imageUrl": "/characters/pica.png",
+    "gender": "Male",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": 99000000,
+    "heightCm": 470,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 99000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa"
+    }
+  },
+  {
+    "id": "sugar",
+    "name": "Sugar",
+    "imageUrl": "/characters/sugar.png",
+    "gender": "Female",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 110,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {}
+  },
+  {
+    "id": "senor-pink",
+    "name": "Senor Pink",
+    "imageUrl": "/characters/senor-pink.png",
+    "gender": "Male",
+    "affiliationPrimary": "Donquixote Pirates",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [
+      "O",
+      "A"
+    ],
+    "bounty": 58000000,
+    "heightCm": 244,
+    "origin": "North Blue",
+    "firstArc": "Dressrosa",
+    "aliases": [],
+    "minTier": "fan",
+    "bountyHistory": [
+      {
+        "amount": 58000000,
+        "arc": "Dressrosa"
+      }
+    ],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {
+      "O": "Dressrosa",
+      "A": "Dressrosa"
+    }
+  },
+  {
+    "id": "viola",
+    "name": "Viola",
+    "imageUrl": "/characters/viola.png",
+    "gender": "Female",
+    "affiliationPrimary": "Dressrosa",
+    "devilFruitType": [
+      "Paramecia"
+    ],
+    "haki": [],
+    "bounty": null,
+    "heightCm": 178,
+    "origin": "New World",
+    "firstArc": "Dressrosa",
+    "aliases": [
+      "Violet"
+    ],
+    "minTier": "nakama",
+    "bountyHistory": [],
+    "devilFruitRevealedInArc": "Dressrosa",
+    "hakiRevealedInArc": {}
   }
 ]
