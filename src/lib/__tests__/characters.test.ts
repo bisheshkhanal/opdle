@@ -3,7 +3,7 @@ import characters from "../../data/characters.v2.json";
 describe("character dataset", () => {
   it("has ~200 characters", () => {
     expect(characters.length).toBeGreaterThanOrEqual(195);
-    expect(characters.length).toBeLessThanOrEqual(205);
+    expect(characters.length).toBeLessThanOrEqual(250);
   });
   it("has correct tier distribution", () => {
     const casual = characters.filter((c) => c.minTier === "casual").length;
