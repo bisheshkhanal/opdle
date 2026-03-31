@@ -515,22 +515,26 @@ export function getInfiniteStats(tier: Tier): InfiniteStats {
 }
 
 /**
- * Get all unique character IDs ever guessed across daily and infinite modes
+ * Get all unique character IDs ever correctly guessed across daily and infinite modes
  */
 export function getAllDiscoveredIds(): string[] {
   const storage = loadStorage();
   const idSet = new Set<string>();
 
   for (const dailyState of Object.values(storage.daily)) {
-    for (const id of dailyState.guessedIds) {
-      idSet.add(id);
+    for (const guess of dailyState.guesses) {
+      if (guess.isCorrect) {
+        idSet.add(guess.characterId);
+      }
     }
   }
 
   for (const tier of ALL_TIERS) {
     const infiniteState = storage.infinite[tier];
-    for (const id of infiniteState.guessedIds) {
-      idSet.add(id);
+    for (const guess of infiniteState.guesses) {
+      if (guess.isCorrect) {
+        idSet.add(guess.characterId);
+      }
     }
   }
 
