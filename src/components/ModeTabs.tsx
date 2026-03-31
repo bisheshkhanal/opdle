@@ -41,12 +41,6 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
           </svg>
           <span>Daily</span>
         </span>
-        {mode === "daily" && (
-          <span className="absolute -right-1 -top-1 flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-400 opacity-75"></span>
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-gold-500"></span>
-          </span>
-        )}
       </button>
 
       {/* Infinite Mode - Endless Seas */}
@@ -54,7 +48,7 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
         onClick={() => onModeChange("infinite")}
         className={`relative rounded-xl px-5 py-3 text-sm font-bold transition-all duration-300 ${
           mode === "infinite"
-            ? "bg-gradient-to-br from-gold-500 to-gold-600 text-white shadow-card ring-2 ring-gold-300/60 dark:from-gold-400 dark:to-gold-500 dark:ring-gold-400/60"
+            ? "bg-navy-700 text-white shadow-card ring-2 ring-gold-400/50 dark:bg-slate-600 dark:ring-gold-500/60"
             : "text-navy-600 hover:bg-parchment-300/80 hover:text-navy-800 dark:text-slate-300 dark:hover:bg-slate-700/80 dark:hover:text-slate-100"
         }`}
         aria-pressed={mode === "infinite"}
@@ -62,7 +56,7 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
         <span className="relative z-10 flex items-center gap-2.5 font-display tracking-wide">
           {/* Infinity/Wave icon */}
           <svg
-            className={`h-5 w-5 transition-transform duration-300 ${mode === "infinite" ? "animate-pulse" : ""}`}
+            className={`h-5 w-5 transition-transform duration-300 ${mode === "infinite" ? "text-gold-400" : ""}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -76,12 +70,6 @@ export function ModeTabs({ mode, onModeChange }: ModeTabsProps) {
           </svg>
           <span>Infinite</span>
         </span>
-        {mode === "infinite" && (
-          <span className="absolute -right-1 -top-1 flex h-3 w-3">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60"></span>
-            <span className="relative inline-flex h-3 w-3 rounded-full bg-white"></span>
-          </span>
-        )}
       </button>
     </div>
   );

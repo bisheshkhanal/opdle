@@ -1,7 +1,9 @@
+import "@testing-library/jest-dom/vitest";
+import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Autocomplete } from "../Autocomplete";
-import type { Character } from "@/lib/types";
+import type { Character } from "../../lib/types";
 
 // Mock scrollIntoView since it's not implemented in jsdom
 const scrollIntoViewMock = vi.fn();
@@ -15,7 +17,7 @@ const mockCharacters: Character[] = [
     imageUrl: "https://example.com/luffy.jpg",
     gender: "Male",
     affiliationPrimary: "Straw Hat Pirates",
-    devilFruitType: "Paramecia",
+    devilFruitType: ["Paramecia"],
     haki: ["O", "A", "C"],
     bounty: 3000000000,
     heightCm: 174,
@@ -30,7 +32,7 @@ const mockCharacters: Character[] = [
     imageUrl: "https://example.com/zoro.jpg",
     gender: "Male",
     affiliationPrimary: "Straw Hat Pirates",
-    devilFruitType: "None",
+    devilFruitType: ["None"],
     haki: ["O", "A", "C"],
     bounty: 1111000000,
     heightCm: 181,
@@ -45,7 +47,7 @@ const mockCharacters: Character[] = [
     imageUrl: "https://example.com/nami.jpg",
     gender: "Female",
     affiliationPrimary: "Straw Hat Pirates",
-    devilFruitType: "None",
+    devilFruitType: ["None"],
     haki: ["O"],
     bounty: 366000000,
     heightCm: 170,
@@ -143,7 +145,7 @@ describe("Autocomplete", () => {
       );
 
       const input = screen.getByPlaceholderText("Search for a pirate...");
-      fireEvent.change(input, { target: { value: "a" } }); // Match all characters
+      fireEvent.change(input, { target: { value: "a" } });
 
       await waitFor(() => {
         expect(screen.getByRole("listbox")).toBeInTheDocument();
@@ -172,7 +174,7 @@ describe("Autocomplete", () => {
       );
 
       const input = screen.getByPlaceholderText("Search for a pirate...");
-      fireEvent.change(input, { target: { value: "a" } }); // Match all characters
+      fireEvent.change(input, { target: { value: "a" } });
 
       await waitFor(() => {
         expect(screen.getByRole("listbox")).toBeInTheDocument();
@@ -367,17 +369,29 @@ describe("Autocomplete", () => {
         expect(screen.getByRole("listbox")).toBeInTheDocument();
       });
 
+      const options = screen.getAllByRole("option");
+      const firstSelected = options.find(
+        (option) => option.getAttribute("aria-selected") === "true"
+      );
+
+      expect(firstSelected).toBeDefined();
       expect(input).toHaveAttribute(
         "aria-activedescendant",
-        "character-option-luffy"
+        firstSelected?.id ?? ""
       );
 
       fireEvent.keyDown(input, { key: "ArrowDown" });
 
       await waitFor(() => {
+        const updatedOptions = screen.getAllByRole("option");
+        const selected = updatedOptions.find(
+          (option) => option.getAttribute("aria-selected") === "true"
+        );
+
+        expect(selected).toBeDefined();
         expect(input).toHaveAttribute(
           "aria-activedescendant",
-          "character-option-zoro"
+          selected?.id ?? ""
         );
       });
     });

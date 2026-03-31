@@ -29,7 +29,7 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="flex h-9 w-9 items-center justify-center rounded-lg border border-parchment-300/60 bg-parchment-50/70"
+        className="flex h-9 w-9 items-center justify-center rounded-lg border border-parchment-300/60 bg-parchment-50/70 dark:border-slate-600/60 dark:bg-slate-800/70"
         aria-label="Toggle theme"
       >
         <span className="h-4 w-4" />

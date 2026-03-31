@@ -9,6 +9,8 @@ interface ResultsShareProps {
   mode: GameMode;
   isWon: boolean;
   dateString?: string;
+  streak?: number;
+  hintUsed?: boolean;
 }
 
 export function ResultsShare({
@@ -16,11 +18,20 @@ export function ResultsShare({
   mode,
   isWon,
   dateString,
+  streak,
+  hintUsed,
 }: ResultsShareProps) {
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
-    const result = await shareResults(guesses, mode, isWon, dateString);
+    const result = await shareResults(
+      guesses,
+      mode,
+      isWon,
+      dateString,
+      streak,
+      hintUsed
+    );
     if (result.success) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);

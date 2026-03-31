@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import type { Character } from "@/lib/types";
 import { searchCharacters } from "@/lib/search";
@@ -26,8 +26,9 @@ export function Autocomplete({
   const listRef = useRef<HTMLUListElement>(null);
 
   // Filter out already guessed characters
-  const availableCharacters = characters.filter(
-    (c) => !guessedIds.includes(c.id)
+  const availableCharacters = useMemo(
+    () => characters.filter((c) => !guessedIds.includes(c.id)),
+    [characters, guessedIds]
   );
 
   const updateResults = useCallback(
@@ -178,8 +179,7 @@ export function Autocomplete({
                   quality={90}
                   className="object-cover object-top"
                   onError={(e) => {
-                    e.currentTarget.src =
-                      "https://via.placeholder.com/40?text=?";
+                    e.currentTarget.src = "/characters/fallback.svg";
                   }}
                 />
               </div>

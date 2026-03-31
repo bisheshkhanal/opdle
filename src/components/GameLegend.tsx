@@ -31,7 +31,7 @@ export function GameLegend() {
         {/* Correct */}
         <div className="flex items-center gap-3">
           <div className="tile-correct flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white">
-            M
+            ✓
           </div>
           <div className="flex-1">
             <div className="text-sm font-bold text-navy-700 dark:text-slate-200">
@@ -46,7 +46,7 @@ export function GameLegend() {
         {/* Partial */}
         <div className="flex items-center gap-3">
           <div className="tile-partial flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white">
-            O
+            ≈
           </div>
           <div className="flex-1">
             <div className="text-sm font-bold text-navy-700 dark:text-slate-200">
@@ -61,7 +61,7 @@ export function GameLegend() {
         {/* Wrong */}
         <div className="flex items-center gap-3">
           <div className="tile-wrong flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white">
-            F
+            ✕
           </div>
           <div className="flex-1">
             <div className="text-sm font-bold text-navy-700 dark:text-slate-200">
@@ -75,7 +75,7 @@ export function GameLegend() {
 
         {/* Higher */}
         <div className="flex items-center gap-3">
-          <div className="tile-wrong flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-lg font-bold text-white">
+          <div className="tile-higher flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-lg font-bold text-white">
             ↑
           </div>
           <div className="flex-1">
@@ -90,7 +90,7 @@ export function GameLegend() {
 
         {/* Lower */}
         <div className="flex items-center gap-3">
-          <div className="tile-wrong flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-lg font-bold text-white">
+          <div className="tile-lower flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-lg font-bold text-white">
             ↓
           </div>
           <div className="flex-1">
@@ -148,7 +148,7 @@ export function GameLegend() {
           </svg>
           <p className="text-xs leading-relaxed text-navy-600 dark:text-slate-300">
             <span className="font-bold">Haki</span> shows partial when some
-            types match
+            types match (O=Observation, A=Armament, C=Conqueror)
           </p>
         </div>
         <div className="flex items-start gap-2.5">

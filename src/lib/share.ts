@@ -28,6 +28,25 @@ function getStatusEmoji(status: TileStatus): string {
   }
 }
 
+export function getFlavorTitle(guesses: number): string | null {
+  switch (guesses) {
+    case 1:
+      return "Pirate King";
+    case 2:
+      return "Yonko";
+    case 3:
+      return "Warlord";
+    case 4:
+      return "Super Rookie";
+    case 5:
+      return "Pirate";
+    case 6:
+      return "Rookie";
+    default:
+      return null;
+  }
+}
+
 /**
  * Format a single guess row as emojis
  */
@@ -42,7 +61,9 @@ export function formatShareText(
   guesses: GuessResult[],
   mode: GameMode,
   isWon: boolean,
-  dateString?: string
+  dateString?: string,
+  streak?: number,
+  hintUsed?: boolean
 ): string {
   const lines: string[] = [];
 
@@ -50,10 +71,23 @@ export function formatShareText(
   if (mode === "daily") {
     const gameNumber = getDailyGameNumber(dateString);
     const attempts = isWon ? guesses.length : "X";
-    lines.push(`OnePiecedle #${gameNumber} ${attempts}/6`);
+    const hintSuffix = hintUsed === true ? " 💡" : "";
+    lines.push(`OnePiecedle #${gameNumber} ${attempts}/6${hintSuffix}`);
   } else {
     const attempts = isWon ? guesses.length : "X";
-    lines.push(`OnePiecedle (Infinite) ${attempts}/6`);
+    const hintSuffix = hintUsed === true ? " 💡" : "";
+    lines.push(`OnePiecedle (Infinite) ${attempts}/6${hintSuffix}`);
+  }
+
+  if (isWon) {
+    const flavor = getFlavorTitle(guesses.length);
+    if (flavor) {
+      lines.push(flavor);
+    }
+
+    if (mode === "daily" && streak !== undefined && streak > 0) {
+      lines.push(`🔥 Streak: ${streak}`);
+    }
   }
 
   lines.push("");
@@ -101,9 +135,18 @@ export async function shareResults(
   guesses: GuessResult[],
   mode: GameMode,
   isWon: boolean,
-  dateString?: string
+  dateString?: string,
+  streak?: number,
+  hintUsed?: boolean
 ): Promise<{ success: boolean; text: string }> {
-  const text = formatShareText(guesses, mode, isWon, dateString);
+  const text = formatShareText(
+    guesses,
+    mode,
+    isWon,
+    dateString,
+    streak,
+    hintUsed
+  );
   const success = await copyToClipboard(text);
   return { success, text };
 }

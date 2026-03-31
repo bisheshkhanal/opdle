@@ -1,7 +1,9 @@
+import "@testing-library/jest-dom/vitest";
+import React from "react";
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { GuessRow } from "../GuessRow";
-import type { GuessResult } from "@/lib/types";
+import type { GuessResult } from "../../lib/types";
 
 describe("GuessRow", () => {
   it("renders character name and image", () => {
@@ -96,13 +98,11 @@ describe("GuessRow", () => {
     expect(cells[2]).toHaveClass("tile-partial");
     expect(screen.getByText("Armament")).toBeInTheDocument();
 
-    // higher (tile-wrong class with up arrow)
-    expect(cells[3]).toHaveClass("tile-wrong");
+    expect(cells[3]).toHaveClass("tile-higher");
     expect(screen.getByText("↑")).toBeInTheDocument();
     expect(screen.getByText("100M")).toBeInTheDocument();
 
-    // lower (tile-wrong class with down arrow)
-    expect(cells[4]).toHaveClass("tile-wrong");
+    expect(cells[4]).toHaveClass("tile-lower");
     expect(screen.getByText("↓")).toBeInTheDocument();
     expect(screen.getByText("180cm")).toBeInTheDocument();
 
@@ -209,7 +209,7 @@ describe("GuessRow", () => {
     // Simulate error
     img.dispatchEvent(new Event("error"));
 
-    expect(img.src).toContain("placeholder");
+    expect(img.src).toContain("/characters/fallback.svg");
   });
 
   it("has proper ARIA roles for accessibility", () => {

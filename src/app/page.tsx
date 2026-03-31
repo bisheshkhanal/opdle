@@ -1,24 +1,35 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import type {
   Character,
   GameMode,
-  GuessResult,
   DailyState,
   InfiniteState,
+  Tier,
 } from "@/lib/types";
 import { validateCharacter } from "@/lib/types";
 import { normalizeCharacterImage } from "@/lib/images";
 import { ModeTabs } from "@/components/ModeTabs";
+import { TierTabs } from "@/components/TierTabs";
 import { Autocomplete } from "@/components/Autocomplete";
 import { GuessRow, GuessRowHeader } from "@/components/GuessRow";
 import { ResultsShare } from "@/components/ResultsShare";
 import { AnswerReveal } from "@/components/AnswerReveal";
 import { GameLegend } from "@/components/GameLegend";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Modal } from "@/components/Modal";
+import { BountyBoard } from "@/components/BountyBoard";
+import { StatsModal } from "@/components/StatsModal";
+import { HintButton } from "@/components/HintButton";
+import { AuthModal } from "@/components/AuthModal";
+import { UserMenu } from "@/components/UserMenu";
+import { Leaderboard } from "@/components/Leaderboard";
+import { DailyComparison } from "@/components/DailyComparison";
 import { evaluateGuess } from "@/lib/evaluateGuess";
+import { getCharactersForTier } from "@/lib/tier";
 import {
   selectDailyCharacter,
   getUTCDateString,
@@ -34,7 +45,15 @@ import {
   startNewInfiniteRound,
   isDailyDuplicate,
   isInfiniteDuplicate,
+  getSelectedTier,
+  setSelectedTier,
+  getDailyStats,
+  getInfiniteStats,
+  getAllDiscoveredIds,
+  markHintUsed,
 } from "@/lib/storage";
+import { useAuthSync } from "@/lib/hooks/useAuthSync";
+import { useCanvasEnabled } from "@/lib/hooks/useCanvasEnabled";
 import charactersData from "@/data/characters.v2.json";
 
 // Validate and type characters
@@ -44,8 +63,23 @@ const characters: Character[] = (charactersData as unknown[])
 
 const MAX_GUESSES = 6;
 
+const CompassCanvas = dynamic(
+  () => import("@/components/three/CompassCanvas"),
+  {
+    ssr: false,
+  }
+);
+
+const EmptyStateOrb = dynamic(
+  () => import("@/components/three/EmptyStateOrb"),
+  {
+    ssr: false,
+  }
+);
+
 export default function Home() {
   const [mode, setMode] = useState<GameMode>("daily");
+  const [tier, setTier] = useState<Tier>("casual");
   const [dailyState, setDailyState] = useState<DailyState | null>(null);
   const [infiniteState, setInfiniteState] = useState<InfiniteState | null>(
     null
@@ -60,30 +94,51 @@ export default function Home() {
   });
   const [isLoaded, setIsLoaded] = useState(false);
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
+  const [showStats, setShowStats] = useState(false);
+  const [showBountyBoard, setShowBountyBoard] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [hintUsed, setHintUsedState] = useState(false);
+  const [compassState, setCompassState] = useState<
+    "idle" | "wrong-guess" | "correct-guess"
+  >("idle");
+  const previousGuessCountRef = useRef(0);
+  const previousIsWonRef = useRef(false);
+  const canvasEnabled = useCanvasEnabled();
+  const { syncDailyResult } = useAuthSync();
 
   // Initialize game state
   useEffect(() => {
+    const storedTier = getSelectedTier();
+    setTier(storedTier);
+
     const dateString = getUTCDateString();
-    const daily = getDailyState(dateString);
-    const infinite = getInfiniteState();
+    const daily = getDailyState(storedTier, dateString);
+    const infinite = getInfiniteState(storedTier);
 
     setDailyState(daily);
     setInfiniteState(infinite);
+    setHintUsedState(daily.hintUsed || false);
     setIsLoaded(true);
   }, []);
 
-  // Update target character when mode changes or game is initialized
+  // Update target character when mode or tier changes
   useEffect(() => {
     if (!isLoaded) return;
 
+    const tierCharacters = getCharactersForTier(characters, tier);
+
     if (mode === "daily") {
-      const target = selectDailyCharacter(characters);
+      const target = selectDailyCharacter(tierCharacters, undefined, tier);
       setTargetCharacter(target);
     } else if (infiniteState) {
-      const target = selectInfiniteCharacter(characters, infiniteState.roundId);
+      const target = selectInfiniteCharacter(
+        tierCharacters,
+        infiniteState.roundId
+      );
       setTargetCharacter(target);
     }
-  }, [mode, isLoaded, infiniteState]);
+  }, [mode, tier, isLoaded, infiniteState]);
 
   // Countdown timer for daily mode
   useEffect(() => {
@@ -104,15 +159,37 @@ export default function Home() {
   const isFinished = currentState?.isFinished || false;
   const isWon = currentState?.isWon || false;
 
+  useEffect(() => {
+    if (isWon && !previousIsWonRef.current) {
+      setCompassState("correct-guess");
+    } else if (guesses.length > previousGuessCountRef.current) {
+      setCompassState("wrong-guess");
+    }
+
+    previousGuessCountRef.current = guesses.length;
+    previousIsWonRef.current = isWon;
+  }, [guesses.length, isWon]);
+
+  useEffect(() => {
+    if (compassState === "idle") {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setCompassState("idle");
+    }, 2000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [compassState]);
+
   const handleGuess = useCallback(
     (character: Character) => {
       if (!targetCharacter || isFinished) return;
 
-      // Check for duplicate
       const isDuplicate =
         mode === "daily"
-          ? isDailyDuplicate(character.id)
-          : isInfiniteDuplicate(character.id);
+          ? isDailyDuplicate(character.id, tier)
+          : isInfiniteDuplicate(character.id, tier);
 
       if (isDuplicate) {
         setDuplicateWarning(`You already guessed ${character.name}!`);
@@ -123,24 +200,71 @@ export default function Home() {
       const result = evaluateGuess(character, targetCharacter);
 
       if (mode === "daily") {
-        const newState = addDailyGuess(result);
+        const newState = addDailyGuess(result, tier);
         setDailyState(newState);
+
+        if (newState.isFinished) {
+          syncDailyResult({
+            date: getUTCDateString(),
+            tier,
+            guessCount: newState.guesses.length,
+            isWon: newState.isWon,
+            hintUsed: newState.hintUsed ?? false,
+          });
+        }
       } else {
-        const newState = addInfiniteGuess(result);
+        const newState = addInfiniteGuess(result, tier);
         setInfiniteState(newState);
       }
     },
-    [targetCharacter, isFinished, mode]
+    [targetCharacter, isFinished, mode, syncDailyResult, tier]
   );
 
   const handlePlayAgain = useCallback(() => {
-    const newState = startNewInfiniteRound();
+    const newState = startNewInfiniteRound(tier);
     setInfiniteState(newState);
-  }, []);
+    setHintUsedState(false);
+  }, [tier]);
+
+  const handleHintUsed = useCallback(() => {
+    markHintUsed(tier, mode, mode === "daily" ? getUTCDateString() : undefined);
+    setHintUsedState(true);
+  }, [tier, mode]);
+
+  const handleTierChange = useCallback(
+    (newTier: Tier) => {
+      setSelectedTier(newTier);
+      setTier(newTier);
+      setDuplicateWarning(null);
+
+      const dateString = getUTCDateString();
+      const daily = getDailyState(newTier, dateString);
+      const infinite = getInfiniteState(newTier);
+      setDailyState(daily);
+      setInfiniteState(infinite);
+
+      const currentHintUsed =
+        mode === "daily" ? daily.hintUsed || false : infinite.hintUsed || false;
+      setHintUsedState(currentHintUsed);
+    },
+    [mode]
+  );
 
   const handleModeChange = (newMode: GameMode) => {
     setMode(newMode);
     setDuplicateWarning(null);
+
+    const dateString = getUTCDateString();
+    const daily = getDailyState(tier, dateString);
+    const infinite = getInfiniteState(tier);
+    setDailyState(daily);
+    setInfiniteState(infinite);
+
+    const currentHintUsed =
+      newMode === "daily"
+        ? daily.hintUsed || false
+        : infinite.hintUsed || false;
+    setHintUsedState(currentHintUsed);
   };
 
   if (!isLoaded) {
@@ -172,20 +296,83 @@ export default function Home() {
     <main className="flex min-h-screen flex-col">
       {/* Header */}
       <header className="border-b border-parchment-300/40 bg-gradient-to-b from-parchment-50/95 via-parchment-100/90 to-parchment-100/95 backdrop-blur-md dark:border-slate-700/40 dark:bg-gradient-to-b dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-800/95">
-        <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-8 sm:py-10">
-          <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+        <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-5 sm:py-7">
+          <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6">
+            <button
+              onClick={() => setShowLeaderboard(true)}
+              className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
+              aria-label="Leaderboard"
+              title="Leaderboard"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 20V10"></path>
+                <path d="M18 20V4"></path>
+                <path d="M6 20v-4"></path>
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowBountyBoard(true)}
+              className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
+              aria-label="Bounty Board"
+              title="Bounty Board"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="9" y1="21" x2="9" y2="9"></line>
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowStats(true)}
+              className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
+              aria-label="Show statistics"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </button>
+            <UserMenu onSignInClick={() => setShowAuthModal(true)} />
             <ThemeToggle />
-          </div>
-          <div className="mb-3 inline-flex items-center gap-3 rounded-full border border-parchment-300/60 bg-parchment-50/70 px-4 py-1.5 font-display text-[11px] uppercase tracking-[0.3em] text-navy-600 shadow-soft dark:border-slate-600/60 dark:bg-slate-800/70 dark:text-slate-300">
-            Treasure Log
           </div>
           <h1 className="mb-3 font-display text-4xl font-semibold tracking-tight text-navy-800 dark:text-slate-100 sm:text-5xl">
             <span className="text-tile-wrong dark:text-red-400">One</span>
             <span className="text-navy-700 dark:text-slate-200">Piece</span>
             <span className="text-gold-600 dark:text-gold-400">dle</span>
           </h1>
-          <div className="mb-4 h-0.5 w-32 rounded-full bg-gradient-to-r from-gold-400/80 via-gold-300/40 to-transparent dark:from-gold-500/60 dark:via-gold-400/30 dark:to-transparent" />
-          <p className="mb-6 text-sm text-navy-500 dark:text-slate-400 sm:text-[15px]">
+          <div className="mb-3 h-0.5 w-32 rounded-full bg-gradient-to-r from-gold-400/80 via-gold-300/40 to-transparent dark:from-gold-500/60 dark:via-gold-400/30 dark:to-transparent" />
+          <p className="mb-4 text-sm text-navy-500 dark:text-slate-400 sm:text-[15px]">
             Guess the character in {MAX_GUESSES} tries
             {mode === "daily" && (
               <span className="ml-2 inline-flex items-center rounded-full bg-navy-100/70 px-2.5 py-0.5 text-xs font-medium text-navy-700 ring-1 ring-navy-200/50 dark:bg-slate-700/70 dark:text-slate-200 dark:ring-slate-600/50">
@@ -202,41 +389,48 @@ export default function Home() {
         <div className="w-full max-w-7xl">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_280px]">
             {/* Game area */}
-            <div className="w-full max-w-5xl">
+            <div className="w-full min-w-0 max-w-5xl">
               <div className="game-stage">
                 <div className="stage-overlay" aria-hidden="true" />
-                <svg
-                  className="stage-compass text-navy-700 dark:text-slate-300"
-                  viewBox="0 0 200 200"
-                  aria-hidden="true"
-                >
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="92"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+                {canvasEnabled ? (
+                  <CompassCanvas
+                    className="stage-compass text-navy-700 dark:text-slate-300"
+                    gameState={compassState}
                   />
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="70"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                  <path
-                    d="M100 20L118 82L180 100L118 118L100 180L82 118L20 100L82 82Z"
-                    fill="currentColor"
-                  />
-                  <path
-                    d="M100 42L110 90L158 100L110 110L100 158L90 110L42 100L90 90Z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                </svg>
+                ) : (
+                  <svg
+                    className="stage-compass text-navy-700 dark:text-slate-300"
+                    viewBox="0 0 200 200"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="92"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="70"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                    />
+                    <path
+                      d="M100 20L118 82L180 100L118 118L100 180L82 118L20 100L82 82Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M100 42L110 90L158 100L110 110L100 158L90 110L42 100L90 90Z"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                )}
                 {/* Input area */}
                 {!isFinished && (
                   <div className="relative !z-20 mb-8 flex flex-col items-center gap-4">
@@ -247,7 +441,7 @@ export default function Home() {
                       disabled={isFinished}
                     />
                     <div className="flex flex-wrap items-center justify-center gap-3">
-                      <span className="rounded-full border border-parchment-300/70 bg-parchment-100/70 px-3 py-1 text-[12px] font-medium text-navy-600 dark:border-slate-600/70 dark:bg-slate-800/70 dark:text-slate-300">
+                      <span className="rounded-full border border-parchment-300/70 bg-parchment-100/70 px-3 py-1 font-pirate text-[12px] font-medium text-navy-600 dark:border-slate-600/70 dark:bg-slate-800/70 dark:text-slate-300">
                         Guess {guesses.length + 1} of {MAX_GUESSES}
                       </span>
                       {duplicateWarning && (
@@ -259,6 +453,13 @@ export default function Home() {
                         </span>
                       )}
                     </div>
+                    {guesses.length >= 3 && targetCharacter && (
+                      <HintButton
+                        targetCharacter={targetCharacter}
+                        hintUsed={hintUsed}
+                        onHintUsed={handleHintUsed}
+                      />
+                    )}
                   </div>
                 )}
 
@@ -302,7 +503,18 @@ export default function Home() {
                       dateString={
                         mode === "daily" ? getUTCDateString() : undefined
                       }
+                      streak={mode === "daily" ? dailyState?.streak : undefined}
+                      hintUsed={hintUsed}
                     />
+                    {mode === "daily" && (
+                      <DailyComparison
+                        date={getUTCDateString()}
+                        tier={tier}
+                        isWon={isWon}
+                        guessCount={guesses.length}
+                        onSignInClick={() => setShowAuthModal(true)}
+                      />
+                    )}
                     {mode === "daily" && (
                       <div className="game-card px-6 py-5 text-center">
                         <p className="text-sm font-medium text-navy-500 dark:text-slate-400">
@@ -321,22 +533,26 @@ export default function Home() {
                 {/* Empty state */}
                 {guesses.length === 0 && !isFinished && (
                   <div className="game-card mx-auto max-w-lg p-7 text-center sm:p-8">
-                    <div className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-navy-100/70 ring-1 ring-navy-200/40 dark:bg-slate-700/70 dark:ring-slate-600/40">
-                      <svg
-                        className="h-8 w-8 text-navy-600 dark:text-slate-300"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </div>
-                    <h2 className="mb-2.5 font-display text-xl font-semibold tracking-tight text-navy-800 dark:text-slate-100 sm:text-2xl">
+                    {canvasEnabled ? (
+                      <EmptyStateOrb className="mb-5" />
+                    ) : (
+                      <div className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-navy-100/70 ring-1 ring-navy-200/40 dark:bg-slate-700/70 dark:ring-slate-600/40">
+                        <svg
+                          className="h-8 w-8 text-navy-600 dark:text-slate-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={1.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                    <h2 className="mb-2.5 font-pirate text-xl font-semibold tracking-tight text-navy-800 dark:text-slate-100 sm:text-2xl">
                       Start typing a character name
                     </h2>
                     <p className="text-sm text-navy-500 dark:text-slate-400 sm:text-[15px]">
@@ -374,20 +590,65 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-parchment-300/40 bg-gradient-to-t from-parchment-100/95 via-parchment-100/90 to-parchment-50/95 backdrop-blur-md dark:border-slate-700/40 dark:bg-gradient-to-t dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-800/95">
         <div className="mx-auto flex max-w-5xl flex-col items-center gap-2.5 px-4 py-6 text-center text-sm text-navy-500 dark:text-slate-400 sm:flex-row sm:justify-between">
-          <Link
-            href="/about"
-            className="font-medium text-navy-600 underline-offset-2 transition-all hover:text-navy-800 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
-          >
-            About / How to Play
-          </Link>
-          {mode === "infinite" && infiniteState && (
-            <span className="text-xs font-medium sm:text-sm">
-              Infinite Stats: {infiniteState.totalWins}W /{" "}
-              {infiniteState.totalGames}G
-            </span>
-          )}
+          <div className="sm:flex-1 sm:text-left">
+            <Link
+              href="/about"
+              className="font-medium text-navy-600 underline-offset-2 transition-all hover:text-navy-800 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
+            >
+              About / How to Play
+            </Link>
+          </div>
+          <span className="font-pirate text-lg text-navy-700 dark:text-slate-300 sm:flex-none">
+            Set sail across the Grand Line
+          </span>
+          <div className="sm:flex-1 sm:text-right">
+            {mode === "infinite" && infiniteState && (
+              <span className="text-xs font-medium sm:text-sm">
+                Infinite Stats: {infiniteState.totalWins}W /{" "}
+                {infiniteState.totalGames}G
+              </span>
+            )}
+          </div>
         </div>
       </footer>
+
+      <Modal
+        isOpen={showLeaderboard}
+        onClose={() => setShowLeaderboard(false)}
+        title="Leaderboard"
+      >
+        <Leaderboard />
+      </Modal>
+
+      <Modal
+        isOpen={showStats}
+        onClose={() => setShowStats(false)}
+        title="Statistics"
+      >
+        <StatsModal
+          dailyStats={getDailyStats(tier)}
+          infiniteStats={getInfiniteStats(tier)}
+          tier={tier}
+          mode={mode}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={showBountyBoard}
+        onClose={() => setShowBountyBoard(false)}
+        title="Bounty Board"
+        maxWidth="5xl"
+      >
+        <BountyBoard
+          characters={characters}
+          discoveredIds={getAllDiscoveredIds()}
+        />
+      </Modal>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
     </main>
   );
 }

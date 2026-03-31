@@ -1,10 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 
-import type { GuessResult, TileStatus } from "@/lib/types";
+import type { GuessResult, TileStatus, CategoryResult } from "@/lib/types";
 import { categories } from "@/lib/categories";
 import { getArrowIndicator } from "@/lib/evaluateGuess";
+import { useCanvasEnabled } from "@/lib/hooks/useCanvasEnabled";
+
+const TileRevealParticles = dynamic(
+  () => import("@/components/three/TileRevealParticles"),
+  { ssr: false }
+);
 
 interface GuessRowProps {
   guess: GuessResult;
@@ -24,9 +31,9 @@ function getTileClass(status: TileStatus): string {
     case "wrong":
       return "tile-wrong";
     case "higher":
-      return "tile-wrong";
+      return "tile-higher";
     case "lower":
-      return "tile-wrong";
+      return "tile-lower";
     case "unknown":
       return "tile-unknown";
     default:
@@ -34,7 +41,42 @@ function getTileClass(status: TileStatus): string {
   }
 }
 
+function renderCellContent(result: CategoryResult) {
+  if (
+    result.key === "haki" &&
+    result.displayValue !== "None" &&
+    result.displayValue !== "Unknown"
+  ) {
+    const badges = result.displayValue.split(",").map((b) => b.trim());
+    return (
+      <span className="flex flex-wrap items-center justify-center gap-1">
+        {badges.map((b) => {
+          let bgColor = "bg-slate-400";
+          if (b === "O") bgColor = "bg-cyan-400";
+          else if (b === "A") bgColor = "bg-slate-500";
+          else if (b === "C") bgColor = "bg-purple-500";
+
+          return (
+            <span
+              key={b}
+              className={`flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold text-white shadow-sm sm:h-5 sm:w-5 sm:text-[10px] ${bgColor}`}
+            >
+              {b}
+            </span>
+          );
+        })}
+      </span>
+    );
+  }
+
+  return (
+    <span className="break-words leading-tight">{result.displayValue}</span>
+  );
+}
+
 export function GuessRow({ guess, isLatest = false }: GuessRowProps) {
+  const canvasEnabled = useCanvasEnabled();
+
   return (
     <div
       className={`guess-table ${isLatest ? "guess-row-enter" : ""}`}
@@ -54,7 +96,7 @@ export function GuessRow({ guess, isLatest = false }: GuessRowProps) {
             className={`object-cover object-top ${guess.isCorrect ? "reveal-stamp" : "reveal-ink"}`}
             quality={92}
             onError={(event) => {
-              event.currentTarget.src = "https://via.placeholder.com/84?text=?";
+              event.currentTarget.src = "/characters/fallback.svg";
             }}
           />
         </div>
@@ -71,12 +113,18 @@ export function GuessRow({ guess, isLatest = false }: GuessRowProps) {
         return (
           <div
             key={result.key}
-            className={`guess-cell ${result.status === "correct" ? "tile-reveal-stamp" : "tile-reveal"} ${delayClass} ${getTileClass(result.status)}`}
+            className={`guess-cell relative ${result.status === "correct" ? "tile-reveal-stamp" : "tile-reveal"} ${delayClass} ${getTileClass(result.status)}`}
             role="cell"
             aria-label={`${result.label}: ${result.displayValue}${arrow ? ` (${result.status})` : ""}`}
             data-status={result.status}
           >
-            <span className="flex items-center justify-center gap-0.5">
+            {isLatest && canvasEnabled && (
+              <TileRevealParticles
+                status={result.status}
+                animationDelay={(index + 1) * 450}
+              />
+            )}
+            <span className="relative z-10 flex items-center justify-center gap-0.5">
               {arrow && (
                 <span
                   className="text-xs font-bold opacity-95 sm:text-sm"
@@ -85,9 +133,7 @@ export function GuessRow({ guess, isLatest = false }: GuessRowProps) {
                   {arrow}
                 </span>
               )}
-              <span className="break-words leading-tight">
-                {result.displayValue}
-              </span>
+              {renderCellContent(result)}
             </span>
           </div>
         );

@@ -50,7 +50,7 @@ export interface Character {
   imageUrl: string;
   gender: Gender;
   affiliationPrimary: string;
-  devilFruitType: DevilFruitType;
+  devilFruitType: DevilFruitType[];
   haki: HakiType[];
   bounty: number | null;
   heightCm: number | null;
@@ -79,6 +79,7 @@ export interface DailyState {
   guessedIds: string[];
   isFinished: boolean;
   isWon: boolean;
+  hintUsed?: boolean;
   streak: number;
   maxStreak: number;
 }
@@ -90,38 +91,31 @@ export interface InfiniteState {
   guessedIds: string[];
   isFinished: boolean;
   isWon: boolean;
+  hintUsed?: boolean;
   totalWins: number;
   totalGames: number;
-}
-
-export interface StorageSchema {
-  version: number;
-  daily: Record<string, DailyState>;
-  infinite: InfiniteState;
-  stats: {
-    dailyStreak: number;
-    dailyMaxStreak: number;
-    infiniteTotalWins: number;
-    infiniteTotalGames: number;
-  };
 }
 
 export interface DailyStats {
   streak: number;
   maxStreak: number;
+  winDistribution: Record<number, number>;
 }
 
 export interface InfiniteStats {
   totalWins: number;
   totalGames: number;
+  streak: number;
+  maxStreak: number;
+  winDistribution: Record<number, number>;
 }
 
-export interface StorageSchemaV3 {
+export interface StorageSchema {
   version: number;
   tier: Tier;
   hasSelectedTier: boolean;
   daily: Record<string, DailyState>;
-  infinite: InfiniteState;
+  infinite: Record<Tier, InfiniteState>;
   dailyStats: Record<Tier, DailyStats>;
   infiniteStats: Record<Tier, InfiniteStats>;
 }
@@ -157,9 +151,11 @@ export function validateCharacter(obj: unknown): obj is Character {
   // Gender enum
   if (!VALID_GENDERS.includes(c.gender as Gender)) return false;
 
-  // Devil fruit type enum
-  if (!VALID_DEVIL_FRUITS.includes(c.devilFruitType as DevilFruitType))
-    return false;
+  // Devil fruit type array
+  if (!Array.isArray(c.devilFruitType)) return false;
+  for (const df of c.devilFruitType) {
+    if (!VALID_DEVIL_FRUITS.includes(df as DevilFruitType)) return false;
+  }
 
   // Haki array
   if (!Array.isArray(c.haki)) return false;

@@ -64,6 +64,12 @@ const config: Config = {
           unknown: "#546E7A",
           unknownBorder: "#455A64",
           unknownDark: "#37474F",
+          higher: "#1565C0",
+          higherBorder: "#0D47A1",
+          higherDark: "#003c8f",
+          lower: "#1565C0",
+          lowerBorder: "#0D47A1",
+          lowerDark: "#003c8f",
         },
       },
       fontFamily: {
@@ -84,6 +90,10 @@ const config: Config = {
           "0 4px 12px rgba(198, 40, 40, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
         "tile-partial":
           "0 4px 12px rgba(230, 167, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+        "tile-higher":
+          "0 4px 12px rgba(21, 101, 192, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)",
+        "tile-lower":
+          "0 4px 12px rgba(21, 101, 192, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)",
       },
       animation: {
         "tile-flip": "tileFlipBold 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)",

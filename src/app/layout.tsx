@@ -1,7 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Alegreya, DM_Sans, Pirata_One } from "next/font/google";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { Providers } from "@/components/Providers";
+import dynamic from "next/dynamic";
 import "./globals.css";
+
+const AmbientParticles = dynamic(
+  () => import("@/components/three/AmbientParticles"),
+  { ssr: false }
+);
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -38,10 +44,14 @@ export const metadata: Metadata = {
     "Daily Puzzle",
   ],
   authors: [{ name: "OnePiecedle" }],
+  icons: { icon: "/favicon.svg" },
   openGraph: {
     title: "OnePiecedle",
     description: "Guess the One Piece character in 6 tries!",
     type: "website",
+  },
+  other: {
+    "darkreader-lock": "true",
   },
 };
 
@@ -49,6 +59,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: "#15294A",
+  colorScheme: "light dark",
 };
 
 export default function RootLayout({
@@ -79,7 +90,10 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans">
-        <ThemeProvider>{children}</ThemeProvider>
+        <Providers>
+          <AmbientParticles />
+          {children}
+        </Providers>
       </body>
     </html>
   );

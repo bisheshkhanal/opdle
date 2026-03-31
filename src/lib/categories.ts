@@ -4,7 +4,13 @@
  * Character, Gender, Affiliation (primary), Devil Fruit (type), Haki, Last Bounty, Height, Origin, First Arc
  */
 
-import type { Character, CategoryResult, TileStatus, HakiType } from "./types";
+import type {
+  Character,
+  CategoryResult,
+  TileStatus,
+  HakiType,
+  DevilFruitType,
+} from "./types";
 import { compareArcs, isValidArc } from "./arcs";
 
 export interface CategoryConfig {
@@ -43,39 +49,44 @@ function formatHaki(haki: HakiType[]): string {
   return haki.map((h) => h.charAt(0)).join(", ");
 }
 
+function formatDevilFruit(types: DevilFruitType[]): string {
+  if (!types || types.length === 0) return "None";
+  return types.join(", ");
+}
+
+/**
+ * Compare two sets using same logic as haki:
+ * correct if equal, partial if intersects, wrong if disjoint
+ */
+function compareSet<T>(guess: T[], target: T[]): TileStatus {
+  const guessSet = new Set(guess || []);
+  const targetSet = new Set(target || []);
+
+  if (guessSet.size === 0 && targetSet.size === 0) return "correct";
+
+  if (guessSet.size === targetSet.size) {
+    let allMatch = true;
+    guessSet.forEach((v) => {
+      if (!targetSet.has(v)) allMatch = false;
+    });
+    if (allMatch) return "correct";
+  }
+
+  let hasIntersection = false;
+  guessSet.forEach((v) => {
+    if (targetSet.has(v)) hasIntersection = true;
+  });
+  if (hasIntersection) return "partial";
+
+  return "wrong";
+}
+
 /**
  * Compare two haki sets
  * Green if equal set, Yellow if intersects but not equal, Red if disjoint
  */
 function compareHaki(guess: HakiType[], target: HakiType[]): TileStatus {
-  const guessSet = new Set(guess || []);
-  const targetSet = new Set(target || []);
-
-  // Both empty = correct
-  if (guessSet.size === 0 && targetSet.size === 0) return "correct";
-
-  // Check if sets are equal
-  if (guessSet.size === targetSet.size) {
-    let allMatch = true;
-    guessSet.forEach((h) => {
-      if (!targetSet.has(h)) {
-        allMatch = false;
-      }
-    });
-    if (allMatch) return "correct";
-  }
-
-  // Check for intersection (partial)
-  let hasIntersection = false;
-  guessSet.forEach((h) => {
-    if (targetSet.has(h)) {
-      hasIntersection = true;
-    }
-  });
-  if (hasIntersection) return "partial";
-
-  // Disjoint
-  return "wrong";
+  return compareSet(guess, target);
 }
 
 /**
@@ -124,9 +135,10 @@ export const categories: CategoryConfig[] = [
   {
     key: "devilFruitType",
     label: "Devil Fruit",
-    type: "string",
-    renderValue: (v) => String(v),
-    evaluate: (g, t) => (g === t ? "correct" : "wrong"),
+    type: "haki",
+    renderValue: (v) => formatDevilFruit(v as DevilFruitType[]),
+    evaluate: (g, t) =>
+      compareSet(g as DevilFruitType[], t as DevilFruitType[]),
   },
   {
     key: "haki",

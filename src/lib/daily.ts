@@ -2,7 +2,7 @@
  * Daily mode utilities - UTC date helpers and seeded daily selection
  */
 
-import type { Character } from "./types";
+import type { Character, Tier } from "./types";
 
 /**
  * Get the current UTC date string in YYYY-MM-DD format
@@ -39,15 +39,17 @@ export function seededRandom(seed: number): () => number {
 }
 
 /**
- * Select a character for daily mode based on UTC date
- * Deterministic - same date always returns same character
+ * Select a character for daily mode based on UTC date and tier
+ * Deterministic - same date + tier always returns same character
  */
 export function selectDailyCharacter(
   characters: Character[],
-  dateString?: string
+  dateString?: string,
+  tier?: Tier
 ): Character {
   const date = dateString || getUTCDateString();
-  const seed = dateToSeed(date);
+  const seedInput = tier ? `${date}-${tier}` : date;
+  const seed = dateToSeed(seedInput);
   const rng = seededRandom(seed);
   const index = Math.floor(rng() * characters.length);
   return characters[index];
@@ -77,7 +79,11 @@ export function isToday(dateString: string): boolean {
 /**
  * Get time until next daily reset (midnight UTC)
  */
-export function getTimeUntilReset(): { hours: number; minutes: number; seconds: number } {
+export function getTimeUntilReset(): {
+  hours: number;
+  minutes: number;
+  seconds: number;
+} {
   const now = new Date();
   const tomorrow = new Date(now);
   tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);

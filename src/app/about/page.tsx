@@ -4,14 +4,14 @@ export default function AboutPage() {
   return (
     <main className="flex min-h-screen flex-col">
       {/* Header */}
-      <header className="border-b border-parchment-300/40 bg-gradient-to-b from-parchment-50/95 via-parchment-100/90 to-parchment-100/95 backdrop-blur-md">
+      <header className="border-b border-parchment-300/40 bg-gradient-to-b from-parchment-50/95 via-parchment-100/90 to-parchment-100/95 backdrop-blur-md dark:border-slate-700/40 dark:bg-gradient-to-b dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-800/95">
         <div className="mx-auto flex max-w-3xl flex-col items-center px-4 py-8 sm:py-9">
-          <h1 className="mb-3 font-display text-3xl font-semibold tracking-tight text-navy-800 md:text-4xl">
+          <h1 className="mb-3 font-display text-3xl font-semibold tracking-tight text-navy-800 dark:text-slate-100 md:text-4xl">
             About OnePiecedle
           </h1>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-navy-600 underline-offset-2 transition-all hover:text-navy-800 hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-medium text-navy-600 underline-offset-2 transition-all hover:text-navy-800 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
           >
             <svg
               className="h-4 w-4"
@@ -36,7 +36,7 @@ export default function AboutPage() {
         <div className="mx-auto max-w-3xl space-y-7">
           {/* How to Play */}
           <section className="game-card p-6 sm:p-7">
-            <h2 className="mb-5 flex items-center gap-2.5 text-xl font-bold tracking-tight text-navy-800 sm:text-2xl">
+            <h2 className="mb-5 flex items-center gap-2.5 text-xl font-bold tracking-tight text-navy-800 dark:text-slate-100 sm:text-2xl">
               <svg
                 className="h-5 w-5 text-gold-600"
                 fill="none"
@@ -52,7 +52,7 @@ export default function AboutPage() {
               </svg>
               How to Play
             </h2>
-            <ul className="space-y-3.5 text-[15px] text-navy-600">
+            <ul className="space-y-3.5 text-[15px] text-navy-600 dark:text-slate-300">
               <li className="flex items-start gap-2.5">
                 <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-navy-400" />
                 Guess the One Piece character in 6 tries
@@ -110,7 +110,7 @@ export default function AboutPage() {
 
           {/* Game Modes */}
           <section className="game-card p-6">
-            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-navy-800">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-navy-800 dark:text-slate-100">
               <svg
                 className="h-5 w-5 text-gold-600"
                 fill="none"
@@ -132,27 +132,27 @@ export default function AboutPage() {
               Game Modes
             </h2>
             <div className="space-y-4">
-              <div className="rounded-xl bg-navy-50 p-4">
-                <h3 className="mb-1 font-semibold text-navy-800">
+              <div className="rounded-xl bg-navy-50 p-4 dark:bg-slate-700/50">
+                <h3 className="mb-1 font-semibold text-navy-800 dark:text-slate-100">
                   <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-navy-700 text-xs text-white">
                     D
                   </span>
                   Daily Mode
                 </h3>
-                <p className="text-sm text-navy-600">
+                <p className="text-sm text-navy-600 dark:text-slate-300">
                   A new character every day at midnight UTC. Same answer for
                   everyone worldwide. Build your streak by solving consecutive
                   days!
                 </p>
               </div>
-              <div className="rounded-xl bg-gold-50 p-4">
-                <h3 className="mb-1 font-semibold text-navy-800">
+              <div className="rounded-xl bg-gold-50 p-4 dark:bg-gold-900/20">
+                <h3 className="mb-1 font-semibold text-navy-800 dark:text-slate-100">
                   <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-gold-600 text-xs text-white">
                     I
                   </span>
                   Infinite Mode
                 </h3>
-                <p className="text-sm text-navy-600">
+                <p className="text-sm text-navy-600 dark:text-slate-300">
                   Practice anytime with randomly selected characters. No
                   streaks, just fun! Click &quot;Play Again&quot; to get a new
                   character instantly.
@@ -163,7 +163,7 @@ export default function AboutPage() {
 
           {/* Categories */}
           <section className="game-card p-6">
-            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-navy-800">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-navy-800 dark:text-slate-100">
               <svg
                 className="h-5 w-5 text-gold-600"
                 fill="none"
@@ -204,12 +204,15 @@ export default function AboutPage() {
               ].map((cat) => (
                 <div
                   key={cat.name}
-                  className="rounded-lg bg-parchment-100 px-3 py-2"
+                  className="rounded-lg bg-parchment-100 px-3 py-2 dark:bg-slate-700/50"
                 >
-                  <span className="font-semibold text-navy-800">
+                  <span className="font-semibold text-navy-800 dark:text-slate-100">
                     {cat.name}
                   </span>
-                  <span className="text-navy-500"> — {cat.desc}</span>
+                  <span className="text-navy-500 dark:text-slate-400">
+                    {" "}
+                    — {cat.desc}
+                  </span>
                 </div>
               ))}
             </div>
@@ -217,7 +220,7 @@ export default function AboutPage() {
 
           {/* Data Sources */}
           <section className="game-card p-6">
-            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-navy-800">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-navy-800 dark:text-slate-100">
               <svg
                 className="h-5 w-5 text-gold-600"
                 fill="none"
@@ -233,13 +236,13 @@ export default function AboutPage() {
               </svg>
               Data Sources
             </h2>
-            <p className="text-navy-600">
+            <p className="text-navy-600 dark:text-slate-300">
               Character data is compiled from the{" "}
               <a
                 href="https://onepiece.fandom.com/wiki/One_Piece_Wiki"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-medium text-navy-700 underline underline-offset-2 transition-colors hover:text-gold-600"
+                className="font-medium text-navy-700 underline underline-offset-2 transition-colors hover:text-gold-600 dark:text-slate-200 dark:hover:text-gold-400"
               >
                 One Piece Wiki
               </a>
@@ -249,9 +252,11 @@ export default function AboutPage() {
           </section>
 
           {/* Disclaimer */}
-          <section className="rounded-xl border border-parchment-400 bg-parchment-100 p-6">
-            <h2 className="mb-3 text-lg font-bold text-navy-800">Disclaimer</h2>
-            <p className="text-sm text-navy-500">
+          <section className="rounded-xl border border-parchment-400 bg-parchment-100 p-6 dark:border-slate-600 dark:bg-slate-800/50 dark:text-slate-400">
+            <h2 className="mb-3 text-lg font-bold text-navy-800 dark:text-slate-100">
+              Disclaimer
+            </h2>
+            <p className="text-sm text-navy-500 dark:text-slate-400">
               This is a fan-made game and is not affiliated with, endorsed,
               sponsored, or specifically approved by Eiichiro Oda, Shueisha,
               Toei Animation, or any other official One Piece entity. One Piece
@@ -264,11 +269,11 @@ export default function AboutPage() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-parchment-300/40 bg-gradient-to-t from-parchment-100/95 to-parchment-50/95 backdrop-blur-md">
+      <footer className="border-t border-parchment-300/40 bg-gradient-to-t from-parchment-100/95 to-parchment-50/95 backdrop-blur-md dark:border-slate-700/40 dark:bg-gradient-to-t dark:from-slate-900/95 dark:to-slate-800/95">
         <div className="mx-auto flex max-w-3xl items-center justify-center px-4 py-5">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-navy-600 underline-offset-2 transition-all hover:text-navy-800 hover:underline"
+            className="inline-flex items-center gap-2 text-sm font-medium text-navy-600 underline-offset-2 transition-all hover:text-navy-800 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
           >
             <svg
               className="h-4 w-4"

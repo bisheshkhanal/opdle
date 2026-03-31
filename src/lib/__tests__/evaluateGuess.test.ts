@@ -14,7 +14,7 @@ const targetCharacter: Character = {
   imageUrl: "https://example.com/luffy.png",
   gender: "Male",
   affiliationPrimary: "Straw Hat Pirates",
-  devilFruitType: "Paramecia",
+  devilFruitType: ["Paramecia"],
   haki: ["O", "A", "C"],
   bounty: 3000000000,
   heightCm: 174,
@@ -32,7 +32,7 @@ const partialHakiCharacter: Character = {
   imageUrl: "https://example.com/sanji.png",
   gender: "Male",
   affiliationPrimary: "Straw Hat Pirates",
-  devilFruitType: "None",
+  devilFruitType: ["None"],
   haki: ["O", "A"], // Missing Conqueror - partial match
   bounty: 1032000000,
   heightCm: 180,
@@ -48,7 +48,7 @@ const noHakiCharacter: Character = {
   imageUrl: "https://example.com/nami.png",
   gender: "Female",
   affiliationPrimary: "Straw Hat Pirates",
-  devilFruitType: "None",
+  devilFruitType: ["None"],
   haki: [], // No haki - wrong
   bounty: 366000000,
   heightCm: 170,
@@ -64,7 +64,7 @@ const nullBountyCharacter: Character = {
   imageUrl: "https://example.com/garp.png",
   gender: "Male",
   affiliationPrimary: "Marines",
-  devilFruitType: "None",
+  devilFruitType: ["None"],
   haki: ["O", "A", "C"],
   bounty: null, // null bounty
   heightCm: 287,
