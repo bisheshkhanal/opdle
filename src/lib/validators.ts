@@ -15,25 +15,31 @@ export const registerSchema = z.object({
 export const tierSchema = z.enum(["casual", "fan", "nakama"]);
 export const modeSchema = z.enum(["daily", "infinite"]);
 
+const dailyTierStats = z.object({
+  streak: z.number().int().min(0),
+  maxStreak: z.number().int().min(0),
+  winDistribution: z.record(z.string(), z.number()),
+});
+
+const infiniteTierStats = z.object({
+  totalWins: z.number().int().min(0),
+  totalGames: z.number().int().min(0),
+  streak: z.number().int().min(0),
+  maxStreak: z.number().int().min(0),
+  winDistribution: z.record(z.string(), z.number()),
+});
+
 export const statsSyncSchema = z.object({
-  dailyStats: z.record(
-    tierSchema,
-    z.object({
-      streak: z.number().int().min(0),
-      maxStreak: z.number().int().min(0),
-      winDistribution: z.record(z.string(), z.number()),
-    })
-  ),
-  infiniteStats: z.record(
-    tierSchema,
-    z.object({
-      totalWins: z.number().int().min(0),
-      totalGames: z.number().int().min(0),
-      streak: z.number().int().min(0),
-      maxStreak: z.number().int().min(0),
-      winDistribution: z.record(z.string(), z.number()),
-    })
-  ),
+  dailyStats: z.object({
+    casual: dailyTierStats,
+    fan: dailyTierStats,
+    nakama: dailyTierStats,
+  }),
+  infiniteStats: z.object({
+    casual: infiniteTierStats,
+    fan: infiniteTierStats,
+    nakama: infiniteTierStats,
+  }),
 });
 
 export const dailyResultSchema = z.object({
