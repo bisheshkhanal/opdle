@@ -28,6 +28,10 @@ import { AuthModal } from "@/components/AuthModal";
 import { UserMenu } from "@/components/UserMenu";
 import { Leaderboard } from "@/components/Leaderboard";
 import { DailyComparison } from "@/components/DailyComparison";
+import { SettingsModal } from "@/components/SettingsModal";
+import { loadSettings } from "@/lib/settings";
+import type { UserSettings } from "@/lib/settings";
+import { DEFAULT_SETTINGS } from "@/lib/settings";
 import { evaluateGuess } from "@/lib/evaluateGuess";
 import { getCharactersForTier } from "@/lib/tier";
 import {
@@ -121,7 +125,9 @@ export default function Home() {
   const [showBountyBoard, setShowBountyBoard] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [hintUsed, setHintUsedState] = useState(false);
+  const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
   const [compassState, setCompassState] = useState<
     "idle" | "wrong-guess" | "correct-guess"
   >("idle");
@@ -155,6 +161,7 @@ export default function Home() {
     setDailyState(daily);
     setInfiniteState(infinite);
     setHintUsedState(daily.hintUsed || false);
+    setSettings(loadSettings());
     setIsLoaded(true);
   }, []);
 
@@ -300,6 +307,10 @@ export default function Home() {
     setHintUsedState(true);
   }, [tier, mode]);
 
+  const handleSettingsChange = useCallback((newSettings: UserSettings) => {
+    setSettings(newSettings);
+  }, []);
+
   const handleModeChange = (newMode: GameMode) => {
     setMode(newMode);
     setDuplicateWarning(null);
@@ -348,6 +359,27 @@ export default function Home() {
       <header className="border-b border-parchment-300/40 bg-gradient-to-b from-parchment-50/95 via-parchment-100/90 to-parchment-100/95 backdrop-blur-md dark:border-slate-700/40 dark:bg-gradient-to-b dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-800/95">
         <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-5 sm:py-7">
           <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6">
+            <button
+              onClick={() => setShowSettings(true)}
+              className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
+              aria-label="Settings"
+              title="Settings"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
             <button
               onClick={() => setShowLeaderboard(true)}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
@@ -694,6 +726,13 @@ export default function Home() {
       >
         <BountyBoard characters={characters} discoveredIds={discoveredIds} />
       </Modal>
+
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        settings={settings}
+        onSettingsChange={handleSettingsChange}
+      />
 
       <AuthModal
         isOpen={showAuthModal}

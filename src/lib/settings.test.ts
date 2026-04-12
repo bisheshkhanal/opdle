@@ -1,0 +1,110 @@
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import {
+  loadSettings,
+  saveSettings,
+  updateSetting,
+  DEFAULT_SETTINGS,
+} from "./settings";
+import type { UserSettings } from "./settings";
+
+const SETTINGS_KEY = "onepiecedle_settings";
+
+function mockLocalStorage() {
+  const store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] ?? null),
+    setItem: vi.fn((key: string, value: string) => {
+      store[key] = value;
+    }),
+    removeItem: vi.fn((key: string) => {
+      delete store[key];
+    }),
+    clear: vi.fn(() => {
+      Object.keys(store).forEach((k) => delete store[k]);
+    }),
+    get store() {
+      return store;
+    },
+  };
+}
+
+describe("settings", () => {
+  let ls: ReturnType<typeof mockLocalStorage>;
+
+  beforeEach(() => {
+    ls = mockLocalStorage();
+    vi.stubGlobal("localStorage", ls);
+  });
+
+  describe("loadSettings", () => {
+    it("returns defaults when localStorage is empty", () => {
+      const result = loadSettings();
+      expect(result).toEqual(DEFAULT_SETTINGS);
+    });
+
+    it("returns saved settings when present", () => {
+      const saved: UserSettings = {
+        silhouetteReveal: true,
+        progressiveHints: false,
+      };
+      ls.store[SETTINGS_KEY] = JSON.stringify(saved);
+
+      const result = loadSettings();
+      expect(result).toEqual(saved);
+    });
+
+    it("returns defaults when JSON parse fails", () => {
+      ls.store[SETTINGS_KEY] = "{invalid json";
+
+      const result = loadSettings();
+      expect(result).toEqual(DEFAULT_SETTINGS);
+    });
+
+    it("merges saved partial settings with defaults", () => {
+      ls.store[SETTINGS_KEY] = JSON.stringify({ silhouetteReveal: true });
+
+      const result = loadSettings();
+      expect(result.silhouetteReveal).toBe(true);
+      expect(result.progressiveHints).toBe(false);
+    });
+  });
+
+  describe("saveSettings", () => {
+    it("writes to localStorage with correct key", () => {
+      const settings: UserSettings = {
+        silhouetteReveal: true,
+        progressiveHints: false,
+      };
+      saveSettings(settings);
+
+      expect(ls.setItem).toHaveBeenCalledWith(
+        SETTINGS_KEY,
+        JSON.stringify(settings)
+      );
+    });
+  });
+
+  describe("updateSetting", () => {
+    it("updates a single setting and returns the full settings object", () => {
+      ls.store[SETTINGS_KEY] = JSON.stringify({
+        silhouetteReveal: false,
+        progressiveHints: false,
+      });
+
+      const result = updateSetting("silhouetteReveal", true);
+      expect(result.silhouetteReveal).toBe(true);
+      expect(result.progressiveHints).toBe(false);
+    });
+
+    it("preserves other settings when updating one", () => {
+      ls.store[SETTINGS_KEY] = JSON.stringify({
+        silhouetteReveal: true,
+        progressiveHints: false,
+      });
+
+      const result = updateSetting("progressiveHints", true);
+      expect(result.silhouetteReveal).toBe(true);
+      expect(result.progressiveHints).toBe(true);
+    });
+  });
+});
