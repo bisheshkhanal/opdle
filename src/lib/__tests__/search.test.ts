@@ -384,8 +384,8 @@ describe("search.ts", () => {
       },
       {
         ...mockCharacters[0],
-        id: "crowley-contains",
-        name: "Crowley",
+        id: "law-contains",
+        name: "Outlaw",
         aliases: [],
       },
       {
@@ -406,6 +406,12 @@ describe("search.ts", () => {
         name: "Another Person",
         aliases: ["Outlaw"],
       },
+      {
+        ...mockCharacters[0],
+        id: "law-fuzzy",
+        name: "Laf",
+        aliases: [],
+      },
     ];
 
     it("exact name match (100) ranks before name prefix match (90)", () => {
@@ -422,7 +428,7 @@ describe("search.ts", () => {
       const results = searchCharacters(rankingCharacters, "Law");
       const ids = results.map((c) => c.id);
       const prefixIdx = ids.indexOf("lawton-prefix");
-      const containsIdx = ids.indexOf("crowley-contains");
+      const containsIdx = ids.indexOf("law-contains");
       if (prefixIdx !== -1 && containsIdx !== -1) {
         expect(prefixIdx).toBeLessThan(containsIdx);
       }
@@ -431,7 +437,7 @@ describe("search.ts", () => {
     it("name contains match (80) ranks before alias exact match (70)", () => {
       const results = searchCharacters(rankingCharacters, "Law");
       const ids = results.map((c) => c.id);
-      const containsIdx = ids.indexOf("crowley-contains");
+      const containsIdx = ids.indexOf("law-contains");
       const aliasExactIdx = ids.indexOf("surgeon-alias-exact");
       if (containsIdx !== -1 && aliasExactIdx !== -1) {
         expect(containsIdx).toBeLessThan(aliasExactIdx);
@@ -458,6 +464,50 @@ describe("search.ts", () => {
       }
     });
 
+    it("literal matches rank before fuzzy matches", () => {
+      const localChars: Character[] = [
+        {
+          ...mockCharacters[0],
+          id: "laws-exact",
+          name: "Laws",
+          aliases: [],
+        },
+        {
+          ...mockCharacters[0],
+          id: "lawson-prefix",
+          name: "Lawson",
+          aliases: [],
+        },
+        {
+          ...mockCharacters[0],
+          id: "outlaws-contains",
+          name: "Outlaws",
+          aliases: [],
+        },
+        {
+          ...mockCharacters[0],
+          id: "lafs-fuzzy",
+          name: "Lafs",
+          aliases: [],
+        },
+      ];
+
+      const results = searchCharacters(localChars, "Laws");
+      const ids = results.map((c) => c.id);
+      const exactIdx = ids.indexOf("laws-exact");
+      const prefixIdx = ids.indexOf("lawson-prefix");
+      const containsIdx = ids.indexOf("outlaws-contains");
+      const fuzzyIdx = ids.indexOf("lafs-fuzzy");
+
+      expect(exactIdx).toBeGreaterThanOrEqual(0);
+      expect(prefixIdx).toBeGreaterThanOrEqual(0);
+      expect(containsIdx).toBeGreaterThanOrEqual(0);
+      expect(fuzzyIdx).toBeGreaterThanOrEqual(0);
+      expect(exactIdx).toBeLessThan(fuzzyIdx);
+      expect(prefixIdx).toBeLessThan(fuzzyIdx);
+      expect(containsIdx).toBeLessThan(fuzzyIdx);
+    });
+
     it("non-matching query returns empty results", () => {
       const results = searchCharacters(rankingCharacters, "xyzqwerty");
       expect(results).toEqual([]);
@@ -476,7 +526,7 @@ describe("search.ts", () => {
       const orderedIds = [
         "law-exact",
         "lawton-prefix",
-        "crowley-contains",
+        "law-contains",
         "surgeon-alias-exact",
         "lawman-alias-prefix",
         "outlaw-alias-contains",
@@ -583,6 +633,19 @@ describe("search.ts", () => {
       expect(ids).toContain("luffy");
     });
 
+    it("typo with substitution: 'Zoroo' finds 'Zoro'", () => {
+      const localChars: Character[] = [
+        {
+          ...mockCharacters[1],
+          aliases: ["Zoro"],
+        },
+      ];
+
+      const results = searchCharacters(localChars, "Zoroo");
+      const ids = results.map((c) => c.id);
+      expect(ids).toContain("zoro");
+    });
+
     it("typo with transposition: 'Lufyf' finds 'Luffy' via alias", () => {
       const results = searchCharacters(fuzzyCharacters, "Lufyf");
       const ids = results.map((c) => c.id);
@@ -593,6 +656,91 @@ describe("search.ts", () => {
       const results = searchCharacters(fuzzyCharacters, "Lffy");
       const ids = results.map((c) => c.id);
       expect(ids).toContain("luffy");
+    });
+
+    it("typo with insertion: 'Luffyy' finds 'Luffy'", () => {
+      const results = searchCharacters(fuzzyCharacters, "Luffyy");
+      const ids = results.map((c) => c.id);
+      expect(ids).toContain("luffy");
+    });
+
+    it("typo with transposition: 'Lfufy' finds 'Luffy'", () => {
+      const results = searchCharacters(fuzzyCharacters, "Lfufy");
+      const ids = results.map((c) => c.id);
+      expect(ids).toContain("luffy");
+    });
+
+    it("multi-word names still fuzzy match adjacent typos", () => {
+      const localChars: Character[] = [
+        {
+          ...mockCharacters[0],
+          id: "brook-two",
+          name: "Brook Two",
+          aliases: [],
+        },
+      ];
+
+      const results = searchCharacters(localChars, "Brook Tow");
+      expect(results[0]?.id).toBe("brook-two");
+    });
+
+    it("alias fuzzy matching works for short aliases", () => {
+      const localChars: Character[] = [
+        {
+          ...mockCharacters[0],
+          id: "strawhat-alias",
+          name: "Random Pirate",
+          aliases: ["Strawhat"],
+        },
+      ];
+
+      const results1 = searchCharacters(localChars, "Strawhatt");
+      const results2 = searchCharacters(localChars, "Strawha");
+
+      expect(results1[0]?.id).toBe("strawhat-alias");
+      expect(results2[0]?.id).toBe("strawhat-alias");
+    });
+
+    it("apostrophes are normalized before fuzzy comparison", () => {
+      const localChars: Character[] = [
+        {
+          ...mockCharacters[0],
+          id: "dartagnan",
+          name: "D'artagnan",
+          aliases: [],
+        },
+      ];
+
+      const results = searchCharacters(localChars, "Dartagnan");
+      expect(results[0]?.id).toBe("dartagnan");
+    });
+
+    it("hyphens are normalized before fuzzy comparison", () => {
+      const localChars: Character[] = [
+        {
+          ...mockCharacters[0],
+          id: "jean-luc",
+          name: "Jean-Luc",
+          aliases: [],
+        },
+      ];
+
+      const results = searchCharacters(localChars, "Jean Luc");
+      expect(results[0]?.id).toBe("jean-luc");
+    });
+
+    it("diacritics are normalized before fuzzy comparison", () => {
+      const localChars: Character[] = [
+        {
+          ...mockCharacters[0],
+          id: "kureha",
+          name: "Küreha",
+          aliases: [],
+        },
+      ];
+
+      const results = searchCharacters(localChars, "Kureha");
+      expect(results[0]?.id).toBe("kureha");
     });
 
     it("short query gate: 'Luf' (3 chars) does NOT trigger fuzzy", () => {
@@ -636,6 +784,14 @@ describe("search.ts", () => {
     it("punctuation-only query returns empty array", () => {
       expect(searchCharacters(fuzzyCharacters, "!!!")).toEqual([]);
       expect(searchCharacters(fuzzyCharacters, "@#$%")).toEqual([]);
+    });
+
+    it("punctuation-only query like '!@#' returns empty array", () => {
+      expect(searchCharacters(fuzzyCharacters, "!@#")).toEqual([]);
+    });
+
+    it("whitespace-only query like '   ' returns empty array", () => {
+      expect(searchCharacters(fuzzyCharacters, "   ")).toEqual([]);
     });
   });
 });
