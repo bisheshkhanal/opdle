@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type {
@@ -14,7 +14,6 @@ import type {
 import { validateCharacter } from "@/lib/types";
 import { normalizeCharacterImage } from "@/lib/images";
 import { ModeTabs } from "@/components/ModeTabs";
-import { TierTabs } from "@/components/TierTabs";
 import { Autocomplete } from "@/components/Autocomplete";
 import { GuessRow, GuessRowHeader } from "@/components/GuessRow";
 import { ResultsShare } from "@/components/ResultsShare";
@@ -130,6 +129,19 @@ export default function Home() {
   const previousIsWonRef = useRef(false);
   const canvasEnabled = useCanvasEnabled();
   const { syncDailyResult } = useAuthSync();
+
+  const { dailyStats, infiniteStats } = useMemo(() => {
+    return {
+      dailyStats: getDailyStats(tier),
+      infiniteStats: getInfiniteStats(tier),
+    };
+  }, [tier]);
+
+  const discoveredIds = useMemo(() => {
+    void dailyState;
+    void infiniteState;
+    return getAllDiscoveredIds();
+  }, [dailyState, infiniteState]);
 
   // Initialize game state
   useEffect(() => {
@@ -287,25 +299,6 @@ export default function Home() {
     markHintUsed(tier, mode, mode === "daily" ? getUTCDateString() : undefined);
     setHintUsedState(true);
   }, [tier, mode]);
-
-  const handleTierChange = useCallback(
-    (newTier: Tier) => {
-      setSelectedTier(newTier);
-      setTier(newTier);
-      setDuplicateWarning(null);
-
-      const dateString = getUTCDateString();
-      const daily = getDailyState(newTier, dateString);
-      const infinite = getInfiniteState(newTier);
-      setDailyState(daily);
-      setInfiniteState(infinite);
-
-      const currentHintUsed =
-        mode === "daily" ? daily.hintUsed || false : infinite.hintUsed || false;
-      setHintUsedState(currentHintUsed);
-    },
-    [mode]
-  );
 
   const handleModeChange = (newMode: GameMode) => {
     setMode(newMode);
@@ -686,8 +679,8 @@ export default function Home() {
         title="Statistics"
       >
         <StatsModal
-          dailyStats={getDailyStats(tier)}
-          infiniteStats={getInfiniteStats(tier)}
+          dailyStats={dailyStats}
+          infiniteStats={infiniteStats}
           tier={tier}
           mode={mode}
         />
@@ -699,10 +692,7 @@ export default function Home() {
         title="Bounty Board"
         maxWidth="5xl"
       >
-        <BountyBoard
-          characters={characters}
-          discoveredIds={getAllDiscoveredIds()}
-        />
+        <BountyBoard characters={characters} discoveredIds={discoveredIds} />
       </Modal>
 
       <AuthModal
