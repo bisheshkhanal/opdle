@@ -14,6 +14,7 @@ import type {
 import { validateCharacter } from "@/lib/types";
 import { normalizeCharacterImage } from "@/lib/images";
 import { ModeTabs } from "@/components/ModeTabs";
+import { TierTabs } from "@/components/TierTabs";
 import { Autocomplete } from "@/components/Autocomplete";
 import { GuessRow, GuessRowHeader } from "@/components/GuessRow";
 import { ResultsShare } from "@/components/ResultsShare";
@@ -148,6 +149,18 @@ export default function Home() {
     void infiniteState;
     return getAllDiscoveredIds();
   }, [dailyState, infiniteState]);
+
+  const characterCounts = useMemo(() => {
+    const counts: Record<Tier, number> = { casual: 0, fan: 0, nakama: 0 };
+
+    counts.casual = characters.filter((c) => c.minTier === "casual").length;
+    counts.fan = characters.filter(
+      (c) => c.minTier === "casual" || c.minTier === "fan"
+    ).length;
+    counts.nakama = characters.length;
+
+    return counts;
+  }, []);
 
   // Initialize game state
   useEffect(() => {
@@ -311,6 +324,25 @@ export default function Home() {
     setSettings(newSettings);
   }, []);
 
+  const handleTierChange = useCallback(
+    (newTier: Tier) => {
+      setSelectedTier(newTier);
+      setTier(newTier);
+      setDuplicateWarning(null);
+
+      const dateString = getUTCDateString();
+      const daily = getDailyState(newTier, dateString);
+      const infinite = getInfiniteState(newTier);
+      setDailyState(daily);
+      setInfiniteState(infinite);
+
+      const currentHintUsed =
+        mode === "daily" ? daily.hintUsed || false : infinite.hintUsed || false;
+      setHintUsedState(currentHintUsed);
+    },
+    [mode]
+  );
+
   const handleModeChange = (newMode: GameMode) => {
     setMode(newMode);
     setDuplicateWarning(null);
@@ -463,6 +495,13 @@ export default function Home() {
             )}
           </p>
           <ModeTabs mode={mode} onModeChange={handleModeChange} />
+          <div className="mt-3">
+            <TierTabs
+              tier={tier}
+              onTierChange={handleTierChange}
+              characterCounts={characterCounts}
+            />
+          </div>
         </div>
       </header>
 
