@@ -12,11 +12,15 @@ import type {
   GuessResult,
 } from "@/lib/types";
 import { validateCharacter } from "@/lib/types";
-import { normalizeCharacterImage } from "@/lib/images";
+import {
+  getLocalCharacterImageUrl,
+  normalizeCharacterImage,
+} from "@/lib/images";
 import { ModeTabs } from "@/components/ModeTabs";
 import { TierTabs } from "@/components/TierTabs";
 import { Autocomplete } from "@/components/Autocomplete";
 import { GuessRow, GuessRowHeader } from "@/components/GuessRow";
+import { HintImage } from "@/components/HintImage";
 import { ResultsShare } from "@/components/ResultsShare";
 import { AnswerReveal } from "@/components/AnswerReveal";
 import { GameLegend } from "@/components/GameLegend";
@@ -223,6 +227,10 @@ export default function Home() {
   const guessedIds = currentState?.guessedIds || [];
   const isFinished = currentState?.isFinished || false;
   const isWon = currentState?.isWon || false;
+  const wrongGuessCount = guesses.filter((guess) => !guess.isCorrect).length;
+  const hintImageUrl = targetCharacter
+    ? targetCharacter.imageUrl || getLocalCharacterImageUrl(targetCharacter.id)
+    : "";
 
   useEffect(() => {
     if (isWon && !previousIsWonRef.current) {
@@ -640,6 +648,13 @@ export default function Home() {
                         targetCharacter={targetCharacter}
                         hintUsed={hintUsed}
                         onHintUsed={handleHintUsed}
+                      />
+                    )}
+                    {settings.progressiveHints && wrongGuessCount >= 3 && (
+                      <HintImage
+                        imageUrl={hintImageUrl}
+                        wrongGuessCount={wrongGuessCount}
+                        isEnabled={settings.progressiveHints}
                       />
                     )}
                   </div>
