@@ -48,6 +48,7 @@ import {
   getDailyGameNumber,
 } from "@/lib/daily";
 import { selectInfiniteCharacter } from "@/lib/infinite";
+import { copyToClipboard } from "@/lib/share";
 import {
   getDailyState,
   addDailyGuess,
@@ -110,6 +111,22 @@ function generateGuessAnnouncement(
   return text;
 }
 
+function encodeChallengeSeed(characterId: string): string {
+  try {
+    return btoa(encodeURIComponent(characterId));
+  } catch {
+    return "";
+  }
+}
+
+function decodeChallengeSeed(seed: string): string | null {
+  try {
+    return decodeURIComponent(atob(seed));
+  } catch {
+    return null;
+  }
+}
+
 export default function Home() {
   const [mode, setMode] = useState<GameMode>("daily");
   const [tier, setTier] = useState<Tier>("casual");
@@ -136,6 +153,12 @@ export default function Home() {
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
   const [hintUsed, setHintUsedState] = useState(false);
+  const [challengeMode, setChallengeMode] = useState(false);
+  const [challengeGuesses, setChallengeGuesses] = useState<GuessResult[]>([]);
+  const [challengeGuessedIds, setChallengeGuessedIds] = useState<string[]>([]);
+  const [challengeIsFinished, setChallengeIsFinished] = useState(false);
+  const [challengeIsWon, setChallengeIsWon] = useState(false);
+  const [challengeLinkCopied, setChallengeLinkCopied] = useState(false);
   const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
   const [compassState, setCompassState] = useState<
     "idle" | "wrong-guess" | "correct-guess"
@@ -178,10 +201,28 @@ export default function Home() {
     const dateString = getUTCDateString();
     const daily = getDailyState(storedTier, dateString);
     const infinite = getInfiniteState(storedTier);
+    const searchParams = new URLSearchParams(window.location.search);
+    const challengeSeed = searchParams.get("challenge");
+
+    if (challengeSeed) {
+      const characterId = decodeChallengeSeed(challengeSeed);
+      if (characterId) {
+        const challengeCharacter = characters.find((c) => c.id === characterId);
+        if (challengeCharacter) {
+          setChallengeMode(true);
+          setTargetCharacter(challengeCharacter);
+          setHintUsedState(false);
+        }
+      }
+
+      window.history.replaceState({}, "", window.location.pathname);
+    }
 
     setDailyState(daily);
     setInfiniteState(infinite);
-    setHintUsedState(daily.hintUsed || false);
+    if (!challengeSeed) {
+      setHintUsedState(daily.hintUsed || false);
+    }
     setSettings(loadSettings());
     setIsLoaded(true);
 
@@ -194,6 +235,7 @@ export default function Home() {
   // Update target character when mode or tier changes
   useEffect(() => {
     if (!isLoaded) return;
+    if (challengeMode) return;
 
     const tierCharacters = getCharactersForTier(characters, tier);
 
@@ -207,7 +249,7 @@ export default function Home() {
       );
       setTargetCharacter(target);
     }
-  }, [mode, tier, isLoaded, infiniteState]);
+  }, [mode, tier, isLoaded, infiniteState, challengeMode]);
 
   // Countdown timer for daily mode
   useEffect(() => {
@@ -222,11 +264,21 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [mode]);
 
-  const currentState = mode === "daily" ? dailyState : infiniteState;
-  const guesses = currentState?.guesses || [];
-  const guessedIds = currentState?.guessedIds || [];
-  const isFinished = currentState?.isFinished || false;
-  const isWon = currentState?.isWon || false;
+  const currentState = challengeMode
+    ? null
+    : mode === "daily"
+      ? dailyState
+      : infiniteState;
+  const guesses = challengeMode
+    ? challengeGuesses
+    : currentState?.guesses || [];
+  const guessedIds = challengeMode
+    ? challengeGuessedIds
+    : currentState?.guessedIds || [];
+  const isFinished = challengeMode
+    ? challengeIsFinished
+    : currentState?.isFinished || false;
+  const isWon = challengeMode ? challengeIsWon : currentState?.isWon || false;
   const wrongGuessCount = guesses.filter((guess) => !guess.isCorrect).length;
   const hintImageUrl = targetCharacter
     ? targetCharacter.imageUrl || getLocalCharacterImageUrl(targetCharacter.id)
@@ -259,8 +311,9 @@ export default function Home() {
     (character: Character) => {
       if (!targetCharacter || isFinished) return;
 
-      const isDuplicate =
-        mode === "daily"
+      const isDuplicate = challengeMode
+        ? challengeGuessedIds.includes(character.id)
+        : mode === "daily"
           ? isDailyDuplicate(character.id, tier)
           : isInfiniteDuplicate(character.id, tier);
 
@@ -272,14 +325,39 @@ export default function Home() {
 
       const result = evaluateGuess(character, targetCharacter);
 
-      const guessNumber =
-        mode === "daily"
+      const guessNumber = challengeMode
+        ? challengeGuesses.length + 1
+        : mode === "daily"
           ? (dailyState?.guesses?.length ?? 0) + 1
           : (infiniteState?.guesses?.length ?? 0) + 1;
 
       setAnnouncement(
         generateGuessAnnouncement(guessNumber, MAX_GUESSES, result)
       );
+
+      if (challengeMode) {
+        const nextGuesses = [...challengeGuesses, result];
+        const nextGuessedIds = [...challengeGuessedIds, character.id];
+        const didWin = result.isCorrect;
+        const didFinish = didWin || nextGuesses.length >= MAX_GUESSES;
+
+        setChallengeGuesses(nextGuesses);
+        setChallengeGuessedIds(nextGuessedIds);
+
+        if (didFinish) {
+          setChallengeIsFinished(true);
+          setChallengeIsWon(didWin);
+          setTimeout(() => {
+            setAnnouncement(
+              didWin
+                ? `Victory! The answer was ${targetCharacter.name}!`
+                : `Defeated. The answer was ${targetCharacter.name}.`
+            );
+          }, 1500);
+        }
+
+        return;
+      }
 
       if (mode === "daily") {
         const newState = addDailyGuess(result, tier);
@@ -319,6 +397,9 @@ export default function Home() {
       targetCharacter,
       isFinished,
       mode,
+      challengeMode,
+      challengeGuessedIds,
+      challengeGuesses,
       syncDailyResult,
       tier,
       dailyState?.guesses?.length,
@@ -333,9 +414,32 @@ export default function Home() {
   }, [tier]);
 
   const handleHintUsed = useCallback(() => {
+    if (challengeMode) {
+      setHintUsedState(true);
+      return;
+    }
+
     markHintUsed(tier, mode, mode === "daily" ? getUTCDateString() : undefined);
     setHintUsedState(true);
-  }, [tier, mode]);
+  }, [challengeMode, tier, mode]);
+
+  const handleChallengeShare = useCallback(async () => {
+    if (!targetCharacter || challengeMode) return;
+
+    const seed = encodeChallengeSeed(targetCharacter.id);
+    if (!seed) return;
+
+    const challengeUrl = new URL(window.location.href);
+    challengeUrl.search = "";
+    challengeUrl.hash = "";
+    challengeUrl.searchParams.set("challenge", seed);
+
+    const success = await copyToClipboard(challengeUrl.toString());
+    if (success) {
+      setChallengeLinkCopied(true);
+      setTimeout(() => setChallengeLinkCopied(false), 2500);
+    }
+  }, [targetCharacter, challengeMode]);
 
   const handleSettingsChange = useCallback((newSettings: UserSettings) => {
     setSettings(newSettings);
@@ -560,14 +664,18 @@ export default function Home() {
               </span>
             )}
           </p>
-          <ModeTabs mode={mode} onModeChange={handleModeChange} />
-          <div className="mt-3">
-            <TierTabs
-              tier={tier}
-              onTierChange={handleTierChange}
-              characterCounts={characterCounts}
-            />
-          </div>
+          {!challengeMode && (
+            <ModeTabs mode={mode} onModeChange={handleModeChange} />
+          )}
+          {!challengeMode && (
+            <div className="mt-3">
+              <TierTabs
+                tier={tier}
+                onTierChange={handleTierChange}
+                characterCounts={characterCounts}
+              />
+            </div>
+          )}
         </div>
       </header>
 
@@ -579,6 +687,14 @@ export default function Home() {
             <div className="w-full min-w-0 max-w-5xl">
               <div className="game-stage">
                 <div className="stage-overlay" aria-hidden="true" />
+                {challengeMode && (
+                  <div className="mb-4 flex items-center justify-center gap-2 rounded-xl bg-gold-100 px-4 py-2.5 text-sm font-medium text-navy-800 ring-1 ring-gold-300/50 dark:bg-gold-900/30 dark:text-gold-200 dark:ring-gold-500/30">
+                    <span className="text-lg">🎯</span>
+                    <span>
+                      Challenge from a friend! Can you guess the character?
+                    </span>
+                  </div>
+                )}
                 {canvasEnabled ? (
                   <CompassCanvas
                     className="stage-compass text-navy-700 dark:text-slate-300"
@@ -703,7 +819,23 @@ export default function Home() {
                       streak={mode === "daily" ? dailyState?.streak : undefined}
                       hintUsed={hintUsed}
                     />
-                    {mode === "daily" && (
+                    {!challengeMode && (
+                      <div className="flex w-full max-w-xs flex-col items-center gap-2">
+                        <button
+                          onClick={handleChallengeShare}
+                          className="btn-secondary flex w-full items-center justify-center gap-2"
+                          aria-live="polite"
+                        >
+                          <span>🎯</span>
+                          <span>
+                            {challengeLinkCopied
+                              ? "Challenge link copied!"
+                              : "Challenge a Friend"}
+                          </span>
+                        </button>
+                      </div>
+                    )}
+                    {mode === "daily" && !challengeMode && (
                       <DailyComparison
                         date={getUTCDateString()}
                         tier={tier}
@@ -712,7 +844,7 @@ export default function Home() {
                         onSignInClick={() => setShowAuthModal(true)}
                       />
                     )}
-                    {mode === "daily" && (
+                    {mode === "daily" && !challengeMode && (
                       <div className="game-card px-6 py-5 text-center">
                         <p className="text-sm font-medium text-navy-500 dark:text-slate-400">
                           Next puzzle in
