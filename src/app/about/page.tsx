@@ -95,8 +95,9 @@ export default function AboutPage() {
                   ↑
                 </span>
                 <span>
-                  Arrow = The target value is higher or lower (for
-                  bounty/height)
+                  Arrow = The target value is higher or lower (for Bounty,
+                  Height, and First Arc). ↑ means your guess appeared in a later
+                  arc, ↓ means earlier.
                 </span>
               </li>
               <li className="flex items-start gap-2">

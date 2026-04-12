@@ -164,7 +164,8 @@ export function GameLegend() {
             />
           </svg>
           <p className="text-xs leading-relaxed text-navy-600 dark:text-slate-300">
-            <span className="font-bold">Arrows</span> apply to Bounty and Height
+            <span className="font-bold">Arrows</span> apply to Bounty, Height,
+            and First Arc
           </p>
         </div>
       </div>
