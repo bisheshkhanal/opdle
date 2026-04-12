@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -18,6 +18,52 @@ export function Modal({
   maxWidth = "md",
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  const getFocusableElements = useCallback((): HTMLElement[] => {
+    if (!modalRef.current) return [];
+    const selectors = [
+      "a[href]",
+      "button",
+      "input",
+      "select",
+      "textarea",
+      '[tabindex]:not([tabindex="-1"])',
+    ].join(", ");
+    return Array.from(
+      modalRef.current.querySelectorAll<HTMLElement>(selectors)
+    ).filter((el) => !el.hasAttribute("disabled"));
+  }, []);
+
+  // Focus trap: Tab / Shift+Tab cycling
+  const handleTabTrap = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+
+      const focusable = getFocusableElements();
+      if (focusable.length === 0) {
+        e.preventDefault();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey) {
+        if (active === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    },
+    [getFocusableElements]
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -27,15 +73,34 @@ export function Modal({
     };
 
     if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
       document.addEventListener("keydown", handleKeyDown);
+      document.addEventListener("keydown", handleTabTrap);
       document.body.style.overflow = "hidden";
+
+      // Focus first focusable element (or modal container) after render
+      requestAnimationFrame(() => {
+        const focusable = getFocusableElements();
+        if (focusable.length > 0) {
+          focusable[0].focus();
+        } else if (modalRef.current) {
+          modalRef.current.focus();
+        }
+      });
     }
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleTabTrap);
       document.body.style.overflow = "unset";
+
+      // Restore focus to trigger element when modal closes
+      if (previousFocusRef.current) {
+        previousFocusRef.current.focus();
+        previousFocusRef.current = null;
+      }
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, handleTabTrap, getFocusableElements]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -66,7 +131,8 @@ export function Modal({
     >
       <div
         ref={modalRef}
-        className={`relative max-h-[90vh] w-full ${maxWidthClass} animate-scale-in overflow-y-auto rounded-xl border-2 border-gold-500 bg-parchment-100 shadow-float dark:bg-navy-800`}
+        tabIndex={-1}
+        className={`relative max-h-[90vh] w-full ${maxWidthClass} animate-scale-in overflow-y-auto rounded-xl border-2 border-gold-500 bg-parchment-100 shadow-float outline-none dark:bg-navy-800`}
       >
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gold-500/30 bg-parchment-100/95 p-4 backdrop-blur-sm dark:bg-navy-800/95">
           <h2

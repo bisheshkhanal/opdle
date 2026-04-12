@@ -11,13 +11,30 @@ interface UserMenuProps {
 export function UserMenu({ onSignInClick }: UserMenuProps) {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Close dropdown on outside click
+  const focusItem = (index: number) => {
+    const items =
+      menuRef?.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
+    if (!items || items.length === 0) return;
+    const clamped = ((index % items.length) + items.length) % items.length;
+    setFocusedIndex(clamped);
+    items[clamped].focus();
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+    setFocusedIndex(-1);
+    buttonRef.current?.focus();
+  };
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setIsOpen(false);
+        setFocusedIndex(-1);
       }
     };
     if (isOpen) {
@@ -52,7 +69,27 @@ export function UserMenu({ onSignInClick }: UserMenuProps) {
     <div ref={menuRef} className="relative">
       {/* Avatar button */}
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen((prev) => !prev)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            if (!isOpen) {
+              setIsOpen(true);
+              requestAnimationFrame(() => focusItem(0));
+            } else {
+              focusItem(0);
+            }
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            if (!isOpen) {
+              setIsOpen(true);
+              requestAnimationFrame(() => focusItem(-1));
+            } else {
+              focusItem(-1);
+            }
+          }
+        }}
         className="flex h-9 w-9 items-center justify-center rounded-full bg-navy-700 text-sm font-bold text-gold-400 ring-2 ring-gold-400/30 transition-all hover:ring-gold-400/60 dark:bg-slate-600 dark:ring-gold-500/30 dark:hover:ring-gold-500/60"
         aria-label={`User menu for ${username}`}
         aria-expanded={isOpen}
@@ -65,6 +102,34 @@ export function UserMenu({ onSignInClick }: UserMenuProps) {
       {isOpen && (
         <div
           role="menu"
+          onKeyDown={(e) => {
+            const items =
+              menuRef.current?.querySelectorAll<HTMLElement>(
+                '[role="menuitem"]'
+              );
+            const count = items?.length ?? 0;
+            if (count === 0) return;
+
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+              const next = focusedIndex < count - 1 ? focusedIndex + 1 : 0;
+              focusItem(next);
+            } else if (e.key === "ArrowUp") {
+              e.preventDefault();
+              const prev = focusedIndex > 0 ? focusedIndex - 1 : count - 1;
+              focusItem(prev);
+            } else if (e.key === "Enter") {
+              e.preventDefault();
+              const active = items?.[focusedIndex] as
+                | HTMLAnchorElement
+                | HTMLButtonElement
+                | undefined;
+              active?.click();
+            } else if (e.key === "Escape") {
+              e.preventDefault();
+              closeMenu();
+            }
+          }}
           className="absolute right-0 top-full z-50 mt-1 w-44 rounded-xl border border-parchment-300/80 bg-parchment-100 shadow-float dark:border-slate-700/80 dark:bg-slate-800"
         >
           {/* Username header */}
@@ -82,8 +147,9 @@ export function UserMenu({ onSignInClick }: UserMenuProps) {
             <Link
               href={`/profile/${username}`}
               role="menuitem"
+              tabIndex={-1}
               onClick={() => setIsOpen(false)}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy-700 transition-colors hover:bg-parchment-200/80 dark:text-slate-200 dark:hover:bg-slate-700/80"
+              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-navy-700 transition-colors hover:bg-parchment-200/80 dark:text-slate-200 dark:hover:bg-slate-700/80${focusedIndex === 0 ? "bg-parchment-200/80 dark:bg-slate-700/80" : ""}`}
             >
               <svg
                 className="h-4 w-4 text-navy-500 dark:text-slate-400"
@@ -102,11 +168,12 @@ export function UserMenu({ onSignInClick }: UserMenuProps) {
             </Link>
             <button
               role="menuitem"
+              tabIndex={-1}
               onClick={() => {
                 setIsOpen(false);
                 void signOut();
               }}
-              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-tile-wrong transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-tile-wrong transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20${focusedIndex === 1 ? "bg-red-50 dark:bg-red-900/20" : ""}`}
             >
               <svg
                 className="h-4 w-4"
