@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import type { Character, GameMode } from "@/lib/types";
 
+import { BADGES } from "@/components/StatsModal";
+
 const WinCelebration = dynamic(
   () => import("@/components/three/WinCelebration"),
   { ssr: false }
@@ -67,6 +69,13 @@ export function AnswerReveal({
               <p className="mt-2 text-[15px] font-medium text-navy-600 dark:text-slate-300">
                 Found in {guessCount} {guessCount === 1 ? "guess" : "guesses"}
               </p>
+              {streak !== undefined &&
+                BADGES.find((b) => b.threshold === streak) && (
+                  <div className="mt-3 animate-bounce text-sm font-bold text-gold-600 dark:text-gold-400">
+                    🏆 New Badge:{" "}
+                    {BADGES.find((b) => b.threshold === streak)?.title}!
+                  </div>
+                )}
             </>
           ) : (
             <>

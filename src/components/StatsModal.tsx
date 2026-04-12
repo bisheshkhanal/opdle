@@ -16,6 +16,14 @@ const TIER_LABELS: Record<Tier, string> = {
   nakama: "Nakama",
 };
 
+export const BADGES = [
+  { threshold: 3, title: "Pirate Apprentice", emoji: "🏴‍☠️" },
+  { threshold: 7, title: "Cabin Mate", emoji: "⚓" },
+  { threshold: 14, title: "First Mate", emoji: "🗡️" },
+  { threshold: 30, title: "Captain", emoji: "👑" },
+  { threshold: 50, title: "Yonko", emoji: "🏆" },
+];
+
 export function StatsModal({
   dailyStats,
   infiniteStats,
@@ -113,6 +121,50 @@ export function StatsModal({
         <span className="inline-flex rounded-full bg-navy-100/70 px-3 py-1 text-xs font-medium text-navy-700 ring-1 ring-navy-200/50 dark:bg-slate-700/70 dark:text-slate-200 dark:ring-slate-600/50">
           {TIER_LABELS[tier]} Tier
         </span>
+      </div>
+
+      <div className="flex flex-col items-center gap-3">
+        <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-navy-600 dark:text-slate-300">
+          Milestones
+        </h3>
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+          {BADGES.map((badge) => {
+            const streak = isDaily
+              ? dailyStats.maxStreak
+              : infiniteStats.maxStreak || 0;
+            const isEarned = streak >= badge.threshold;
+
+            const earnedBadges = BADGES.filter((b) => streak >= b.threshold);
+            const currentBadge = earnedBadges[earnedBadges.length - 1];
+            const isCurrent = currentBadge?.threshold === badge.threshold;
+
+            return (
+              <div
+                key={badge.threshold}
+                className={`flex w-[60px] flex-col items-center justify-center rounded-lg p-2 text-center transition-all sm:w-[70px] ${
+                  isEarned
+                    ? isCurrent
+                      ? "bg-gold-100 ring-2 ring-gold-400 dark:bg-gold-900/40 dark:ring-gold-500"
+                      : "bg-gold-50 ring-1 ring-gold-300 dark:bg-gold-900/20 dark:ring-gold-700"
+                    : "bg-slate-100 opacity-40 grayscale dark:bg-slate-800"
+                }`}
+                title={`${badge.title} (${badge.threshold} streak)`}
+              >
+                <div className="relative mb-1 text-2xl">
+                  {badge.emoji}
+                  {!isEarned && (
+                    <div className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-slate-700 text-[8px] text-white">
+                      🔒
+                    </div>
+                  )}
+                </div>
+                <div className="text-[10px] font-bold leading-tight text-navy-800 dark:text-slate-200">
+                  {badge.title}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <div>
