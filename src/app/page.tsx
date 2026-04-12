@@ -9,6 +9,7 @@ import type {
   DailyState,
   InfiniteState,
   Tier,
+  GuessResult,
 } from "@/lib/types";
 import { validateCharacter } from "@/lib/types";
 import { normalizeCharacterImage } from "@/lib/images";
@@ -77,6 +78,28 @@ const EmptyStateOrb = dynamic(
   }
 );
 
+function generateGuessAnnouncement(
+  guessNumber: number,
+  totalGuesses: number,
+  result: GuessResult
+): string {
+  const correct = result.categories.filter(
+    (c) => c.status === "correct"
+  ).length;
+  const partial = result.categories.filter(
+    (c) => c.status === "partial"
+  ).length;
+  const wrong = result.categories.filter((c) => c.status === "wrong").length;
+  const arrows = result.categories
+    .filter((c) => c.status === "higher" || c.status === "lower")
+    .map((c) => `${c.label}: ${c.status}`)
+    .join(". ");
+
+  let text = `Guess ${guessNumber} of ${totalGuesses}: ${correct} correct, ${partial} partial, ${wrong} wrong.`;
+  if (arrows) text += ` ${arrows}.`;
+  return text;
+}
+
 export default function Home() {
   const [mode, setMode] = useState<GameMode>("daily");
   const [tier, setTier] = useState<Tier>("casual");
@@ -94,6 +117,7 @@ export default function Home() {
   });
   const [isLoaded, setIsLoaded] = useState(false);
   const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState("");
   const [showStats, setShowStats] = useState(false);
   const [showBountyBoard, setShowBountyBoard] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -199,6 +223,15 @@ export default function Home() {
 
       const result = evaluateGuess(character, targetCharacter);
 
+      const guessNumber =
+        mode === "daily"
+          ? (dailyState?.guesses?.length ?? 0) + 1
+          : (infiniteState?.guesses?.length ?? 0) + 1;
+
+      setAnnouncement(
+        generateGuessAnnouncement(guessNumber, MAX_GUESSES, result)
+      );
+
       if (mode === "daily") {
         const newState = addDailyGuess(result, tier);
         setDailyState(newState);
@@ -211,13 +244,37 @@ export default function Home() {
             isWon: newState.isWon,
             hintUsed: newState.hintUsed ?? false,
           });
+          setTimeout(() => {
+            setAnnouncement(
+              newState.isWon
+                ? `Victory! The answer was ${targetCharacter.name}!`
+                : `Defeated. The answer was ${targetCharacter.name}.`
+            );
+          }, 1500);
         }
       } else {
         const newState = addInfiniteGuess(result, tier);
         setInfiniteState(newState);
+        if (newState.isFinished) {
+          setTimeout(() => {
+            setAnnouncement(
+              newState.isWon
+                ? `Victory! The answer was ${targetCharacter.name}!`
+                : `Defeated. The answer was ${targetCharacter.name}.`
+            );
+          }, 1500);
+        }
       }
     },
-    [targetCharacter, isFinished, mode, syncDailyResult, tier]
+    [
+      targetCharacter,
+      isFinished,
+      mode,
+      syncDailyResult,
+      tier,
+      dailyState?.guesses?.length,
+      infiniteState?.guesses?.length,
+    ]
   );
 
   const handlePlayAgain = useCallback(() => {
@@ -452,6 +509,9 @@ export default function Home() {
                           {duplicateWarning}
                         </span>
                       )}
+                    </div>
+                    <div aria-live="polite" className="sr-only">
+                      {announcement}
                     </div>
                     {guesses.length >= 3 && targetCharacter && (
                       <HintButton
