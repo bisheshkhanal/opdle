@@ -39,6 +39,17 @@ export type Gender = "Male" | "Female" | "Unknown" | "Other";
 
 export type Tier = "casual" | "fan" | "nakama";
 
+/** Clue kind discriminant for Quote/Laugh mode */
+export type CharacterClueKind = "quote" | "laugh" | "epithet" | "alias";
+
+/** A structured clue record for hint-based game modes */
+export interface CharacterClue {
+  kind: CharacterClueKind;
+  text: string;
+  spoilerTier?: Tier;
+  arc?: string;
+}
+
 /**
  * Character schema for Classic mode
  * Required fields are enforced at runtime validation
@@ -61,6 +72,8 @@ export interface Character {
   bountyHistory?: Array<{ amount: number; arc: string }>;
   devilFruitRevealedInArc?: string | null;
   hakiRevealedInArc?: Partial<Record<HakiType, string>>;
+  // Structured clue metadata for Quote/Laugh mode
+  clues?: CharacterClue[];
 }
 
 export type GameMode = "daily" | "infinite";
@@ -173,6 +186,12 @@ const VALID_DEVIL_FRUITS: DevilFruitType[] = [
 ];
 const VALID_HAKI: HakiType[] = ["O", "A", "C"];
 const VALID_TIERS: Tier[] = ["casual", "fan", "nakama"];
+const VALID_CLUE_KINDS: CharacterClueKind[] = [
+  "quote",
+  "laugh",
+  "epithet",
+  "alias",
+];
 
 /**
  * Runtime validation for Character
@@ -221,6 +240,24 @@ export function validateCharacter(obj: unknown): obj is Character {
     (typeof c.heightCm !== "number" || !Number.isFinite(c.heightCm))
   )
     return false;
+
+  // Optional clues array
+  if (c.clues !== undefined) {
+    if (!Array.isArray(c.clues)) return false;
+    for (const clue of c.clues) {
+      if (typeof clue !== "object" || clue === null) return false;
+      const cl = clue as Record<string, unknown>;
+      if (!VALID_CLUE_KINDS.includes(cl.kind as CharacterClueKind))
+        return false;
+      if (typeof cl.text !== "string" || cl.text.length === 0) return false;
+      if (
+        cl.spoilerTier !== undefined &&
+        !VALID_TIERS.includes(cl.spoilerTier as Tier)
+      )
+        return false;
+      if (cl.arc !== undefined && typeof cl.arc !== "string") return false;
+    }
+  }
 
   return true;
 }
