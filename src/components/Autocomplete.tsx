@@ -42,7 +42,7 @@ export function Autocomplete({
       const matches = searchCharacters(availableCharacters, searchQuery, 8);
       setResults(matches);
       setSelectedIndex(0);
-      setIsOpen(matches.length > 0);
+      setIsOpen(searchQuery.trim().length > 0);
     },
     [availableCharacters]
   );
@@ -189,6 +189,34 @@ export function Autocomplete({
             </li>
           ))}
         </ul>
+      )}
+
+      {isOpen && query.trim().length > 0 && results.length === 0 && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="bg-parchment-50/98 dark:bg-slate-800/98 absolute z-50 mt-3 w-full rounded-2xl border-2 border-parchment-400/80 px-4 py-5 text-center shadow-float backdrop-blur-md dark:border-slate-600/80"
+        >
+          <div className="flex items-center justify-center gap-2 text-navy-600 dark:text-slate-300">
+            <svg
+              aria-hidden="true"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-4.35-4.35m1.85-5.15a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
+              />
+            </svg>
+            <span className="text-sm font-medium text-navy-600/80 dark:text-slate-300/80">
+              No characters found
+            </span>
+          </div>
+        </div>
       )}
     </div>
   );
