@@ -134,6 +134,140 @@ describe("Autocomplete", () => {
     });
   });
 
+  describe("guessed-character filtering", () => {
+    it("filters out a single guessed character from dropdown", async () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={["luffy"]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "a" } });
+
+      await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+      });
+
+      const options = screen.getAllByRole("option");
+      const optionTexts = options.map((o) => o.textContent);
+      expect(optionTexts).not.toContain("Monkey D. Luffy");
+      expect(optionTexts).toContain("Roronoa Zoro");
+      expect(optionTexts).toContain("Nami");
+    });
+
+    it("filters out multiple guessed characters", async () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={["luffy", "zoro"]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "a" } });
+
+      await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+      });
+
+      const options = screen.getAllByRole("option");
+      const optionTexts = options.map((o) => o.textContent);
+      expect(optionTexts).not.toContain("Monkey D. Luffy");
+      expect(optionTexts).not.toContain("Roronoa Zoro");
+      expect(optionTexts).toContain("Nami");
+    });
+
+    it("filters out all characters when all are guessed", async () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={["luffy", "zoro", "nami"]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "a" } });
+
+      await waitFor(() => {
+        expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+      });
+    });
+
+    it("guessedIds filtering is strictly enforced — excluded character cannot appear via alias", async () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={["zoro"]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "Pirate Hunter" } });
+
+      await waitFor(() => {
+        expect(screen.queryByText("Roronoa Zoro")).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("empty and whitespace query behavior", () => {
+    it("shows no dropdown when query is empty", () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={[]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+    });
+
+    it("shows no dropdown for whitespace-only query", async () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={[]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "   " } });
+
+      expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+    });
+
+    it("clears dropdown when query is cleared after typing", async () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={[]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "luffy" } });
+
+      await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+      });
+
+      fireEvent.change(input, { target: { value: "" } });
+
+      await waitFor(() => {
+        expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+      });
+    });
+  });
+
   describe("keyboard navigation", () => {
     it("moves selection down with ArrowDown key", async () => {
       render(
