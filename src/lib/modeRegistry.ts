@@ -64,11 +64,11 @@ export const RULESET_REGISTRY: Record<Ruleset, RulesetDef> = {
     id: "arc",
     label: "Arc",
     description:
-      "Identify the arc from a sequence of progressively revealed characters",
+      "Guess the character by arc proximity — each guess reveals how close their debut arc is",
     maxGuesses: 6,
     supportedRunKinds: ["daily", "infinite"],
     usesProgressiveReveal: false,
-    usesClueProgression: true,
+    usesClueProgression: false,
     isMultiBoard: false,
     boardCount: 1,
   },
