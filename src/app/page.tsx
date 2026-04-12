@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Character, GameMode, Tier } from "@/lib/types";
@@ -29,6 +29,7 @@ import { ArchiveModal } from "@/components/ArchiveModal";
 import { getLocalCharacterImageUrl } from "@/lib/images";
 import { getUTCDateString, getDailyGameNumber } from "@/lib/daily";
 import { useGameController } from "@/lib/hooks/useGameController";
+import { useGameUiState } from "@/lib/hooks/useGameUiState";
 import { useCanvasEnabled } from "@/lib/hooks/useCanvasEnabled";
 import charactersData from "@/data/characters.v2.json";
 
@@ -52,19 +53,7 @@ const EmptyStateOrb = dynamic(
 
 export default function Home() {
   const game = useGameController();
-
-  const [showStats, setShowStats] = useState(false);
-  const [showBountyBoard, setShowBountyBoard] = useState(false);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [showHowToPlay, setShowHowToPlay] = useState(false);
-  const [showArchive, setShowArchive] = useState(false);
-  const [compassState, setCompassState] = useState<
-    "idle" | "wrong-guess" | "correct-guess"
-  >("idle");
-  const previousGuessCountRef = useRef(0);
-  const previousIsWonRef = useRef(false);
+  const ui = useGameUiState(game);
   const canvasEnabled = useCanvasEnabled();
 
   const {
@@ -91,7 +80,6 @@ export default function Home() {
     characterCounts,
     wrongGuessCount,
     maxGuesses: MAX_GUESSES,
-    shouldShowOnboarding,
     handleGuess,
     handlePlayAgain,
     handleHintUsed,
@@ -101,43 +89,34 @@ export default function Home() {
     handleModeChange,
   } = game;
 
+  const {
+    showStats,
+    showBountyBoard,
+    showLeaderboard,
+    showAuthModal,
+    showSettings,
+    showHowToPlay,
+    showArchive,
+    compassState,
+    openStats,
+    closeStats,
+    openBountyBoard,
+    closeBountyBoard,
+    openLeaderboard,
+    closeLeaderboard,
+    openAuthModal,
+    closeAuthModal,
+    openSettings,
+    closeSettings,
+    openHowToPlay,
+    closeHowToPlay,
+    openArchive,
+    closeArchive,
+  } = ui;
+
   const hintImageUrl = targetCharacter
     ? targetCharacter.imageUrl || getLocalCharacterImageUrl(targetCharacter.id)
     : "";
-
-  useEffect(() => {
-    if (shouldShowOnboarding) {
-      setShowHowToPlay(true);
-    }
-  }, [shouldShowOnboarding]);
-
-  useEffect(() => {
-    if (isWon && !previousIsWonRef.current) {
-      setCompassState("correct-guess");
-    } else if (guesses.length > previousGuessCountRef.current) {
-      setCompassState("wrong-guess");
-    }
-
-    previousGuessCountRef.current = guesses.length;
-    previousIsWonRef.current = isWon;
-  }, [guesses.length, isWon]);
-
-  useEffect(() => {
-    if (compassState === "idle") {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setCompassState("idle");
-    }, 2000);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [compassState]);
-
-  const handleHowToPlayClose = useCallback(() => {
-    setShowHowToPlay(false);
-    localStorage.setItem("onepiecedle_onboarded", "true");
-  }, []);
 
   if (!isLoaded) {
     return (
@@ -171,7 +150,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-5 sm:py-7">
           <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6">
             <button
-              onClick={() => setShowArchive(true)}
+              onClick={openArchive}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
               aria-label="Archive"
               title="Archive"
@@ -193,7 +172,7 @@ export default function Home() {
               </svg>
             </button>
             <button
-              onClick={() => setShowSettings(true)}
+              onClick={openSettings}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
               aria-label="Settings"
               title="Settings"
@@ -214,7 +193,7 @@ export default function Home() {
               </svg>
             </button>
             <button
-              onClick={() => setShowHowToPlay(true)}
+              onClick={openHowToPlay}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
               aria-label="How to Play"
               title="How to Play"
@@ -236,7 +215,7 @@ export default function Home() {
               </svg>
             </button>
             <button
-              onClick={() => setShowLeaderboard(true)}
+              onClick={openLeaderboard}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
               aria-label="Leaderboard"
               title="Leaderboard"
@@ -258,7 +237,7 @@ export default function Home() {
               </svg>
             </button>
             <button
-              onClick={() => setShowBountyBoard(true)}
+              onClick={openBountyBoard}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
               aria-label="Bounty Board"
               title="Bounty Board"
@@ -280,7 +259,7 @@ export default function Home() {
               </svg>
             </button>
             <button
-              onClick={() => setShowStats(true)}
+              onClick={openStats}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
               aria-label="Show statistics"
             >
@@ -300,7 +279,7 @@ export default function Home() {
                 <line x1="6" y1="20" x2="6" y2="14"></line>
               </svg>
             </button>
-            <UserMenu onSignInClick={() => setShowAuthModal(true)} />
+            <UserMenu onSignInClick={openAuthModal} />
             <ThemeToggle />
           </div>
           <h1 className="mb-3 font-display text-4xl font-semibold tracking-tight text-navy-800 dark:text-slate-100 sm:text-5xl">
@@ -495,7 +474,7 @@ export default function Home() {
                         tier={tier}
                         isWon={isWon}
                         guessCount={guesses.length}
-                        onSignInClick={() => setShowAuthModal(true)}
+                        onSignInClick={openAuthModal}
                       />
                     )}
                     {mode === "daily" && !challengeMode && (
@@ -597,17 +576,13 @@ export default function Home() {
 
       <Modal
         isOpen={showLeaderboard}
-        onClose={() => setShowLeaderboard(false)}
+        onClose={closeLeaderboard}
         title="Leaderboard"
       >
         <Leaderboard />
       </Modal>
 
-      <Modal
-        isOpen={showStats}
-        onClose={() => setShowStats(false)}
-        title="Statistics"
-      >
+      <Modal isOpen={showStats} onClose={closeStats} title="Statistics">
         <StatsModal
           dailyStats={dailyStats}
           infiniteStats={infiniteStats}
@@ -618,7 +593,7 @@ export default function Home() {
 
       <Modal
         isOpen={showBountyBoard}
-        onClose={() => setShowBountyBoard(false)}
+        onClose={closeBountyBoard}
         title="Bounty Board"
         maxWidth="5xl"
       >
@@ -627,21 +602,18 @@ export default function Home() {
 
       <SettingsModal
         isOpen={showSettings}
-        onClose={() => setShowSettings(false)}
+        onClose={closeSettings}
         settings={settings}
         onSettingsChange={handleSettingsChange}
       />
 
-      <AuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-      />
+      <AuthModal isOpen={showAuthModal} onClose={closeAuthModal} />
 
-      <HowToPlayModal isOpen={showHowToPlay} onClose={handleHowToPlayClose} />
+      <HowToPlayModal isOpen={showHowToPlay} onClose={closeHowToPlay} />
 
       <ArchiveModal
         isOpen={showArchive}
-        onClose={() => setShowArchive(false)}
+        onClose={closeArchive}
         characters={characters}
         tier={tier}
       />
