@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { GuessResult, GameMode } from "@/lib/types";
+import type { GuessResult, GameMode, Ruleset } from "@/lib/types";
 import { shareResults } from "@/lib/share";
 
 interface ResultsShareProps {
@@ -11,6 +11,7 @@ interface ResultsShareProps {
   dateString?: string;
   streak?: number;
   hintUsed?: boolean;
+  ruleset?: Ruleset;
 }
 
 export function ResultsShare({
@@ -20,6 +21,7 @@ export function ResultsShare({
   dateString,
   streak,
   hintUsed,
+  ruleset,
 }: ResultsShareProps) {
   const [copied, setCopied] = useState(false);
 
@@ -30,7 +32,8 @@ export function ResultsShare({
       isWon,
       dateString,
       streak,
-      hintUsed
+      hintUsed,
+      ruleset
     );
     if (result.success) {
       setCopied(true);

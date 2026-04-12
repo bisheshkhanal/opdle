@@ -1,20 +1,23 @@
 "use client";
 
-import type { GameMode, Tier } from "@/lib/types";
+import type { GameMode, Tier, Ruleset } from "@/lib/types";
 import { getDailyGameNumber } from "@/lib/daily";
 import { UserMenu } from "@/components/UserMenu";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ModeTabs } from "@/components/ModeTabs";
 import { TierTabs } from "@/components/TierTabs";
+import { RulesetTabs } from "@/components/RulesetTabs";
 
 interface GamePageHeaderProps {
   mode: GameMode;
   tier: Tier;
+  activeRuleset: Ruleset;
   challengeMode: boolean;
   maxGuesses: number;
   characterCounts: Record<Tier, number>;
   onModeChange: (mode: GameMode) => void;
   onTierChange: (tier: Tier) => void;
+  onRulesetChange: (ruleset: Ruleset) => void;
   onOpenArchive: () => void;
   onOpenSettings: () => void;
   onOpenHowToPlay: () => void;
@@ -27,11 +30,13 @@ interface GamePageHeaderProps {
 export function GamePageHeader({
   mode,
   tier,
+  activeRuleset,
   challengeMode,
   maxGuesses,
   characterCounts,
   onModeChange,
   onTierChange,
+  onRulesetChange,
   onOpenArchive,
   onOpenSettings,
   onOpenHowToPlay,
@@ -192,6 +197,14 @@ export function GamePageHeader({
           )}
         </p>
         {!challengeMode && <ModeTabs mode={mode} onModeChange={onModeChange} />}
+        {!challengeMode && (
+          <div className="mt-3">
+            <RulesetTabs
+              activeRuleset={activeRuleset}
+              onRulesetChange={onRulesetChange}
+            />
+          </div>
+        )}
         {!challengeMode && (
           <div className="mt-3">
             <TierTabs

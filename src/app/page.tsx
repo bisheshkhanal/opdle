@@ -1,14 +1,23 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import type { Character } from "@/lib/types";
+import type { Character, Ruleset } from "@/lib/types";
 import { validateCharacter } from "@/lib/types";
 import { normalizeCharacterImage } from "@/lib/images";
 import { GamePageHeader } from "@/components/GamePageHeader";
+import { AnswerReveal } from "@/components/AnswerReveal";
+import { ResultsShare } from "@/components/ResultsShare";
+import { getUTCDateString } from "@/lib/daily";
 import { GameBoardSection } from "@/components/GameBoardSection";
+import { SilhouetteBoard } from "@/components/SilhouetteBoard";
+import { WantedBoard } from "@/components/WantedBoard";
+import { QuoteBoard } from "@/components/QuoteBoard";
+import { ArcBoard } from "@/components/ArcBoard";
 import { GameModalRegistry } from "@/components/GameModalRegistry";
 import { useGameController } from "@/lib/hooks/useGameController";
 import { useGameUiState } from "@/lib/hooks/useGameUiState";
+import { useRulesetGame } from "@/lib/hooks/useRulesetGame";
 import charactersData from "@/data/characters.v2.json";
 
 const characters: Character[] = (charactersData as unknown[])
@@ -18,6 +27,16 @@ const characters: Character[] = (charactersData as unknown[])
 export default function Home() {
   const game = useGameController();
   const ui = useGameUiState(game);
+  const [activeRuleset, setActiveRuleset] = useState<Ruleset>("classic");
+
+  const rulesetGame = useRulesetGame(
+    activeRuleset === "classic" || activeRuleset === "four-seas"
+      ? "silhouette"
+      : activeRuleset,
+    game.mode === "challenge" ? "daily" : game.mode,
+    game.tier,
+    characters
+  );
 
   const {
     mode,
@@ -108,11 +127,13 @@ export default function Home() {
       <GamePageHeader
         mode={mode}
         tier={tier}
+        activeRuleset={activeRuleset}
         challengeMode={challengeMode}
         maxGuesses={MAX_GUESSES}
         characterCounts={characterCounts}
         onModeChange={handleModeChange}
         onTierChange={handleTierChange}
+        onRulesetChange={setActiveRuleset}
         onOpenArchive={openArchive}
         onOpenSettings={openSettings}
         onOpenHowToPlay={openHowToPlay}
@@ -123,32 +144,107 @@ export default function Home() {
       />
 
       {/* Main content */}
-      <GameBoardSection
-        mode={mode}
-        tier={tier}
-        targetCharacter={targetCharacter}
-        dailyState={dailyState}
-        guesses={guesses}
-        guessedIds={guessedIds}
-        isFinished={isFinished}
-        isWon={isWon}
-        hintUsed={hintUsed}
-        challengeMode={challengeMode}
-        challengeLinkCopied={challengeLinkCopied}
-        duplicateWarning={duplicateWarning}
-        announcement={announcement}
-        settings={settings}
-        countdown={countdown}
-        wrongGuessCount={wrongGuessCount}
-        maxGuesses={MAX_GUESSES}
-        characters={characters}
-        compassState={compassState}
-        handleGuess={handleGuess}
-        handlePlayAgain={handlePlayAgain}
-        handleHintUsed={handleHintUsed}
-        handleChallengeShare={handleChallengeShare}
-        openAuthModal={openAuthModal}
-      />
+      {(activeRuleset === "classic" || challengeMode) && (
+        <GameBoardSection
+          mode={mode}
+          tier={tier}
+          targetCharacter={targetCharacter}
+          dailyState={dailyState}
+          guesses={guesses}
+          guessedIds={guessedIds}
+          isFinished={isFinished}
+          isWon={isWon}
+          hintUsed={hintUsed}
+          challengeMode={challengeMode}
+          challengeLinkCopied={challengeLinkCopied}
+          duplicateWarning={duplicateWarning}
+          announcement={announcement}
+          settings={settings}
+          countdown={countdown}
+          wrongGuessCount={wrongGuessCount}
+          maxGuesses={MAX_GUESSES}
+          characters={characters}
+          compassState={compassState}
+          handleGuess={handleGuess}
+          handlePlayAgain={handlePlayAgain}
+          handleHintUsed={handleHintUsed}
+          handleChallengeShare={handleChallengeShare}
+          openAuthModal={openAuthModal}
+        />
+      )}
+      {activeRuleset !== "classic" &&
+        !challengeMode &&
+        rulesetGame.state &&
+        rulesetGame.targetCharacter && (
+          <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 sm:py-10">
+            {activeRuleset === "silhouette" && (
+              <SilhouetteBoard
+                targetCharacter={rulesetGame.targetCharacter}
+                allCharacters={characters}
+                state={rulesetGame.state}
+                onGuess={rulesetGame.handleGuess}
+              />
+            )}
+            {activeRuleset === "wanted" && (
+              <WantedBoard
+                targetCharacter={rulesetGame.targetCharacter}
+                allCharacters={characters}
+                state={rulesetGame.state}
+                onGuess={rulesetGame.handleGuess}
+              />
+            )}
+            {activeRuleset === "quote" && (
+              <QuoteBoard
+                targetCharacter={rulesetGame.targetCharacter}
+                allCharacters={characters}
+                state={rulesetGame.state}
+                onGuess={rulesetGame.handleGuess}
+              />
+            )}
+            {activeRuleset === "arc" && (
+              <ArcBoard
+                targetCharacter={rulesetGame.targetCharacter}
+                allCharacters={characters}
+                state={rulesetGame.state}
+                onGuess={rulesetGame.handleGuess}
+              />
+            )}
+
+            {rulesetGame.state.isFinished && (
+              <div className="mt-8 flex flex-col items-center gap-6">
+                <AnswerReveal
+                  character={rulesetGame.targetCharacter}
+                  isWon={rulesetGame.state.isWon}
+                  guessCount={rulesetGame.state.guesses.length}
+                  mode={mode}
+                  silhouetteReveal={settings.silhouetteReveal}
+                  onPlayAgain={
+                    mode === "infinite" ? handlePlayAgain : undefined
+                  }
+                  streak={
+                    mode === "daily" && "streak" in rulesetGame.state
+                      ? rulesetGame.state.streak
+                      : undefined
+                  }
+                  ruleset={activeRuleset}
+                />
+                <ResultsShare
+                  guesses={rulesetGame.state.guesses}
+                  mode={mode}
+                  isWon={rulesetGame.state.isWon}
+                  dateString={mode === "daily" ? getUTCDateString() : undefined}
+                  streak={
+                    mode === "daily" && "streak" in rulesetGame.state
+                      ? rulesetGame.state.streak
+                      : undefined
+                  }
+                  hintUsed={false}
+                  ruleset={activeRuleset}
+                />
+              </div>
+            )}
+          </div>
+        )}
 
       {/* Footer */}
       <footer className="border-t border-parchment-300/40 bg-gradient-to-t from-parchment-100/95 via-parchment-100/90 to-parchment-50/95 backdrop-blur-md dark:border-slate-700/40 dark:bg-gradient-to-t dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-800/95">

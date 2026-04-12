@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import type { Character, GameMode } from "@/lib/types";
+import type { Character, GameMode, Ruleset } from "@/lib/types";
+import { RULESET_REGISTRY } from "@/lib/modeRegistry";
 
 import { BADGES } from "@/components/StatsModal";
 
@@ -25,6 +26,7 @@ interface AnswerRevealProps {
   silhouetteReveal?: boolean;
   onPlayAgain?: () => void;
   streak?: number;
+  ruleset?: Ruleset;
 }
 
 export function AnswerReveal({
@@ -35,10 +37,14 @@ export function AnswerReveal({
   silhouetteReveal = false,
   onPlayAgain,
   streak,
+  ruleset,
 }: AnswerRevealProps) {
   const [celebrationVisible, setCelebrationVisible] = useState(false);
   const [revealComplete, setRevealComplete] = useState(!silhouetteReveal);
   const [showSilhouette, setShowSilhouette] = useState(false);
+
+  const rulesetLabel =
+    ruleset && ruleset !== "classic" ? RULESET_REGISTRY[ruleset].label : null;
 
   useEffect(() => {
     if (isWon) {
@@ -78,6 +84,11 @@ export function AnswerReveal({
       <div className="game-card win-celebrate w-full max-w-sm p-7 sm:p-8">
         {/* Result message */}
         <div className="mb-6 text-center">
+          {rulesetLabel && (
+            <div className="mb-2 text-xs font-bold uppercase tracking-wider text-navy-500 dark:text-slate-400">
+              {rulesetLabel} Mode
+            </div>
+          )}
           {isWon ? (
             <>
               <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-tile-correct/20 shadow-tile-correct ring-4 ring-tile-correct/30">
