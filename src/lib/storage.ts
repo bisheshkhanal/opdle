@@ -11,6 +11,9 @@ import type {
   DailyStats,
   InfiniteStats,
   GameMode,
+  Ruleset,
+  RulesetDailyState,
+  RulesetInfiniteState,
 } from "./types";
 import { getUTCDateString } from "./daily";
 import { generateRoundId } from "./infinite";
@@ -304,9 +307,10 @@ export function saveDailyState(state: DailyState, tier: Tier): void {
   const storage = loadStorage();
   const date = state.date;
   const key = getDailyKey(tier, date);
+  const wasAlreadyFinished = storage.daily[key]?.isFinished === true;
   storage.daily[key] = state;
 
-  if (state.isFinished) {
+  if (state.isFinished && !wasAlreadyFinished) {
     const tierStats = storage.dailyStats[tier];
     if (state.isWon) {
       tierStats.streak = state.streak;
@@ -547,4 +551,84 @@ export function getAllDiscoveredIds(): string[] {
 export function clearStorage(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEY);
+}
+
+export function buildRulesetDailyKey(
+  tier: Tier,
+  ruleset: Ruleset,
+  date: string
+): string {
+  return `${tier}:${ruleset}:${date}`;
+}
+
+export function buildRulesetInfiniteKey(tier: Tier, ruleset: Ruleset): string {
+  return `${tier}:${ruleset}`;
+}
+
+export function getRulesetDailyState(
+  tier: Tier,
+  ruleset: Ruleset,
+  dateString?: string
+): RulesetDailyState {
+  const date = dateString || getUTCDateString();
+  const key = buildRulesetDailyKey(tier, ruleset, date);
+  const storage = loadStorage();
+
+  if (storage.rulesetDaily?.[key]) {
+    return storage.rulesetDaily[key];
+  }
+
+  return {
+    guesses: [],
+    guessedIds: [],
+    isFinished: false,
+    isWon: false,
+  };
+}
+
+export function saveRulesetDailyState(
+  state: RulesetDailyState,
+  tier: Tier,
+  ruleset: Ruleset
+): void {
+  const storage = loadStorage();
+  const key = buildRulesetDailyKey(tier, ruleset, getUTCDateString());
+  if (!storage.rulesetDaily) {
+    storage.rulesetDaily = {};
+  }
+  storage.rulesetDaily[key] = state;
+  saveStorage(storage);
+}
+
+export function getRulesetInfiniteState(
+  tier: Tier,
+  ruleset: Ruleset
+): RulesetInfiniteState {
+  const key = buildRulesetInfiniteKey(tier, ruleset);
+  const storage = loadStorage();
+
+  if (storage.rulesetInfinite?.[key]) {
+    return storage.rulesetInfinite[key];
+  }
+
+  return {
+    guesses: [],
+    guessedIds: [],
+    isFinished: false,
+    isWon: false,
+  };
+}
+
+export function saveRulesetInfiniteState(
+  state: RulesetInfiniteState,
+  tier: Tier,
+  ruleset: Ruleset
+): void {
+  const storage = loadStorage();
+  const key = buildRulesetInfiniteKey(tier, ruleset);
+  if (!storage.rulesetInfinite) {
+    storage.rulesetInfinite = {};
+  }
+  storage.rulesetInfinite[key] = state;
+  saveStorage(storage);
 }

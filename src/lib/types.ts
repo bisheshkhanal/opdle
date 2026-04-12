@@ -122,6 +122,34 @@ export interface InfiniteStats {
   winDistribution: Record<number, number>;
 }
 
+/**
+ * Lean state for non-classic daily rulesets.
+ * Keyed by "tier:ruleset:YYYY-MM-DD" in StorageSchema.rulesetDaily.
+ * No streak/win counts — those are tracked at the classic tier level.
+ */
+export interface RulesetDailyState {
+  guesses: GuessResult[];
+  guessedIds: string[];
+  isFinished: boolean;
+  isWon: boolean;
+  clueIndex?: number;
+  revealStep?: number;
+}
+
+/**
+ * Lean state for non-classic infinite rulesets.
+ * Keyed by "tier:ruleset" in StorageSchema.rulesetInfinite.
+ * No streak/win counts — those are tracked at the classic tier level.
+ */
+export interface RulesetInfiniteState {
+  guesses: GuessResult[];
+  guessedIds: string[];
+  isFinished: boolean;
+  isWon: boolean;
+  clueIndex?: number;
+  revealStep?: number;
+}
+
 export interface StorageSchema {
   version: number;
   tier: Tier;
@@ -130,6 +158,10 @@ export interface StorageSchema {
   infinite: Record<Tier, InfiniteState>;
   dailyStats: Record<Tier, DailyStats>;
   infiniteStats: Record<Tier, InfiniteStats>;
+  /** Optional: per-ruleset daily state, keyed "tier:ruleset:YYYY-MM-DD" */
+  rulesetDaily?: Record<string, RulesetDailyState>;
+  /** Optional: per-ruleset infinite state, keyed "tier:ruleset" */
+  rulesetInfinite?: Record<string, RulesetInfiniteState>;
 }
 
 const VALID_GENDERS: Gender[] = ["Male", "Female", "Unknown", "Other"];

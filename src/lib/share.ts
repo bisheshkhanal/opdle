@@ -2,7 +2,8 @@
  * Share functionality - emoji grid formatting
  */
 
-import type { GuessResult, GameMode, TileStatus } from "./types";
+import type { GuessResult, GameMode, TileStatus, Ruleset } from "./types";
+import { RULESET_REGISTRY } from "./modeRegistry";
 import { getDailyGameNumber } from "./daily";
 
 const MAX_GUESSES = 6;
@@ -47,15 +48,26 @@ export function formatShareText(
   isWon: boolean,
   dateString?: string,
   streak?: number,
-  _hintUsed?: boolean
+  _hintUsed?: boolean,
+  ruleset?: Ruleset
 ): string {
   const lines: string[] = [];
+  const rulesetLabel =
+    ruleset && ruleset !== "classic" ? RULESET_REGISTRY[ruleset].label : null;
 
   if (mode === "daily") {
     const gameNumber = getDailyGameNumber(dateString);
-    lines.push(`🏴‍☠️ Onepiecedle Daily #${gameNumber}`);
+    lines.push(
+      rulesetLabel
+        ? `🏴‍☠️ Onepiecedle ${rulesetLabel} Daily #${gameNumber}`
+        : `🏴‍☠️ Onepiecedle Daily #${gameNumber}`
+    );
   } else {
-    lines.push("🏴‍☠️ Onepiecedle Infinite");
+    lines.push(
+      rulesetLabel
+        ? `🏴‍☠️ Onepiecedle ${rulesetLabel} Infinite`
+        : "🏴‍☠️ Onepiecedle Infinite"
+    );
   }
 
   lines.push(`${isWon ? guesses.length : "X"}/${MAX_GUESSES} guesses`);
@@ -113,7 +125,8 @@ export async function shareResults(
   isWon: boolean,
   dateString?: string,
   streak?: number,
-  hintUsed?: boolean
+  hintUsed?: boolean,
+  ruleset?: Ruleset
 ): Promise<{ success: boolean; text: string }> {
   const text = formatShareText(
     guesses,
@@ -121,7 +134,8 @@ export async function shareResults(
     isWon,
     dateString,
     streak,
-    hintUsed
+    hintUsed,
+    ruleset
   );
   const success = await copyToClipboard(text);
   return { success, text };

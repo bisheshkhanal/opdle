@@ -1,13 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  addDailyGuess,
   addInfiniteGuess,
   clearStorage,
+  getDailyState,
   getAllDiscoveredIds,
   getInfiniteState,
   getInfiniteStats,
+  getSelectedTier,
+  isDailyDuplicate,
+  isInfiniteDuplicate,
   loadStorage,
   markHintUsed,
+  saveDailyState,
   saveStorage,
+  setSelectedTier,
+  startNewInfiniteRound,
+  buildRulesetDailyKey,
+  buildRulesetInfiniteKey,
+  getRulesetDailyState,
+  saveRulesetDailyState,
+  getRulesetInfiniteState,
+  saveRulesetInfiniteState,
 } from "../storage";
 import type { GuessResult, StorageSchema } from "../types";
 
@@ -28,6 +42,16 @@ const mockGuess: GuessResult = {
   ],
   isCorrect: false,
 };
+
+function createGuess(characterId: string, isCorrect: boolean): GuessResult {
+  return {
+    ...mockGuess,
+    characterId,
+    characterName: characterId,
+    imageUrl: `/characters/${characterId}.png`,
+    isCorrect,
+  };
+}
 
 describe("storage.ts", () => {
   beforeEach(() => {
@@ -130,18 +154,18 @@ describe("storage.ts", () => {
     it("returns unique IDs from daily guesses", () => {
       seedStorage({
         daily: {
-          "2026-01-01": {
+          "casual:2026-01-01": {
             date: "2026-01-01",
-            guesses: [],
+            guesses: [createGuess("luffy", true), createGuess("zoro", true)],
             guessedIds: ["luffy", "zoro"],
             isFinished: false,
             isWon: false,
             streak: 0,
             maxStreak: 0,
           },
-          "2026-01-02": {
+          "casual:2026-01-02": {
             date: "2026-01-02",
-            guesses: [],
+            guesses: [createGuess("nami", true), createGuess("luffy", true)],
             guessedIds: ["nami", "luffy"],
             isFinished: false,
             isWon: false,
@@ -161,6 +185,7 @@ describe("storage.ts", () => {
           casual: {
             ...emptyInfiniteTier,
             roundId: "test-round",
+            guesses: [createGuess("sanji", true)],
             guessedIds: ["sanji"],
           },
           fan: emptyInfiniteTier,
@@ -176,9 +201,9 @@ describe("storage.ts", () => {
     it("deduplicates IDs appearing in both daily and infinite", () => {
       seedStorage({
         daily: {
-          "2026-01-01": {
+          "casual:2026-01-01": {
             date: "2026-01-01",
-            guesses: [],
+            guesses: [createGuess("luffy", true), createGuess("zoro", true)],
             guessedIds: ["luffy", "zoro"],
             isFinished: false,
             isWon: false,
@@ -190,6 +215,7 @@ describe("storage.ts", () => {
           casual: {
             ...emptyInfiniteTier,
             roundId: "test-round",
+            guesses: [createGuess("luffy", true)],
             guessedIds: ["luffy"],
           },
           fan: emptyInfiniteTier,
@@ -341,6 +367,330 @@ describe("storage.ts", () => {
     it("includes hintUsed: false in default infinite state", () => {
       const state = getInfiniteState("casual");
       expect(state.hintUsed).toBe(false);
+    });
+  });
+
+  describe("storage.ts - additional coverage", () => {
+    describe("daily guess persistence", () => {
+      it("addDailyGuess persists guess and guessedId", () => {
+        const date = "2026-04-01";
+        const guess = createGuess("usopp", false);
+
+        const state = addDailyGuess(guess, "casual", date);
+        const persisted = getDailyState("casual", date);
+
+        expect(state.guesses).toHaveLength(1);
+        expect(state.guessedIds).toEqual(["usopp"]);
+        expect(persisted.guesses).toHaveLength(1);
+        expect(persisted.guessedIds).toEqual(["usopp"]);
+      });
+
+      it("addDailyGuess for correct guess sets isWon=true, isFinished=true, increments streak", () => {
+        const date = "2026-04-02";
+        const state = addDailyGuess(createGuess("luffy", true), "casual", date);
+
+        expect(state.isWon).toBe(true);
+        expect(state.isFinished).toBe(true);
+        expect(state.streak).toBe(1);
+
+        const persisted = getDailyState("casual", date);
+        expect(persisted.streak).toBe(1);
+      });
+
+      it("addDailyGuess for wrong guess after 6 total sets isFinished=true, streak=0", () => {
+        const date = "2026-04-03";
+        for (let i = 0; i < 6; i++) {
+          addDailyGuess(createGuess(`wrong-${i}`, false), "casual", date);
+        }
+
+        const state = getDailyState("casual", date);
+        expect(state.isFinished).toBe(true);
+        expect(state.streak).toBe(0);
+        expect(state.isWon).toBe(false);
+      });
+
+      it("getDailyState returns default for non-existent date", () => {
+        const state = getDailyState("casual", "2099-01-01");
+
+        expect(state.date).toBe("2099-01-01");
+        expect(state.guesses).toEqual([]);
+        expect(state.guessedIds).toEqual([]);
+        expect(state.isFinished).toBe(false);
+        expect(state.isWon).toBe(false);
+      });
+    });
+
+    describe("duplicate blocking", () => {
+      it("addDailyGuess blocks duplicate character ID", () => {
+        const date = "2026-04-04";
+        addDailyGuess(createGuess("ace", false), "casual", date);
+        addDailyGuess(createGuess("ace", true), "casual", date);
+
+        const state = getDailyState("casual", date);
+        expect(state.guesses).toHaveLength(1);
+        expect(state.guessedIds).toEqual(["ace"]);
+      });
+
+      it("addInfiniteGuess blocks duplicate character ID", () => {
+        addInfiniteGuess(createGuess("law", false), "casual");
+        addInfiniteGuess(createGuess("law", true), "casual");
+
+        const state = getInfiniteState("casual");
+        expect(state.guesses).toHaveLength(1);
+        expect(state.guessedIds).toEqual(["law"]);
+      });
+
+      it("isDailyDuplicate returns true for guessed character", () => {
+        const date = "2026-04-05";
+        addDailyGuess(createGuess("zoro", false), "casual", date);
+
+        expect(isDailyDuplicate("zoro", "casual", date)).toBe(true);
+      });
+
+      it("isInfiniteDuplicate returns true for guessed character", () => {
+        addInfiniteGuess(createGuess("sanji", false), "casual");
+
+        expect(isInfiniteDuplicate("sanji", "casual")).toBe(true);
+      });
+    });
+
+    describe("startNewInfiniteRound", () => {
+      it("resets guesses and guessedIds to empty", () => {
+        addInfiniteGuess(createGuess("brook", false), "casual");
+        const next = startNewInfiniteRound("casual");
+
+        expect(next.guesses).toEqual([]);
+        expect(next.guessedIds).toEqual([]);
+      });
+
+      it("preserves totalWins and totalGames", () => {
+        addInfiniteGuess(createGuess("luffy", true), "casual");
+        const before = getInfiniteState("casual");
+
+        const next = startNewInfiniteRound("casual");
+        expect(next.totalWins).toBe(before.totalWins);
+        expect(next.totalGames).toBe(before.totalGames);
+      });
+
+      it("generates new roundId", () => {
+        const before = getInfiniteState("casual");
+        const next = startNewInfiniteRound("casual");
+
+        expect(next.roundId).not.toBe(before.roundId);
+      });
+
+      it("sets isFinished=false, isWon=false", () => {
+        addInfiniteGuess(createGuess("roger", true), "casual");
+        const next = startNewInfiniteRound("casual");
+
+        expect(next.isFinished).toBe(false);
+        expect(next.isWon).toBe(false);
+      });
+    });
+
+    describe("clearStorage", () => {
+      it("removes the storage key entirely", () => {
+        void loadStorage();
+        expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
+
+        clearStorage();
+        expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+      });
+    });
+
+    describe("tier selection", () => {
+      it('getSelectedTier returns default "casual"', () => {
+        expect(getSelectedTier()).toBe("casual");
+      });
+
+      it("setSelectedTier changes the tier", () => {
+        setSelectedTier("fan");
+        expect(getSelectedTier()).toBe("fan");
+      });
+    });
+
+    describe("hint tracking", () => {
+      it("markHintUsed sets hintUsed=true for daily", () => {
+        markHintUsed("casual", "daily", "2026-04-06");
+        const state = getDailyState("casual", "2026-04-06");
+
+        expect(state.hintUsed).toBe(true);
+      });
+
+      it("markHintUsed sets hintUsed=true for infinite", () => {
+        markHintUsed("casual", "infinite");
+        const state = getInfiniteState("casual");
+
+        expect(state.hintUsed).toBe(true);
+      });
+    });
+
+    describe("idempotency", () => {
+      it("saveDailyState called twice on same finished win does NOT double-count stats", () => {
+        const state = {
+          date: "2026-04-07",
+          guesses: [createGuess("jinbe", true)],
+          guessedIds: ["jinbe"],
+          isFinished: true,
+          isWon: true,
+          streak: 1,
+          maxStreak: 1,
+        };
+
+        saveDailyState(state, "casual");
+        saveDailyState(state, "casual");
+
+        const storage = loadStorage();
+        const stats = storage.dailyStats.casual;
+        expect(stats.streak).toBe(1);
+        expect(stats.maxStreak).toBe(1);
+        expect(stats.winDistribution[1]).toBe(1);
+      });
+    });
+  });
+
+  describe("ruleset key builders", () => {
+    it("buildRulesetDailyKey produces tier:ruleset:date format", () => {
+      expect(buildRulesetDailyKey("casual", "silhouette", "2026-04-12")).toBe(
+        "casual:silhouette:2026-04-12"
+      );
+    });
+
+    it("buildRulesetInfiniteKey produces tier:ruleset format", () => {
+      expect(buildRulesetInfiniteKey("fan", "four-seas")).toBe("fan:four-seas");
+    });
+  });
+
+  describe("ruleset daily state", () => {
+    it("returns default state when no ruleset daily exists", () => {
+      const state = getRulesetDailyState("casual", "silhouette", "2026-04-12");
+      expect(state.guesses).toEqual([]);
+      expect(state.guessedIds).toEqual([]);
+      expect(state.isFinished).toBe(false);
+      expect(state.isWon).toBe(false);
+    });
+
+    it("saves and loads silhouette daily state", () => {
+      const date = "2026-04-12";
+      const guess = createGuess("luffy", true);
+      const state = {
+        guesses: [guess],
+        guessedIds: ["luffy"],
+        isFinished: true,
+        isWon: true,
+        revealStep: 3,
+      };
+
+      saveRulesetDailyState(state, "casual", "silhouette");
+      const loaded = getRulesetDailyState("casual", "silhouette", date);
+
+      expect(loaded.guesses).toHaveLength(1);
+      expect(loaded.guessedIds).toEqual(["luffy"]);
+      expect(loaded.isFinished).toBe(true);
+      expect(loaded.isWon).toBe(true);
+      expect(loaded.revealStep).toBe(3);
+    });
+
+    it("saves and loads four-seas daily state independently", () => {
+      const date = "2026-04-12";
+      const state = {
+        guesses: [createGuess("zoro", false)],
+        guessedIds: ["zoro"],
+        isFinished: false,
+        isWon: false,
+        clueIndex: 2,
+      };
+
+      saveRulesetDailyState(state, "fan", "four-seas");
+      const loaded = getRulesetDailyState("fan", "four-seas", date);
+
+      expect(loaded.guessedIds).toEqual(["zoro"]);
+      expect(loaded.clueIndex).toBe(2);
+    });
+
+    it("isolates ruleset daily from classic daily", () => {
+      const date = "2026-04-12";
+      addDailyGuess(createGuess("nami", true), "casual", date);
+
+      const rulesetState = getRulesetDailyState("casual", "silhouette", date);
+      expect(rulesetState.guesses).toEqual([]);
+      expect(rulesetState.isWon).toBe(false);
+    });
+  });
+
+  describe("ruleset infinite state", () => {
+    it("returns default state when no ruleset infinite exists", () => {
+      const state = getRulesetInfiniteState("casual", "silhouette");
+      expect(state.guesses).toEqual([]);
+      expect(state.guessedIds).toEqual([]);
+      expect(state.isFinished).toBe(false);
+      expect(state.isWon).toBe(false);
+    });
+
+    it("saves and loads silhouette infinite state", () => {
+      const state = {
+        guesses: [createGuess("sanji", true)],
+        guessedIds: ["sanji"],
+        isFinished: true,
+        isWon: true,
+        revealStep: 5,
+      };
+
+      saveRulesetInfiniteState(state, "casual", "silhouette");
+      const loaded = getRulesetInfiniteState("casual", "silhouette");
+
+      expect(loaded.guesses).toHaveLength(1);
+      expect(loaded.guessedIds).toEqual(["sanji"]);
+      expect(loaded.isWon).toBe(true);
+      expect(loaded.revealStep).toBe(5);
+    });
+
+    it("saves and loads four-seas infinite state independently", () => {
+      const state = {
+        guesses: [createGuess("robin", false)],
+        guessedIds: ["robin"],
+        isFinished: false,
+        isWon: false,
+        clueIndex: 1,
+      };
+
+      saveRulesetInfiniteState(state, "nakama", "four-seas");
+      const loaded = getRulesetInfiniteState("nakama", "four-seas");
+
+      expect(loaded.guessedIds).toEqual(["robin"]);
+      expect(loaded.clueIndex).toBe(1);
+    });
+
+    it("isolates ruleset infinite from classic infinite", () => {
+      addInfiniteGuess(createGuess("chopper", true), "casual");
+
+      const rulesetState = getRulesetInfiniteState("casual", "silhouette");
+      expect(rulesetState.guesses).toEqual([]);
+      expect(rulesetState.isWon).toBe(false);
+    });
+
+    it("different rulesets for same tier have independent state", () => {
+      const silhouetteState = {
+        guesses: [createGuess("brook", true)],
+        guessedIds: ["brook"],
+        isFinished: true,
+        isWon: true,
+      };
+      const wantedState = {
+        guesses: [createGuess("franky", false)],
+        guessedIds: ["franky"],
+        isFinished: false,
+        isWon: false,
+      };
+
+      saveRulesetInfiniteState(silhouetteState, "casual", "silhouette");
+      saveRulesetInfiniteState(wantedState, "casual", "wanted");
+
+      const loadedSilhouette = getRulesetInfiniteState("casual", "silhouette");
+      const loadedWanted = getRulesetInfiniteState("casual", "wanted");
+
+      expect(loadedSilhouette.guessedIds).toEqual(["brook"]);
+      expect(loadedWanted.guessedIds).toEqual(["franky"]);
     });
   });
 });
