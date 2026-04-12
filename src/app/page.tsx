@@ -6,14 +6,7 @@ import { validateCharacter } from "@/lib/types";
 import { normalizeCharacterImage } from "@/lib/images";
 import { GamePageHeader } from "@/components/GamePageHeader";
 import { GameBoardSection } from "@/components/GameBoardSection";
-import { Modal } from "@/components/Modal";
-import { BountyBoard } from "@/components/BountyBoard";
-import { StatsModal } from "@/components/StatsModal";
-import { AuthModal } from "@/components/AuthModal";
-import { Leaderboard } from "@/components/Leaderboard";
-import { SettingsModal } from "@/components/SettingsModal";
-import { HowToPlayModal } from "@/components/HowToPlayModal";
-import { ArchiveModal } from "@/components/ArchiveModal";
+import { GameModalRegistry } from "@/components/GameModalRegistry";
 import { useGameController } from "@/lib/hooks/useGameController";
 import { useGameUiState } from "@/lib/hooks/useGameUiState";
 import charactersData from "@/data/characters.v2.json";
@@ -182,48 +175,29 @@ export default function Home() {
         </div>
       </footer>
 
-      <Modal
-        isOpen={showLeaderboard}
-        onClose={closeLeaderboard}
-        title="Leaderboard"
-      >
-        <Leaderboard />
-      </Modal>
-
-      <Modal isOpen={showStats} onClose={closeStats} title="Statistics">
-        <StatsModal
-          dailyStats={dailyStats}
-          infiniteStats={infiniteStats}
-          tier={tier}
-          mode={mode}
-        />
-      </Modal>
-
-      <Modal
-        isOpen={showBountyBoard}
-        onClose={closeBountyBoard}
-        title="Bounty Board"
-        maxWidth="5xl"
-      >
-        <BountyBoard characters={characters} discoveredIds={discoveredIds} />
-      </Modal>
-
-      <SettingsModal
-        isOpen={showSettings}
-        onClose={closeSettings}
-        settings={settings}
-        onSettingsChange={handleSettingsChange}
-      />
-
-      <AuthModal isOpen={showAuthModal} onClose={closeAuthModal} />
-
-      <HowToPlayModal isOpen={showHowToPlay} onClose={closeHowToPlay} />
-
-      <ArchiveModal
-        isOpen={showArchive}
-        onClose={closeArchive}
-        characters={characters}
+      <GameModalRegistry
         tier={tier}
+        mode={mode}
+        dailyStats={dailyStats}
+        infiniteStats={infiniteStats}
+        discoveredIds={discoveredIds}
+        settings={settings}
+        characters={characters}
+        handleSettingsChange={handleSettingsChange}
+        showLeaderboard={showLeaderboard}
+        closeLeaderboard={closeLeaderboard}
+        showStats={showStats}
+        closeStats={closeStats}
+        showBountyBoard={showBountyBoard}
+        closeBountyBoard={closeBountyBoard}
+        showSettings={showSettings}
+        closeSettings={closeSettings}
+        showAuthModal={showAuthModal}
+        closeAuthModal={closeAuthModal}
+        showHowToPlay={showHowToPlay}
+        closeHowToPlay={closeHowToPlay}
+        showArchive={showArchive}
+        closeArchive={closeArchive}
       />
     </main>
   );
