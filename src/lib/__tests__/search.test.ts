@@ -512,4 +512,130 @@ describe("search.ts", () => {
       expect(names[0]).toBe("Monkey D. Luffy");
     });
   });
+
+  describe("fuzzy search fallback", () => {
+    const fuzzyCharacters: Character[] = [
+      {
+        id: "luffy",
+        name: "Monkey D. Luffy",
+        aliases: ["Luffy", "Straw Hat Luffy", "Straw Hat"],
+        imageUrl: "/characters/luffy.png",
+        gender: "Male",
+        affiliationPrimary: "Straw Hat Pirates",
+        devilFruitType: ["Paramecia"],
+        haki: ["O", "A", "C"],
+        bounty: 3000000000,
+        heightCm: 174,
+        origin: "East Blue",
+        firstArc: "Romance Dawn Arc",
+        minTier: "casual",
+      },
+      {
+        id: "nami",
+        name: "Nami",
+        aliases: ["Cat Burglar"],
+        imageUrl: "/characters/nami.png",
+        gender: "Female",
+        affiliationPrimary: "Straw Hat Pirates",
+        devilFruitType: ["None"],
+        haki: [],
+        bounty: 366000000,
+        heightCm: 170,
+        origin: "East Blue",
+        firstArc: "Orange Town Arc",
+        minTier: "casual",
+      },
+      {
+        id: "kami",
+        name: "Kami",
+        aliases: [],
+        imageUrl: "/characters/kami.png",
+        gender: "Male",
+        affiliationPrimary: "Sky Pirates",
+        devilFruitType: ["None"],
+        haki: [],
+        bounty: null,
+        heightCm: null,
+        origin: "Sky Island",
+        firstArc: "Skypiea Arc",
+        minTier: "casual",
+      },
+      {
+        id: "zoro",
+        name: "Roronoa Zoro",
+        aliases: ["Pirate Hunter"],
+        imageUrl: "/characters/zoro.png",
+        gender: "Male",
+        affiliationPrimary: "Straw Hat Pirates",
+        devilFruitType: ["None"],
+        haki: ["O", "A", "C"],
+        bounty: 1111000000,
+        heightCm: 181,
+        origin: "East Blue",
+        firstArc: "Romance Dawn Arc",
+        minTier: "casual",
+      },
+    ];
+
+    it("typo with substitution: 'Lufy' finds 'Luffy' via alias", () => {
+      const results = searchCharacters(fuzzyCharacters, "Lufy");
+      const ids = results.map((c) => c.id);
+      expect(ids).toContain("luffy");
+    });
+
+    it("typo with transposition: 'Lufyf' finds 'Luffy' via alias", () => {
+      const results = searchCharacters(fuzzyCharacters, "Lufyf");
+      const ids = results.map((c) => c.id);
+      expect(ids).toContain("luffy");
+    });
+
+    it("typo with deletion: 'Lffy' finds 'Luffy' via alias", () => {
+      const results = searchCharacters(fuzzyCharacters, "Lffy");
+      const ids = results.map((c) => c.id);
+      expect(ids).toContain("luffy");
+    });
+
+    it("short query gate: 'Luf' (3 chars) does NOT trigger fuzzy", () => {
+      const results = searchCharacters(fuzzyCharacters, "Luf");
+      const ids = results.map((c) => c.id);
+      expect(ids).not.toContain("kami");
+    });
+
+    it("literal match wins over fuzzy: 'Luffy' exact query scores highest", () => {
+      const results = searchCharacters(fuzzyCharacters, "Luffy");
+      expect(results.length).toBeGreaterThan(0);
+      expect(results[0].id).toBe("luffy");
+      const ids = results.map((c) => c.id);
+      expect(ids).toContain("luffy");
+      const luffyIdx = ids.indexOf("luffy");
+      expect(luffyIdx).toBe(0);
+    });
+
+    it("fuzzy results appear AFTER literal results", () => {
+      const results = searchCharacters(fuzzyCharacters, "Nami");
+      const ids = results.map((c) => c.id);
+      const namiIdx = ids.indexOf("nami");
+      const kamiIdx = ids.indexOf("kami");
+      expect(namiIdx).toBeGreaterThanOrEqual(0);
+      if (kamiIdx !== -1) {
+        expect(namiIdx).toBeLessThan(kamiIdx);
+      }
+    });
+
+    it("fuzzy with distance 2 does NOT appear in results", () => {
+      const results = searchCharacters(fuzzyCharacters, "Lufyy");
+      const ids = results.map((c) => c.id);
+      expect(ids).not.toContain("zoro");
+    });
+
+    it("whitespace-only query returns empty array", () => {
+      expect(searchCharacters(fuzzyCharacters, "   ")).toEqual([]);
+      expect(searchCharacters(fuzzyCharacters, "\t")).toEqual([]);
+    });
+
+    it("punctuation-only query returns empty array", () => {
+      expect(searchCharacters(fuzzyCharacters, "!!!")).toEqual([]);
+      expect(searchCharacters(fuzzyCharacters, "@#$%")).toEqual([]);
+    });
+  });
 });

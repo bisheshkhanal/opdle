@@ -1,5 +1,5 @@
 /**
- * Character search - name and alias lookup
+ * Character search - name and alias lookup with bounded fuzzy fallback
  */
 
 import type { Character } from "./types";
@@ -12,29 +12,10 @@ function normalize(str: string): string {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[-']/g, " ")
     .replace(/[^a-z0-9\s]/g, "")
+    .replace(/\s+/g, " ")
     .trim();
-}
-
-/**
- * Check if a query matches a character name or alias
- */
-function matchesCharacter(character: Character, query: string): boolean {
-  const normalizedQuery = normalize(query);
-
-  // Check main name
-  if (normalize(character.name).includes(normalizedQuery)) {
-    return true;
-  }
-
-  // Check aliases
-  for (const alias of character.aliases) {
-    if (normalize(alias).includes(normalizedQuery)) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 /**
@@ -77,8 +58,116 @@ function scoreMatch(character: Character, query: string): number {
 }
 
 /**
+ * Bounded Damerau-Levenshtein distance (substitution, insertion, deletion, transposition).
+ * Returns early with maxDistance + 1 if the distance is guaranteed to exceed maxDistance.
+ */
+function damerauLevenshteinDistance(
+  a: string,
+  b: string,
+  maxDistance: number = 1
+): number {
+  const lenA = a.length;
+  const lenB = b.length;
+
+  // Quick reject: length difference alone exceeds maxDistance
+  if (Math.abs(lenA - lenB) > maxDistance) {
+    return maxDistance + 1;
+  }
+
+  // Use the shorter string as columns to minimize memory
+  if (lenA < lenB) {
+    return damerauLevenshteinDistance(b, a, maxDistance);
+  }
+
+  // Single-row DP with previous row for transposition lookback
+  let prevRow = new Array(lenB + 1);
+  const currRow = new Array(lenB + 1);
+  let prevPrevRow: number[] | null = null;
+
+  // Initialize first row
+  for (let j = 0; j <= lenB; j++) {
+    prevRow[j] = j;
+  }
+
+  for (let i = 1; i <= lenA; i++) {
+    currRow[0] = i;
+    let rowMin = currRow[0];
+
+    for (let j = 1; j <= lenB; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      let val = Math.min(
+        currRow[j - 1] + 1, // insertion
+        prevRow[j] + 1, // deletion
+        prevRow[j - 1] + cost // substitution
+      );
+
+      // Transposition
+      if (
+        i > 1 &&
+        j > 1 &&
+        a[i - 1] === b[j - 2] &&
+        a[i - 2] === b[j - 1] &&
+        prevPrevRow !== null
+      ) {
+        val = Math.min(val, prevPrevRow[j - 2] + cost);
+      }
+
+      currRow[j] = val;
+      if (val < rowMin) {
+        rowMin = val;
+      }
+    }
+
+    // Early termination: if minimum value in this row exceeds maxDistance
+    if (rowMin > maxDistance) {
+      return maxDistance + 1;
+    }
+
+    // Rotate rows
+    prevPrevRow = prevRow.slice();
+    prevRow = currRow.slice();
+  }
+
+  return prevRow[lenB] > maxDistance ? maxDistance + 1 : prevRow[lenB];
+}
+
+const FUZZY_THRESHOLD = 1;
+const FUZZY_MIN_QUERY_LENGTH = 4;
+
+function fuzzyScore(
+  character: Character,
+  normalizedQuery: string
+): { distance: number; matchLength: number } | null {
+  const normalizedName = normalize(character.name);
+  const nameDistance = damerauLevenshteinDistance(
+    normalizedQuery,
+    normalizedName,
+    FUZZY_THRESHOLD
+  );
+  if (nameDistance <= FUZZY_THRESHOLD) {
+    return { distance: nameDistance, matchLength: normalizedName.length };
+  }
+
+  // Check aliases
+  for (const alias of character.aliases) {
+    const normalizedAlias = normalize(alias);
+    const aliasDistance = damerauLevenshteinDistance(
+      normalizedQuery,
+      normalizedAlias,
+      FUZZY_THRESHOLD
+    );
+    if (aliasDistance <= FUZZY_THRESHOLD) {
+      return { distance: aliasDistance, matchLength: normalizedAlias.length };
+    }
+  }
+
+  return null;
+}
+
+/**
  * Search characters by name or alias
- * Returns sorted results with best matches first
+ * Returns sorted results with best matches first.
+ * Ranking: exact → prefix → contains → fuzzy (bounded Damerau-Levenshtein)
  */
 export function searchCharacters(
   characters: Character[],
@@ -89,14 +178,59 @@ export function searchCharacters(
     return [];
   }
 
-  const matches = characters
-    .filter((c) => matchesCharacter(c, query))
-    .map((c) => ({ character: c, score: scoreMatch(c, query) }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((m) => m.character);
+  const normalizedQuery = normalize(query);
+  if (normalizedQuery.length === 0) {
+    return [];
+  }
 
-  return matches;
+  const literalMatchedIds = new Set<string>();
+  const literalMatches: Array<{ character: Character; score: number }> = [];
+
+  for (const c of characters) {
+    const score = scoreMatch(c, query);
+    if (score > 0) {
+      literalMatches.push({ character: c, score });
+      literalMatchedIds.add(c.id);
+    }
+  }
+
+  literalMatches.sort((a, b) => b.score - a.score);
+
+  const fuzzyMatches: Array<{
+    character: Character;
+    distance: number;
+    matchLength: number;
+  }> = [];
+
+  if (normalizedQuery.length >= FUZZY_MIN_QUERY_LENGTH) {
+    for (const c of characters) {
+      if (literalMatchedIds.has(c.id)) {
+        continue;
+      }
+
+      const result = fuzzyScore(c, normalizedQuery);
+      if (result !== null) {
+        fuzzyMatches.push({
+          character: c,
+          distance: result.distance,
+          matchLength: result.matchLength,
+        });
+      }
+    }
+
+    fuzzyMatches.sort((a, b) => {
+      if (a.distance !== b.distance) return a.distance - b.distance;
+      if (a.matchLength !== b.matchLength) return a.matchLength - b.matchLength;
+      return a.character.name.localeCompare(b.character.name);
+    });
+  }
+
+  const combined = [
+    ...literalMatches.map((m) => m.character),
+    ...fuzzyMatches.map((m) => m.character),
+  ];
+
+  return combined.slice(0, limit);
 }
 
 /**
