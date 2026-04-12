@@ -3,19 +3,9 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import type {
-  Character,
-  GameMode,
-  DailyState,
-  InfiniteState,
-  Tier,
-  GuessResult,
-} from "@/lib/types";
+import type { Character, GameMode, Tier } from "@/lib/types";
 import { validateCharacter } from "@/lib/types";
-import {
-  getLocalCharacterImageUrl,
-  normalizeCharacterImage,
-} from "@/lib/images";
+import { normalizeCharacterImage } from "@/lib/images";
 import { ModeTabs } from "@/components/ModeTabs";
 import { TierTabs } from "@/components/TierTabs";
 import { Autocomplete } from "@/components/Autocomplete";
@@ -36,44 +26,15 @@ import { DailyComparison } from "@/components/DailyComparison";
 import { SettingsModal } from "@/components/SettingsModal";
 import { HowToPlayModal } from "@/components/HowToPlayModal";
 import { ArchiveModal } from "@/components/ArchiveModal";
-import { loadSettings } from "@/lib/settings";
-import type { UserSettings } from "@/lib/settings";
-import { DEFAULT_SETTINGS } from "@/lib/settings";
-import { evaluateGuess } from "@/lib/evaluateGuess";
-import { getCharactersForTier } from "@/lib/tier";
-import {
-  selectDailyCharacter,
-  getUTCDateString,
-  getTimeUntilReset,
-  getDailyGameNumber,
-} from "@/lib/daily";
-import { selectInfiniteCharacter } from "@/lib/infinite";
-import { copyToClipboard } from "@/lib/share";
-import {
-  getDailyState,
-  addDailyGuess,
-  getInfiniteState,
-  addInfiniteGuess,
-  startNewInfiniteRound,
-  isDailyDuplicate,
-  isInfiniteDuplicate,
-  getSelectedTier,
-  setSelectedTier,
-  getDailyStats,
-  getInfiniteStats,
-  getAllDiscoveredIds,
-  markHintUsed,
-} from "@/lib/storage";
-import { useAuthSync } from "@/lib/hooks/useAuthSync";
+import { getLocalCharacterImageUrl } from "@/lib/images";
+import { getUTCDateString, getDailyGameNumber } from "@/lib/daily";
+import { useGameController } from "@/lib/hooks/useGameController";
 import { useCanvasEnabled } from "@/lib/hooks/useCanvasEnabled";
 import charactersData from "@/data/characters.v2.json";
 
-// Validate and type characters
 const characters: Character[] = (charactersData as unknown[])
   .filter(validateCharacter)
   .map((character) => normalizeCharacterImage(character)) as Character[];
-
-const MAX_GUESSES = 6;
 
 const CompassCanvas = dynamic(
   () => import("@/components/three/CompassCanvas"),
@@ -89,62 +50,9 @@ const EmptyStateOrb = dynamic(
   }
 );
 
-function generateGuessAnnouncement(
-  guessNumber: number,
-  totalGuesses: number,
-  result: GuessResult
-): string {
-  const correct = result.categories.filter(
-    (c) => c.status === "correct"
-  ).length;
-  const partial = result.categories.filter(
-    (c) => c.status === "partial"
-  ).length;
-  const wrong = result.categories.filter((c) => c.status === "wrong").length;
-  const arrows = result.categories
-    .filter((c) => c.status === "higher" || c.status === "lower")
-    .map((c) => `${c.label}: ${c.status}`)
-    .join(". ");
-
-  let text = `Guess ${guessNumber} of ${totalGuesses}: ${correct} correct, ${partial} partial, ${wrong} wrong.`;
-  if (arrows) text += ` ${arrows}.`;
-  return text;
-}
-
-function encodeChallengeSeed(characterId: string): string {
-  try {
-    return btoa(encodeURIComponent(characterId));
-  } catch {
-    return "";
-  }
-}
-
-function decodeChallengeSeed(seed: string): string | null {
-  try {
-    return decodeURIComponent(atob(seed));
-  } catch {
-    return null;
-  }
-}
-
 export default function Home() {
-  const [mode, setMode] = useState<GameMode>("daily");
-  const [tier, setTier] = useState<Tier>("casual");
-  const [dailyState, setDailyState] = useState<DailyState | null>(null);
-  const [infiniteState, setInfiniteState] = useState<InfiniteState | null>(
-    null
-  );
-  const [targetCharacter, setTargetCharacter] = useState<Character | null>(
-    null
-  );
-  const [countdown, setCountdown] = useState({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
-  const [announcement, setAnnouncement] = useState("");
+  const game = useGameController();
+
   const [showStats, setShowStats] = useState(false);
   const [showBountyBoard, setShowBountyBoard] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
@@ -152,137 +60,56 @@ export default function Home() {
   const [showSettings, setShowSettings] = useState(false);
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
-  const [hintUsed, setHintUsedState] = useState(false);
-  const [challengeMode, setChallengeMode] = useState(false);
-  const [challengeGuesses, setChallengeGuesses] = useState<GuessResult[]>([]);
-  const [challengeGuessedIds, setChallengeGuessedIds] = useState<string[]>([]);
-  const [challengeIsFinished, setChallengeIsFinished] = useState(false);
-  const [challengeIsWon, setChallengeIsWon] = useState(false);
-  const [challengeLinkCopied, setChallengeLinkCopied] = useState(false);
-  const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
   const [compassState, setCompassState] = useState<
     "idle" | "wrong-guess" | "correct-guess"
   >("idle");
   const previousGuessCountRef = useRef(0);
   const previousIsWonRef = useRef(false);
   const canvasEnabled = useCanvasEnabled();
-  const { syncDailyResult } = useAuthSync();
 
-  const { dailyStats, infiniteStats } = useMemo(() => {
-    return {
-      dailyStats: getDailyStats(tier),
-      infiniteStats: getInfiniteStats(tier),
-    };
-  }, [tier]);
+  const {
+    mode,
+    tier,
+    targetCharacter,
+    dailyState,
+    infiniteState,
+    guesses,
+    guessedIds,
+    isFinished,
+    isWon,
+    isLoaded,
+    hintUsed,
+    challengeMode,
+    challengeLinkCopied,
+    duplicateWarning,
+    announcement,
+    settings,
+    countdown,
+    discoveredIds,
+    dailyStats,
+    infiniteStats,
+    characterCounts,
+    wrongGuessCount,
+    maxGuesses: MAX_GUESSES,
+    shouldShowOnboarding,
+    handleGuess,
+    handlePlayAgain,
+    handleHintUsed,
+    handleChallengeShare,
+    handleSettingsChange,
+    handleTierChange,
+    handleModeChange,
+  } = game;
 
-  const discoveredIds = useMemo(() => {
-    void dailyState;
-    void infiniteState;
-    return getAllDiscoveredIds();
-  }, [dailyState, infiniteState]);
-
-  const characterCounts = useMemo(() => {
-    const counts: Record<Tier, number> = { casual: 0, fan: 0, nakama: 0 };
-
-    counts.casual = characters.filter((c) => c.minTier === "casual").length;
-    counts.fan = characters.filter(
-      (c) => c.minTier === "casual" || c.minTier === "fan"
-    ).length;
-    counts.nakama = characters.length;
-
-    return counts;
-  }, []);
-
-  // Initialize game state
-  useEffect(() => {
-    const storedTier = getSelectedTier();
-    setTier(storedTier);
-
-    const dateString = getUTCDateString();
-    const daily = getDailyState(storedTier, dateString);
-    const infinite = getInfiniteState(storedTier);
-    const searchParams = new URLSearchParams(window.location.search);
-    const challengeSeed = searchParams.get("challenge");
-
-    if (challengeSeed) {
-      const characterId = decodeChallengeSeed(challengeSeed);
-      if (characterId) {
-        const challengeCharacter = characters.find((c) => c.id === characterId);
-        if (challengeCharacter) {
-          setChallengeMode(true);
-          setTargetCharacter(challengeCharacter);
-          setHintUsedState(false);
-        }
-      }
-
-      window.history.replaceState({}, "", window.location.pathname);
-    }
-
-    setDailyState(daily);
-    setInfiniteState(infinite);
-    if (!challengeSeed) {
-      setHintUsedState(daily.hintUsed || false);
-    }
-    setSettings(loadSettings());
-    setIsLoaded(true);
-
-    const onboarded = localStorage.getItem("onepiecedle_onboarded");
-    if (!onboarded) {
-      setShowHowToPlay(true);
-    }
-  }, []);
-
-  // Update target character when mode or tier changes
-  useEffect(() => {
-    if (!isLoaded) return;
-    if (challengeMode) return;
-
-    const tierCharacters = getCharactersForTier(characters, tier);
-
-    if (mode === "daily") {
-      const target = selectDailyCharacter(tierCharacters, undefined, tier);
-      setTargetCharacter(target);
-    } else if (infiniteState) {
-      const target = selectInfiniteCharacter(
-        tierCharacters,
-        infiniteState.roundId
-      );
-      setTargetCharacter(target);
-    }
-  }, [mode, tier, isLoaded, infiniteState, challengeMode]);
-
-  // Countdown timer for daily mode
-  useEffect(() => {
-    if (mode !== "daily") return;
-
-    const updateCountdown = () => {
-      setCountdown(getTimeUntilReset());
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [mode]);
-
-  const currentState = challengeMode
-    ? null
-    : mode === "daily"
-      ? dailyState
-      : infiniteState;
-  const guesses = challengeMode
-    ? challengeGuesses
-    : currentState?.guesses || [];
-  const guessedIds = challengeMode
-    ? challengeGuessedIds
-    : currentState?.guessedIds || [];
-  const isFinished = challengeMode
-    ? challengeIsFinished
-    : currentState?.isFinished || false;
-  const isWon = challengeMode ? challengeIsWon : currentState?.isWon || false;
-  const wrongGuessCount = guesses.filter((guess) => !guess.isCorrect).length;
   const hintImageUrl = targetCharacter
     ? targetCharacter.imageUrl || getLocalCharacterImageUrl(targetCharacter.id)
     : "";
+
+  useEffect(() => {
+    if (shouldShowOnboarding) {
+      setShowHowToPlay(true);
+    }
+  }, [shouldShowOnboarding]);
 
   useEffect(() => {
     if (isWon && !previousIsWonRef.current) {
@@ -307,184 +134,10 @@ export default function Home() {
     return () => window.clearTimeout(timeoutId);
   }, [compassState]);
 
-  const handleGuess = useCallback(
-    (character: Character) => {
-      if (!targetCharacter || isFinished) return;
-
-      const isDuplicate = challengeMode
-        ? challengeGuessedIds.includes(character.id)
-        : mode === "daily"
-          ? isDailyDuplicate(character.id, tier)
-          : isInfiniteDuplicate(character.id, tier);
-
-      if (isDuplicate) {
-        setDuplicateWarning(`You already guessed ${character.name}!`);
-        setTimeout(() => setDuplicateWarning(null), 3000);
-        return;
-      }
-
-      const result = evaluateGuess(character, targetCharacter);
-
-      const guessNumber = challengeMode
-        ? challengeGuesses.length + 1
-        : mode === "daily"
-          ? (dailyState?.guesses?.length ?? 0) + 1
-          : (infiniteState?.guesses?.length ?? 0) + 1;
-
-      setAnnouncement(
-        generateGuessAnnouncement(guessNumber, MAX_GUESSES, result)
-      );
-
-      if (challengeMode) {
-        const nextGuesses = [...challengeGuesses, result];
-        const nextGuessedIds = [...challengeGuessedIds, character.id];
-        const didWin = result.isCorrect;
-        const didFinish = didWin || nextGuesses.length >= MAX_GUESSES;
-
-        setChallengeGuesses(nextGuesses);
-        setChallengeGuessedIds(nextGuessedIds);
-
-        if (didFinish) {
-          setChallengeIsFinished(true);
-          setChallengeIsWon(didWin);
-          setTimeout(() => {
-            setAnnouncement(
-              didWin
-                ? `Victory! The answer was ${targetCharacter.name}!`
-                : `Defeated. The answer was ${targetCharacter.name}.`
-            );
-          }, 1500);
-        }
-
-        return;
-      }
-
-      if (mode === "daily") {
-        const newState = addDailyGuess(result, tier);
-        setDailyState(newState);
-
-        if (newState.isFinished) {
-          syncDailyResult({
-            date: getUTCDateString(),
-            tier,
-            guessCount: newState.guesses.length,
-            isWon: newState.isWon,
-            hintUsed: newState.hintUsed ?? false,
-          });
-          setTimeout(() => {
-            setAnnouncement(
-              newState.isWon
-                ? `Victory! The answer was ${targetCharacter.name}!`
-                : `Defeated. The answer was ${targetCharacter.name}.`
-            );
-          }, 1500);
-        }
-      } else {
-        const newState = addInfiniteGuess(result, tier);
-        setInfiniteState(newState);
-        if (newState.isFinished) {
-          setTimeout(() => {
-            setAnnouncement(
-              newState.isWon
-                ? `Victory! The answer was ${targetCharacter.name}!`
-                : `Defeated. The answer was ${targetCharacter.name}.`
-            );
-          }, 1500);
-        }
-      }
-    },
-    [
-      targetCharacter,
-      isFinished,
-      mode,
-      challengeMode,
-      challengeGuessedIds,
-      challengeGuesses,
-      syncDailyResult,
-      tier,
-      dailyState?.guesses?.length,
-      infiniteState?.guesses?.length,
-    ]
-  );
-
-  const handlePlayAgain = useCallback(() => {
-    const newState = startNewInfiniteRound(tier);
-    setInfiniteState(newState);
-    setHintUsedState(false);
-  }, [tier]);
-
-  const handleHintUsed = useCallback(() => {
-    if (challengeMode) {
-      setHintUsedState(true);
-      return;
-    }
-
-    markHintUsed(tier, mode, mode === "daily" ? getUTCDateString() : undefined);
-    setHintUsedState(true);
-  }, [challengeMode, tier, mode]);
-
-  const handleChallengeShare = useCallback(async () => {
-    if (!targetCharacter || challengeMode) return;
-
-    const seed = encodeChallengeSeed(targetCharacter.id);
-    if (!seed) return;
-
-    const challengeUrl = new URL(window.location.href);
-    challengeUrl.search = "";
-    challengeUrl.hash = "";
-    challengeUrl.searchParams.set("challenge", seed);
-
-    const success = await copyToClipboard(challengeUrl.toString());
-    if (success) {
-      setChallengeLinkCopied(true);
-      setTimeout(() => setChallengeLinkCopied(false), 2500);
-    }
-  }, [targetCharacter, challengeMode]);
-
-  const handleSettingsChange = useCallback((newSettings: UserSettings) => {
-    setSettings(newSettings);
-  }, []);
-
   const handleHowToPlayClose = useCallback(() => {
     setShowHowToPlay(false);
     localStorage.setItem("onepiecedle_onboarded", "true");
   }, []);
-
-  const handleTierChange = useCallback(
-    (newTier: Tier) => {
-      setSelectedTier(newTier);
-      setTier(newTier);
-      setDuplicateWarning(null);
-
-      const dateString = getUTCDateString();
-      const daily = getDailyState(newTier, dateString);
-      const infinite = getInfiniteState(newTier);
-      setDailyState(daily);
-      setInfiniteState(infinite);
-
-      const currentHintUsed =
-        mode === "daily" ? daily.hintUsed || false : infinite.hintUsed || false;
-      setHintUsedState(currentHintUsed);
-    },
-    [mode]
-  );
-
-  const handleModeChange = (newMode: GameMode) => {
-    setMode(newMode);
-    setDuplicateWarning(null);
-
-    const dateString = getUTCDateString();
-    const daily = getDailyState(tier, dateString);
-    const infinite = getInfiniteState(tier);
-    setDailyState(daily);
-    setInfiniteState(infinite);
-
-    const currentHintUsed =
-      newMode === "daily"
-        ? daily.hintUsed || false
-        : infinite.hintUsed || false;
-    setHintUsedState(currentHintUsed);
-  };
 
   if (!isLoaded) {
     return (
@@ -804,6 +457,7 @@ export default function Home() {
                       isWon={isWon}
                       guessCount={guesses.length}
                       mode={mode}
+                      silhouetteReveal={settings.silhouetteReveal}
                       onPlayAgain={
                         mode === "infinite" ? handlePlayAgain : undefined
                       }
