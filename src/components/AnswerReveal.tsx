@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import type { Character, GameMode } from "@/lib/types";
 
 const WinCelebration = dynamic(
@@ -104,17 +105,18 @@ export function AnswerReveal({
                   : "bg-parchment-100/80 ring-4 ring-parchment-400/60 dark:bg-slate-700/80 dark:ring-slate-500/60"
               }`}
             >
-              <img
+              <Image
                 src={character.imageUrl}
                 alt={character.name}
+                width={144}
+                height={144}
                 className={`h-36 w-36 rounded-2xl bg-parchment-50/90 object-contain object-top ${
                   isWon
                     ? "ring-4 ring-gold-500/50 dark:ring-gold-400/40"
                     : "ring-4 ring-parchment-300/70 dark:ring-slate-500/50"
                 } dark:bg-slate-600/90`}
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "/characters/fallback.svg";
+                  e.currentTarget.src = "/characters/fallback.svg";
                 }}
               />
             </div>

@@ -37,7 +37,6 @@ export function BountyBoard({ characters, discoveredIds }: BountyBoardProps) {
               className={`object-cover object-top ${
                 !isDiscovered ? "brightness-0 grayscale" : ""
               }`}
-              unoptimized
             />
           </div>
         );
