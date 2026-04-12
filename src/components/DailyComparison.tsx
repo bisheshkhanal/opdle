@@ -30,11 +30,14 @@ export function DailyComparison({
   const { data: session, status } = useSession();
   const [data, setData] = useState<ComparisonData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (status !== "authenticated") return;
 
     setIsLoading(true);
+    setError(false);
     fetch(`/api/daily-results?date=${date}&tier=${tier}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed");
@@ -45,10 +48,10 @@ export function DailyComparison({
         setIsLoading(false);
       })
       .catch(() => {
-        // Silent failure — component renders nothing on error
+        setError(true);
         setIsLoading(false);
       });
-  }, [date, tier, status]);
+  }, [date, tier, status, retryCount]);
 
   // Not logged in — prompt to sign in
   if (status === "unauthenticated" || (!session && status !== "loading")) {
@@ -69,8 +72,27 @@ export function DailyComparison({
     );
   }
 
-  // Loading or no data yet
-  if (isLoading || !data) {
+  if (isLoading) {
+    return null;
+  }
+
+  if (error) {
+    return (
+      <div className="game-card px-6 py-5 text-center">
+        <p className="mb-3 text-sm font-medium text-navy-600 dark:text-slate-300">
+          Could not load comparison data
+        </p>
+        <button
+          onClick={() => setRetryCount((count) => count + 1)}
+          className="rounded-lg bg-navy-700 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-navy-800 dark:bg-slate-600 dark:hover:bg-slate-500"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (!data) {
     return null;
   }
 
