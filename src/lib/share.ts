@@ -5,6 +5,9 @@
 import type { GuessResult, GameMode, TileStatus } from "./types";
 import { getDailyGameNumber } from "./daily";
 
+const MAX_GUESSES = 6;
+const SHARE_LEGEND = "🟩 Correct  🟨 Partial  ⬜ Wrong  ⬆️ Higher  ⬇️ Lower";
+
 /**
  * Get emoji for a category status
  * Green = correct
@@ -28,25 +31,6 @@ function getStatusEmoji(status: TileStatus): string {
   }
 }
 
-export function getFlavorTitle(guesses: number): string | null {
-  switch (guesses) {
-    case 1:
-      return "Pirate King";
-    case 2:
-      return "Yonko";
-    case 3:
-      return "Warlord";
-    case 4:
-      return "Super Rookie";
-    case 5:
-      return "Pirate";
-    case 6:
-      return "Rookie";
-    default:
-      return null;
-  }
-}
-
 /**
  * Format a single guess row as emojis
  */
@@ -63,28 +47,20 @@ export function formatShareText(
   isWon: boolean,
   dateString?: string,
   streak?: number,
-  hintUsed?: boolean
+  _hintUsed?: boolean
 ): string {
   const lines: string[] = [];
 
-  // Header
   if (mode === "daily") {
     const gameNumber = getDailyGameNumber(dateString);
-    const attempts = isWon ? guesses.length : "X";
-    const hintSuffix = hintUsed === true ? " 💡" : "";
-    lines.push(`OnePiecedle #${gameNumber} ${attempts}/6${hintSuffix}`);
+    lines.push(`🏴‍☠️ Onepiecedle Daily #${gameNumber}`);
   } else {
-    const attempts = isWon ? guesses.length : "X";
-    const hintSuffix = hintUsed === true ? " 💡" : "";
-    lines.push(`OnePiecedle (Infinite) ${attempts}/6${hintSuffix}`);
+    lines.push("🏴‍☠️ Onepiecedle Infinite");
   }
 
-  if (isWon) {
-    const flavor = getFlavorTitle(guesses.length);
-    if (flavor) {
-      lines.push(flavor);
-    }
+  lines.push(`${isWon ? guesses.length : "X"}/${MAX_GUESSES} guesses`);
 
+  if (isWon) {
     if (mode === "daily" && streak !== undefined && streak > 0) {
       lines.push(`🔥 Streak: ${streak}`);
     }
@@ -98,7 +74,7 @@ export function formatShareText(
   }
 
   lines.push("");
-  lines.push("https://onepiecedle.com");
+  lines.push(SHARE_LEGEND);
 
   return lines.join("\n");
 }
