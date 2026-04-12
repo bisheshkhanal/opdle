@@ -1,5 +1,4 @@
 import "@testing-library/jest-dom/vitest";
-import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Autocomplete } from "../Autocomplete";
@@ -265,6 +264,58 @@ describe("Autocomplete", () => {
       await waitFor(() => {
         expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
       });
+    });
+  });
+
+  describe("fuzzy search integration", () => {
+    it('returns "Monkey D. Luffy" for typo query "Lufffy"', async () => {
+      render(
+        <Autocomplete
+          characters={mockCharacters}
+          guessedIds={[]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "Lufffy" } });
+
+      await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+      });
+
+      expect(screen.getByRole("option")).toHaveTextContent("Monkey D. Luffy");
+    });
+
+    it("keeps exact literal matches ahead of fuzzy matches", async () => {
+      const charactersWithFuzzyMatch: Character[] = [
+        ...mockCharacters,
+        {
+          ...mockCharacters[2],
+          id: "zora",
+          name: "Zora",
+          aliases: ["Sword Mistress"],
+        },
+      ];
+
+      render(
+        <Autocomplete
+          characters={charactersWithFuzzyMatch}
+          guessedIds={[]}
+          onSelect={mockOnSelect}
+        />
+      );
+
+      const input = screen.getByPlaceholderText("Search for a pirate...");
+      fireEvent.change(input, { target: { value: "Zoro" } });
+
+      await waitFor(() => {
+        expect(screen.getByRole("listbox")).toBeInTheDocument();
+      });
+
+      const options = screen.getAllByRole("option");
+      expect(options[0]).toHaveTextContent("Roronoa Zoro");
+      expect(options[1]).toHaveTextContent("Zora");
     });
   });
 
