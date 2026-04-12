@@ -65,6 +65,18 @@ export interface Character {
 
 export type GameMode = "daily" | "infinite";
 
+// Run kind: HOW a round is initiated (time-based, free-play, or shared link)
+export type RunKind = "daily" | "infinite" | "challenge";
+
+// Ruleset: WHAT gameplay rules are used (category comparison, reveal mechanics, etc.)
+export type Ruleset =
+  | "classic"
+  | "silhouette"
+  | "wanted"
+  | "quote"
+  | "arc"
+  | "four-seas";
+
 export interface GameState {
   mode: GameMode;
   guesses: GuessResult[];
@@ -166,9 +178,17 @@ export function validateCharacter(obj: unknown): obj is Character {
   // Aliases array
   if (!Array.isArray(c.aliases)) return false;
 
-  // Nullable numbers
-  if (c.bounty !== null && typeof c.bounty !== "number") return false;
-  if (c.heightCm !== null && typeof c.heightCm !== "number") return false;
+  // Nullable numbers (must be null or finite — reject NaN, Infinity, -Infinity)
+  if (
+    c.bounty !== null &&
+    (typeof c.bounty !== "number" || !Number.isFinite(c.bounty))
+  )
+    return false;
+  if (
+    c.heightCm !== null &&
+    (typeof c.heightCm !== "number" || !Number.isFinite(c.heightCm))
+  )
+    return false;
 
   return true;
 }
