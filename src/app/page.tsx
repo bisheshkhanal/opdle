@@ -30,6 +30,7 @@ import { UserMenu } from "@/components/UserMenu";
 import { Leaderboard } from "@/components/Leaderboard";
 import { DailyComparison } from "@/components/DailyComparison";
 import { SettingsModal } from "@/components/SettingsModal";
+import { HowToPlayModal } from "@/components/HowToPlayModal";
 import { loadSettings } from "@/lib/settings";
 import type { UserSettings } from "@/lib/settings";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
@@ -127,6 +128,7 @@ export default function Home() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [hintUsed, setHintUsedState] = useState(false);
   const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
   const [compassState, setCompassState] = useState<
@@ -176,6 +178,11 @@ export default function Home() {
     setHintUsedState(daily.hintUsed || false);
     setSettings(loadSettings());
     setIsLoaded(true);
+
+    const onboarded = localStorage.getItem("onepiecedle_onboarded");
+    if (!onboarded) {
+      setShowHowToPlay(true);
+    }
   }, []);
 
   // Update target character when mode or tier changes
@@ -324,6 +331,11 @@ export default function Home() {
     setSettings(newSettings);
   }, []);
 
+  const handleHowToPlayClose = useCallback(() => {
+    setShowHowToPlay(false);
+    localStorage.setItem("onepiecedle_onboarded", "true");
+  }, []);
+
   const handleTierChange = useCallback(
     (newTier: Tier) => {
       setSelectedTier(newTier);
@@ -410,6 +422,28 @@ export default function Home() {
               >
                 <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
                 <circle cx="12" cy="12" r="3" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setShowHowToPlay(true)}
+              className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
+              aria-label="How to Play"
+              title="How to Play"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
               </svg>
             </button>
             <button
@@ -777,6 +811,8 @@ export default function Home() {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />
+
+      <HowToPlayModal isOpen={showHowToPlay} onClose={handleHowToPlayClose} />
     </main>
   );
 }
