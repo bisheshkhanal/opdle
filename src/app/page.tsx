@@ -31,6 +31,7 @@ import { Leaderboard } from "@/components/Leaderboard";
 import { DailyComparison } from "@/components/DailyComparison";
 import { SettingsModal } from "@/components/SettingsModal";
 import { HowToPlayModal } from "@/components/HowToPlayModal";
+import { ArchiveModal } from "@/components/ArchiveModal";
 import { loadSettings } from "@/lib/settings";
 import type { UserSettings } from "@/lib/settings";
 import { DEFAULT_SETTINGS } from "@/lib/settings";
@@ -129,6 +130,7 @@ export default function Home() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const [showArchive, setShowArchive] = useState(false);
   const [hintUsed, setHintUsedState] = useState(false);
   const [settings, setSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
   const [compassState, setCompassState] = useState<
@@ -403,6 +405,28 @@ export default function Home() {
       <header className="border-b border-parchment-300/40 bg-gradient-to-b from-parchment-50/95 via-parchment-100/90 to-parchment-100/95 backdrop-blur-md dark:border-slate-700/40 dark:bg-gradient-to-b dark:from-slate-900/95 dark:via-slate-900/90 dark:to-slate-800/95">
         <div className="mx-auto flex max-w-5xl flex-col items-center px-4 py-5 sm:py-7">
           <div className="absolute right-4 top-4 flex items-center gap-2 sm:right-6 sm:top-6">
+            <button
+              onClick={() => setShowArchive(true)}
+              className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
+              aria-label="Archive"
+              title="Archive"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 2v20l4-3 4 3 4-3 4 3V2H4z" />
+                <line x1="8" y1="8" x2="16" y2="8" />
+                <line x1="8" y1="12" x2="13" y2="12" />
+              </svg>
+            </button>
             <button
               onClick={() => setShowSettings(true)}
               className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
@@ -813,6 +837,13 @@ export default function Home() {
       />
 
       <HowToPlayModal isOpen={showHowToPlay} onClose={handleHowToPlayClose} />
+
+      <ArchiveModal
+        isOpen={showArchive}
+        onClose={() => setShowArchive(false)}
+        characters={characters}
+        tier={tier}
+      />
     </main>
   );
 }
