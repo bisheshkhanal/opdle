@@ -14,7 +14,7 @@
 
     /* Tile colors for light mode */
     --tile-correct: 46 125 50;
-    --tile-partial: 230 167 0;
+    --tile-partial: 165 106 0;
     --tile-wrong: 198 40 40;
     --tile-unknown: 84 110 122;
     --tile-higher: 21 101 192;
@@ -37,7 +37,7 @@
 
     /* Tile colors adjusted for dark mode */
     --tile-correct: 56 160 66;
-    --tile-partial: 255 183 0;
+    --tile-partial: 157 101 0;
     --tile-wrong: 239 83 80;
     --tile-unknown: 96 125 139;
     --tile-higher: 30 136 229;

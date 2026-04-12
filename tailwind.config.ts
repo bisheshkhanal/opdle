@@ -53,9 +53,9 @@ const config: Config = {
           correctBorder: "#1B5E20",
           correctDark: "#145218",
           // Partial: bright amber gold
-          partial: "#E6A700",
-          partialBorder: "#C99000",
-          partialDark: "#A67C00",
+          partial: "#A56A00",
+          partialBorder: "#8E5C00",
+          partialDark: "#7A4F00",
           // Wrong: bold crimson
           wrong: "#C62828",
           wrongBorder: "#B71C1C",
