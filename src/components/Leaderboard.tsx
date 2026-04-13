@@ -216,12 +216,7 @@ export function Leaderboard() {
                         ? "🥉"
                         : String(rank);
 
-                const factionIcon = entry.factionMembership
-                  ? FACTIONS.find(
-                      (f) =>
-                        f.factionSlug === entry.factionMembership?.factionSlug
-                    )?.icon
-                  : null;
+                const factionIcon = null;
 
                 return (
                   <div
@@ -305,9 +300,7 @@ export function Leaderboard() {
                         ? "🥉"
                         : String(rank);
 
-                const factionIcon = FACTIONS.find(
-                  (f) => f.factionSlug === entry.factionSlug
-                )?.icon;
+                const factionIcon = null;
 
                 return (
                   <div
