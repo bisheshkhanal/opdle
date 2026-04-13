@@ -10,7 +10,7 @@ describe("RulesetTabs", () => {
     mockOnChange.mockClear();
   });
 
-  it("renders all 5 tabs correctly", () => {
+  it("renders all 6 tabs correctly", () => {
     render(
       <RulesetTabs activeRuleset="classic" onRulesetChange={mockOnChange} />
     );
@@ -20,6 +20,7 @@ describe("RulesetTabs", () => {
     expect(screen.getByTestId("ruleset-tab-wanted")).toBeInTheDocument();
     expect(screen.getByTestId("ruleset-tab-quote")).toBeInTheDocument();
     expect(screen.getByTestId("ruleset-tab-arc")).toBeInTheDocument();
+    expect(screen.getByTestId("ruleset-tab-four-seas")).toBeInTheDocument();
   });
 
   it("sets aria-selected true only on the active tab", () => {
@@ -47,6 +48,10 @@ describe("RulesetTabs", () => {
       "aria-selected",
       "false"
     );
+    expect(screen.getByTestId("ruleset-tab-four-seas")).toHaveAttribute(
+      "aria-selected",
+      "false"
+    );
   });
 
   it("calls onRulesetChange with correct ruleset when clicked", () => {
@@ -58,14 +63,12 @@ describe("RulesetTabs", () => {
     expect(mockOnChange).toHaveBeenCalledWith("wanted");
   });
 
-  it("does not include four-seas tab", () => {
+  it("includes four-seas tab", () => {
     render(
       <RulesetTabs activeRuleset="classic" onRulesetChange={mockOnChange} />
     );
 
-    expect(
-      screen.queryByTestId("ruleset-tab-four-seas")
-    ).not.toBeInTheDocument();
+    expect(screen.getByTestId("ruleset-tab-four-seas")).toBeInTheDocument();
   });
 
   it("has aria-label on tablist for screen readers", () => {
@@ -115,11 +118,13 @@ describe("RulesetTabs", () => {
 
     const tablist = screen.getByTestId("ruleset-tabs");
     fireEvent.keyDown(tablist, { key: "ArrowLeft" });
-    expect(mockOnChange).toHaveBeenCalledWith("arc");
+    expect(mockOnChange).toHaveBeenCalledWith("four-seas");
   });
 
   it("Home key navigates to first tab", () => {
-    render(<RulesetTabs activeRuleset="arc" onRulesetChange={mockOnChange} />);
+    render(
+      <RulesetTabs activeRuleset="four-seas" onRulesetChange={mockOnChange} />
+    );
 
     const tablist = screen.getByTestId("ruleset-tabs");
     fireEvent.keyDown(tablist, { key: "Home" });
@@ -133,7 +138,7 @@ describe("RulesetTabs", () => {
 
     const tablist = screen.getByTestId("ruleset-tabs");
     fireEvent.keyDown(tablist, { key: "End" });
-    expect(mockOnChange).toHaveBeenCalledWith("arc");
+    expect(mockOnChange).toHaveBeenCalledWith("four-seas");
   });
 
   it("decorative SVG icons have aria-hidden", () => {
