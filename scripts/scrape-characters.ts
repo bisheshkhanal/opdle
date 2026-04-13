@@ -6,6 +6,13 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { fileURLToPath } from "url";
+
+import type {
+  CharacterCrewHistoryEntry,
+  CharacterProvenance,
+  CharacterStatus,
+} from "@/lib/types";
 
 type Gender = "Male" | "Female" | "Unknown" | "Other";
 type DevilFruitType = "Paramecia" | "Zoan" | "Logia" | "None";
@@ -25,6 +32,11 @@ interface ScrapedCharacter {
   origin: string;
   firstArc: string;
   minTier: "nakama";
+  age?: number;
+  status?: CharacterStatus;
+  crewHistory?: CharacterCrewHistoryEntry[];
+  epithet?: string;
+  provenance?: CharacterProvenance;
   bountyHistory?: Array<{ amount: number; arc: string }>;
   devilFruitRevealedInArc?: string | null;
   hakiRevealedInArc?: Partial<Record<HakiType, string>>;
@@ -273,10 +285,12 @@ function parseAliases(raw: string): string[] {
   if (!raw) return [];
   const s = stripWiki(raw).trim();
   if (!s) return [];
-  return s
-    .split(/[,\n]/)
-    .map((x) => x.trim())
-    .filter((x) => x.length > 0);
+  return cleanAliases(
+    s
+      .split(/[,\n]/)
+      .map((x) => x.trim())
+      .filter((x) => x.length > 0)
+  );
 }
 
 interface CharBoxFields {
@@ -286,6 +300,89 @@ interface CharBoxFields {
   height?: string;
   origin?: string;
   epithet?: string;
+  age?: string;
+  status?: string;
+  crewHistory?: string;
+}
+
+function extractAge(infobox: CharBoxFields): number | null {
+  const raw = infobox.age?.trim();
+  if (!raw) return null;
+  const match = raw.match(/\b(\d{1,3})\b/);
+  if (!match) return null;
+  const age = parseInt(match[1], 10);
+  return Number.isNaN(age) ? null : age;
+}
+
+function extractStatus(infobox: CharBoxFields): CharacterStatus {
+  const raw = infobox.status?.trim();
+  if (!raw) return null;
+  const normalized = stripWiki(raw).toLowerCase();
+  if (normalized.includes("alive")) return "Alive";
+  if (normalized.includes("deceased") || normalized.includes("dead")) {
+    return "Deceased";
+  }
+  if (normalized.includes("unknown")) return "Unknown";
+  return null;
+}
+
+function cleanAliases(aliases: string[]): string[] {
+  return aliases
+    .map((alias) => alias.replace(/^["'|;\s]+|["'|;\s]+$/g, "").trim())
+    .filter((alias) => alias.length > 0);
+}
+
+function extractEpithet(infobox: CharBoxFields): string | null {
+  const raw = infobox.epithet?.trim();
+  if (!raw) return null;
+  const cleaned = stripWiki(raw).replace(/\s+/g, " ").trim();
+  return cleaned.length > 0 ? cleaned : null;
+}
+
+function parseCrewHistoryLine(line: string): CharacterCrewHistoryEntry | null {
+  const cleaned = stripWiki(line).replace(/\s+/g, " ").trim();
+  if (!cleaned) return null;
+
+  const entry: CharacterCrewHistoryEntry = { crew: cleaned };
+  const segments = cleaned.split(/\s*[|;]\s*/).filter(Boolean);
+
+  if (segments.length > 1) {
+    for (const segment of segments) {
+      const [key, ...rest] = segment.split(/\s*[:=]\s*/);
+      if (rest.length === 0) continue;
+      const value = rest.join(":").trim();
+      const normalizedKey = key.toLowerCase();
+      if (normalizedKey === "crew") entry.crew = value;
+      if (normalizedKey === "role") entry.role = value;
+      if (normalizedKey === "fromarc") entry.fromArc = value;
+      if (normalizedKey === "toarc") entry.toArc = value;
+    }
+    if (entry.crew) return entry;
+  }
+
+  return entry;
+}
+
+function extractCrewHistory(
+  infobox: CharBoxFields
+): CharacterCrewHistoryEntry[] | null {
+  const raw = infobox.crewHistory?.trim();
+  if (!raw) return null;
+
+  const entries = raw
+    .split(/<br\s*\/?>|\n|\|\|/gi)
+    .map((line) => parseCrewHistoryLine(line))
+    .filter((entry): entry is CharacterCrewHistoryEntry => entry !== null);
+
+  return entries.length > 0 ? entries : null;
+}
+
+function buildProvenance(source: string): CharacterProvenance {
+  return {
+    source,
+    scrapedAt: new Date().toISOString(),
+    version: 1,
+  };
 }
 
 function parseCharBox(wikitext: string): CharBoxFields {
@@ -303,6 +400,10 @@ function parseCharBox(wikitext: string): CharBoxFields {
     else if (key === "height") fields.height = val;
     else if (key === "origin") fields.origin = val;
     else if (key === "epithet") fields.epithet = val;
+    else if (key === "age") fields.age = val;
+    else if (key === "status") fields.status = val;
+    else if (key === "crew history") fields.crewHistory = val;
+    else if (key === "crewhistory") fields.crewHistory = val;
   }
   return fields;
 }
@@ -381,7 +482,37 @@ function buildCharacter(
   const origin = stripWiki(charBox.origin ?? "").trim() || "Unknown";
   const affiliationPrimary = parseAffiliation(charBox.affiliation ?? "");
   const aliases = parseAliases(charBox.epithet ?? "");
+  const age = extractAge(charBox);
+  const status = extractStatus(charBox);
+  const crewHistory = extractCrewHistory(charBox);
+  const epithet = extractEpithet(charBox);
   const id = generateId(name);
+
+  const enrichment: Pick<
+    ScrapedCharacter,
+    "age" | "status" | "crewHistory" | "epithet" | "provenance"
+  > = {};
+  let hasEnrichment = false;
+
+  if (age !== null) {
+    enrichment.age = age;
+    hasEnrichment = true;
+  }
+  if (status !== null) {
+    enrichment.status = status;
+    hasEnrichment = true;
+  }
+  if (crewHistory !== null) {
+    enrichment.crewHistory = crewHistory;
+    hasEnrichment = true;
+  }
+  if (epithet !== null) {
+    enrichment.epithet = epithet;
+    hasEnrichment = true;
+  }
+  if (hasEnrichment) {
+    enrichment.provenance = buildProvenance("wiki");
+  }
 
   return {
     id,
@@ -400,6 +531,7 @@ function buildCharacter(
     bountyHistory: bountyHistory,
     devilFruitRevealedInArc: dfType !== "None" ? firstArc : null,
     hakiRevealedInArc: hakiRevealedInArc,
+    ...enrichment,
   };
 }
 
@@ -520,7 +652,23 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("Fatal:", err);
-  process.exit(1);
-});
+if (
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
+  main().catch((err) => {
+    console.error("Fatal:", err);
+    process.exit(1);
+  });
+}
+
+export {
+  buildCharacter,
+  buildProvenance,
+  cleanAliases,
+  extractAge,
+  extractCrewHistory,
+  extractEpithet,
+  extractStatus,
+  parseCharBox,
+};
