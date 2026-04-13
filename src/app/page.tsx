@@ -349,6 +349,8 @@ export default function Home() {
                   streak={mode === "daily" ? dailyState?.streak : undefined}
                   hintUsed={false}
                   ruleset={activeRuleset}
+                  target={rulesetGame.targetCharacter || undefined}
+                  challengeMode={challengeMode}
                 />
               </div>
             )}
@@ -395,6 +397,13 @@ export default function Home() {
                   streak={undefined}
                   hintUsed={false}
                   ruleset={activeRuleset}
+                  target={
+                    fourSeasGame.targetCharacters[
+                      fourSeasGame.fourSeasState.boards["north"]
+                        .targetCharacterId
+                    ]
+                  }
+                  challengeMode={challengeMode}
                 />
               </div>
             )}

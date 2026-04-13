@@ -19,6 +19,12 @@ interface ProfileData {
     id: string;
     username: string;
     createdAt: string;
+    faction: {
+      factionId: string;
+      factionName: string;
+      factionSlug: string;
+      icon: string;
+    } | null;
   };
   stats: UserStatsRow[];
   meta: {
@@ -180,7 +186,19 @@ export default async function ProfilePage({
           <h1 className="font-display text-3xl font-semibold tracking-tight text-navy-800 dark:text-slate-100 md:text-4xl">
             {user.username}
           </h1>
-          <p className="mt-2 text-sm text-navy-500 dark:text-slate-400">
+
+          {user.faction ? (
+            <div className="mt-4 flex items-center gap-2 rounded-full border border-gold-400/30 bg-gold-400/10 px-3 py-1.5 text-sm font-semibold text-gold-700 shadow-sm dark:border-gold-500/30 dark:bg-gold-500/10 dark:text-gold-400">
+              <span className="text-base">{user.faction.icon}</span>
+              {user.faction.factionName}
+            </div>
+          ) : (
+            <div className="mt-4 flex items-center gap-2 rounded-full border border-navy-300/50 bg-navy-100/50 px-3 py-1.5 text-sm font-medium text-navy-600 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-400">
+              Unaffiliated Pirate
+            </div>
+          )}
+
+          <p className="mt-4 text-sm text-navy-500 dark:text-slate-400">
             Joined {joinedDate}
           </p>
         </div>

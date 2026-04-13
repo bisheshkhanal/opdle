@@ -21,6 +21,7 @@ interface GamePageHeaderProps {
   onOpenArchive: () => void;
   onOpenSettings: () => void;
   onOpenHowToPlay: () => void;
+  onOpenChallenges: () => void;
   onOpenLeaderboard: () => void;
   onOpenBountyBoard: () => void;
   onOpenStats: () => void;
@@ -40,6 +41,7 @@ export function GamePageHeader({
   onOpenArchive,
   onOpenSettings,
   onOpenHowToPlay,
+  onOpenChallenges,
   onOpenLeaderboard,
   onOpenBountyBoard,
   onOpenStats,
@@ -112,6 +114,31 @@ export function GamePageHeader({
               <circle cx="12" cy="12" r="10" />
               <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
               <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </button>
+          <button
+            onClick={onOpenChallenges}
+            className="rounded-lg p-2 text-navy-600 transition-colors hover:bg-navy-100 dark:text-slate-400 dark:hover:bg-slate-800"
+            aria-label="Challenges"
+            title="Challenges"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+              <polyline points="14 2 14 8 20 8" />
+              <path d="M8 13h2" />
+              <path d="M8 17h2" />
+              <path d="M14 13h2" />
+              <path d="M14 17h2" />
             </svg>
           </button>
           <button

@@ -265,6 +265,26 @@ export interface FactionSnapshot {
   factionSlug: string;
 }
 
+export interface FactionWeeklyContributionSummary {
+  points: number;
+  avgGuesses: number | null;
+}
+
+export interface FactionSummary {
+  factionSlug: string;
+  displayName: string;
+  weeklyContribution: FactionWeeklyContributionSummary | null;
+  memberSince: string;
+}
+
+export interface ChallengeSummary {
+  totalChallenges: number;
+  wins: number;
+  currentStreak: number;
+  bestStreak: number;
+  packCompletions: number;
+}
+
 export interface ShareCardPayload {
   template?: "dossier" | "bounty";
   title: string;
