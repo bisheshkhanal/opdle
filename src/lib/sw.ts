@@ -5,6 +5,8 @@ export const SW_DATA_VERSION = "v1";
 export const DATA_CACHE_NAME = "onepiecedle-data-v1";
 export const IMAGE_CACHE_NAME = "onepiecedle-images-v1";
 export const DATA_VERSION_CACHE_KEY = "/__sw-data-version__";
+export const NOTIFICATION_ICON = "/icon-192x192.png";
+export const NOTIFICATION_BADGE = "/icon-192x192.png";
 
 const CURRENT_CACHE_NAMES = [
   STATIC_CACHE_NAME,
@@ -157,4 +159,112 @@ export function extractShellAssetUrls(html: string, baseUrl: string): string[] {
   }
 
   return Array.from(assetUrls);
+}
+
+export interface PushNotificationPayload {
+  title: string;
+  body: string;
+  url: string;
+}
+
+type PushEventData =
+  | {
+      text?: () => string;
+    }
+  | null
+  | undefined;
+
+function isPushNotificationPayload(
+  value: unknown
+): value is PushNotificationPayload {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as PushNotificationPayload).title === "string" &&
+    typeof (value as PushNotificationPayload).body === "string" &&
+    typeof (value as PushNotificationPayload).url === "string"
+  );
+}
+
+export function normalizeNotificationUrl(url: string): string {
+  return new URL(url, self.location.origin).toString();
+}
+
+export function parsePushNotificationPayload(
+  data: PushEventData
+): PushNotificationPayload | null {
+  if (!data) {
+    console.warn("[sw] Dropping malformed push payload: missing data");
+    return null;
+  }
+
+  try {
+    const rawPayload =
+      typeof (data as { text?: () => string }).text === "function"
+        ? (data as { text: () => string }).text()
+        : JSON.stringify(data);
+    const parsedPayload = JSON.parse(rawPayload) as unknown;
+
+    if (!isPushNotificationPayload(parsedPayload)) {
+      console.warn("[sw] Dropping malformed push payload: invalid shape");
+      return null;
+    }
+
+    return {
+      title: parsedPayload.title,
+      body: parsedPayload.body,
+      url: normalizeNotificationUrl(parsedPayload.url),
+    };
+  } catch (error) {
+    console.warn("[sw] Dropping malformed push payload", error);
+    return null;
+  }
+}
+
+export function handlePushEvent(event: PushEvent): void {
+  event.waitUntil(
+    (async () => {
+      const payload = parsePushNotificationPayload(event.data);
+
+      if (!payload) {
+        return;
+      }
+
+      await self.registration.showNotification(payload.title, {
+        body: payload.body,
+        icon: NOTIFICATION_ICON,
+        badge: NOTIFICATION_BADGE,
+        data: { url: payload.url },
+      });
+    })()
+  );
+}
+
+export function handleNotificationClickEvent(event: NotificationEvent): void {
+  event.waitUntil(
+    (async () => {
+      const notificationUrl =
+        typeof event.notification.data?.url === "string"
+          ? normalizeNotificationUrl(event.notification.data.url)
+          : self.location.origin;
+
+      event.notification.close();
+
+      const windowClients = await clients.matchAll({
+        type: "window",
+        includeUncontrolled: true,
+      });
+
+      const existingClient = windowClients.find(
+        (client): client is WindowClient => typeof client.focus === "function"
+      );
+
+      if (existingClient) {
+        await existingClient.focus();
+        return;
+      }
+
+      await clients.openWindow(notificationUrl);
+    })()
+  );
 }

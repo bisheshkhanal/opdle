@@ -323,3 +323,95 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(fetch(request));
 });
+
+const NOTIFICATION_ICON = "/icon-192x192.png";
+const NOTIFICATION_BADGE = "/icon-192x192.png";
+
+function isPushNotificationPayload(value) {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof value.title === "string" &&
+    typeof value.body === "string" &&
+    typeof value.url === "string"
+  );
+}
+
+function normalizeNotificationUrl(url) {
+  return new URL(url, self.location.origin).toString();
+}
+
+function parsePushNotificationPayload(data) {
+  if (!data) {
+    console.warn("[sw] Dropping malformed push payload: missing data");
+    return null;
+  }
+
+  try {
+    const rawPayload =
+      typeof data.text === "function" ? data.text() : JSON.stringify(data);
+    const parsedPayload = JSON.parse(rawPayload);
+
+    if (!isPushNotificationPayload(parsedPayload)) {
+      console.warn("[sw] Dropping malformed push payload: invalid shape");
+      return null;
+    }
+
+    return {
+      title: parsedPayload.title,
+      body: parsedPayload.body,
+      url: normalizeNotificationUrl(parsedPayload.url),
+    };
+  } catch (error) {
+    console.warn("[sw] Dropping malformed push payload", error);
+    return null;
+  }
+}
+
+self.addEventListener("push", (event) => {
+  event.waitUntil(
+    (async () => {
+      const payload = parsePushNotificationPayload(event.data);
+
+      if (!payload) {
+        return;
+      }
+
+      await self.registration.showNotification(payload.title, {
+        body: payload.body,
+        icon: NOTIFICATION_ICON,
+        badge: NOTIFICATION_BADGE,
+        data: { url: payload.url },
+      });
+    })()
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.waitUntil(
+    (async () => {
+      const notificationUrl =
+        typeof event.notification.data?.url === "string"
+          ? normalizeNotificationUrl(event.notification.data.url)
+          : self.location.origin;
+
+      event.notification.close();
+
+      const windowClients = await clients.matchAll({
+        type: "window",
+        includeUncontrolled: true,
+      });
+
+      const existingClient = windowClients.find(
+        (client) => typeof client.focus === "function"
+      );
+
+      if (existingClient) {
+        await existingClient.focus();
+        return;
+      }
+
+      await clients.openWindow(notificationUrl);
+    })()
+  );
+});
