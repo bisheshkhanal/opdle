@@ -266,10 +266,16 @@ export interface FactionSnapshot {
 }
 
 export interface ShareCardPayload {
+  template?: "dossier" | "bounty";
   title: string;
   mode: GameMode;
   runKind: RunKind;
   ruleset: Ruleset;
+  brandingText?: string;
+  guessCount?: number;
+  emojiGrid?: string;
+  puzzleLabel?: string;
+  silhouetteUrl?: string | null;
   shareText: string;
   textFallback: string;
   shareUrl?: string | null;

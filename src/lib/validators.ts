@@ -37,10 +37,16 @@ export const factionSnapshotSchema = z.object({
 });
 
 export const shareCardPayloadSchema = z.object({
+  template: z.enum(["dossier", "bounty"]).optional(),
   title: z.string().min(1),
   mode: modeSchema,
   runKind: runKindSchema,
   ruleset: rulesetSchema,
+  brandingText: z.string().min(1).optional(),
+  guessCount: z.number().int().min(0).optional(),
+  emojiGrid: z.string().optional(),
+  puzzleLabel: z.string().min(1).optional(),
+  silhouetteUrl: z.string().min(1).nullable().optional(),
   shareText: z.string().min(1),
   textFallback: z.string().min(1),
   shareUrl: z.string().min(1).nullable().optional(),
