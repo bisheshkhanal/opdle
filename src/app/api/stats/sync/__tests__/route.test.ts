@@ -1,13 +1,29 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const { mockAuth } = vi.hoisted(() => ({ mockAuth: vi.fn() }));
+const { mockInsert } = vi.hoisted(() => ({ mockInsert: vi.fn() }));
 
 vi.mock("@/lib/auth", () => ({ auth: mockAuth }));
-vi.mock("@/lib/db", () => ({ db: {} }));
-vi.mock("@/lib/db/schema", () => ({ userStats: {} }));
+vi.mock("@/lib/db", () => ({
+  db: {
+    insert: mockInsert,
+  },
+}));
+vi.mock("@/lib/db/schema", () => ({
+  userStats: {},
+  userProgression: {},
+  userAchievements: {},
+  monthlyCollections: {},
+}));
 vi.mock("drizzle-orm", () => ({
   sql: vi.fn((s: TemplateStringsArray) => s[0]),
 }));
+
+const chain = {
+  values: vi.fn().mockReturnValue({
+    onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
+  }),
+};
 
 const validPayload = {
   dailyStats: {
@@ -40,10 +56,46 @@ const validPayload = {
   },
 };
 
+const payloadWithMeta = {
+  ...validPayload,
+  metaProgression: {
+    progressionSnapshot: { chapter: 12 },
+    completedSagaCount: 1,
+    achievementCount: 3,
+    completedCollectionCount: 2,
+  },
+  achievementProgress: {
+    brave_start: {
+      progress: 2,
+      target: 5,
+      status: "revealed",
+      unlockedAt: "2026-04-12T00:00:00.000Z",
+      lastUpdatedAt: "2026-04-12T00:00:00.000Z",
+      seasonKey: "2026-04",
+    },
+  },
+  monthlyCollections: {
+    activeSeasonKey: "2026-04",
+    seasons: {
+      "2026-04": {
+        collectibleId: "poster-1",
+        collectibleType: "bounty-poster",
+        targetFragments: 24,
+        revealedDays: ["2026-04-01"],
+        revealedFragmentIndexes: [0, 3],
+        completedAt: "2026-04-12T00:00:00.000Z",
+      },
+    },
+  },
+};
+
 describe("POST /api/stats/sync", () => {
   beforeEach(() => {
     vi.resetModules();
     mockAuth.mockReset();
+    mockInsert.mockReturnValue(chain);
+    chain.values.mockClear();
+    chain.values().onConflictDoUpdate.mockClear();
   });
 
   it("returns 401 when not authenticated", async () => {
@@ -78,15 +130,6 @@ describe("POST /api/stats/sync", () => {
       user: { id: "uuid-1", name: "luffy", email: null, image: null },
       expires: "",
     });
-    vi.doMock("@/lib/db", () => ({
-      db: {
-        insert: vi.fn().mockReturnValue({
-          values: vi.fn().mockReturnValue({
-            onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
-          }),
-        }),
-      },
-    }));
     const { POST } = await import("../route");
     const req = new Request("http://localhost/api/stats/sync", {
       method: "POST",
@@ -95,5 +138,40 @@ describe("POST /api/stats/sync", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(200);
+  });
+
+  it("accepts valid sync payload with optional meta fields", async () => {
+    mockAuth.mockResolvedValue({
+      user: { id: "uuid-1", name: "luffy", email: null, image: null },
+      expires: "",
+    });
+    const { POST } = await import("../route");
+    const req = new Request("http://localhost/api/stats/sync", {
+      method: "POST",
+      body: JSON.stringify(payloadWithMeta),
+      headers: { "Content-Type": "application/json" },
+    });
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+  });
+
+  it("rejects malformed meta fields", async () => {
+    mockAuth.mockResolvedValue({
+      user: { id: "uuid-1", name: "luffy", email: null, image: null },
+      expires: "",
+    });
+    const { POST } = await import("../route");
+    const req = new Request("http://localhost/api/stats/sync", {
+      method: "POST",
+      body: JSON.stringify({
+        ...validPayload,
+        metaProgression: {
+          completedSagaCount: -1,
+        },
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const res = await POST(req);
+    expect(res.status).toBe(400);
   });
 });

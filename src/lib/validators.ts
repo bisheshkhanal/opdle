@@ -42,6 +42,44 @@ export const statsSyncSchema = z.object({
   }),
 });
 
+const achievementProgressSchema = z.object({
+  progress: z.number().int().min(0).optional(),
+  target: z.number().int().min(0).optional(),
+  status: z.enum(["locked", "revealed", "unlocked"]).optional(),
+  unlockedAt: z.string().optional(),
+  lastUpdatedAt: z.string().optional(),
+  seasonKey: z.string().nullable().optional(),
+});
+
+const monthlySeasonSchema = z.object({
+  collectibleId: z.string().optional(),
+  collectibleType: z.enum(["bounty-poster", "vivre-card"]).optional(),
+  targetFragments: z.number().int().min(0).optional(),
+  revealedDays: z.array(z.string()).optional(),
+  revealedFragmentIndexes: z.array(z.number()).optional(),
+  completedAt: z.string().optional(),
+});
+
+export const metaProgressionSchema = z.object({
+  progressionSnapshot: z.record(z.string(), z.unknown()).optional(),
+  completedSagaCount: z.number().int().min(0).optional(),
+  achievementCount: z.number().int().min(0).optional(),
+  completedCollectionCount: z.number().int().min(0).optional(),
+});
+
+export const statsSyncWithMetaSchema = statsSyncSchema.extend({
+  metaProgression: metaProgressionSchema.optional(),
+  achievementProgress: z
+    .record(z.string(), achievementProgressSchema)
+    .optional(),
+  monthlyCollections: z
+    .object({
+      activeSeasonKey: z.string().optional(),
+      seasons: z.record(z.string(), monthlySeasonSchema).optional(),
+    })
+    .optional(),
+});
+
 export const dailyResultSchema = z.object({
   date: z
     .string()
