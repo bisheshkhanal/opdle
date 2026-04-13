@@ -9,6 +9,7 @@ import {
   getRulesetInfiniteState,
   saveRulesetInfiniteState,
 } from "@/lib/storage";
+import type { RulesetDailyState, RulesetInfiniteState } from "@/lib/types";
 import {
   initFourSeasState,
   applyFourSeasGuess,
@@ -101,12 +102,21 @@ export function useFourSeasGame(
       setState(newState);
 
       // Save to storage
-      // The serialize function returns FourSeasSerialized, we cast to any for storage
-      const serialized = serializeFourSeasState(newState) as any;
+      // FourSeasSerialized is structurally compatible at runtime — storage
+      // accepts unknown shapes and deserializeFourSeasState validates on load.
+      const serialized = serializeFourSeasState(newState);
       if (runKind === "daily") {
-        saveRulesetDailyState(serialized, tier, "four-seas");
+        saveRulesetDailyState(
+          serialized as unknown as RulesetDailyState,
+          tier,
+          "four-seas"
+        );
       } else if (runKind === "infinite") {
-        saveRulesetInfiniteState(serialized, tier, "four-seas");
+        saveRulesetInfiniteState(
+          serialized as unknown as RulesetInfiniteState,
+          tier,
+          "four-seas"
+        );
       }
     },
     [state, targetCharacterMap, allCharacters, runKind, tier]
