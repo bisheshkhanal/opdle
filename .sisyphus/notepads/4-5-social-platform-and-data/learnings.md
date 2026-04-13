@@ -194,3 +194,9 @@
 - Ensured graceful fallback when the user is anonymous or the sample size is under 5.
 - Wrote tests to ensure components behave correctly under various states (anon, low sample, full data).
 - Validated tests passed locally without affecting unrelated suites.
+
+## [S16] Challenge Comparison E2E
+- For tracked challenge modal coverage, mocking `**/api/challenges**` in one handler and branching by `pathname` avoids route-pattern collisions between `/api/challenges`, `/api/challenges/packs`, and `/api/challenges/:id`.
+- `Challenges` dialog has multiple headings containing the word "Challenges", so role selectors should use `{ exact: true }` for the top modal heading to avoid strict-mode ambiguity.
+- In classic daily completion, `ResultsShare` can render text-only sharing (`Copy Results`) instead of `Share Card`; E2E should assert share-surface availability rather than assuming a specific button label.
+- Stable daily-comparison assertions are best anchored on `data-testid` hooks (`distribution-chart`, `percentile-messaging`, `trend-section`) with a mocked `/api/daily-results` payload where `sampleSize >= 5`.
