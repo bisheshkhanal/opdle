@@ -1,3 +1,30 @@
+// Service worker global types not included in the "dom" lib.
+// Declared here to avoid adding "webworker" to tsconfig (which conflicts with DOM).
+interface PushMessageData {
+  json(): unknown;
+  text(): string;
+}
+
+interface PushEvent extends ExtendableEvent {
+  readonly data: PushMessageData | null;
+}
+
+interface NotificationOptions {
+  body?: string;
+  icon?: string;
+  badge?: string;
+  data?: unknown;
+}
+
+interface Notification {
+  readonly data: Record<string, unknown> | null;
+  close(): void;
+}
+
+interface NotificationEvent extends ExtendableEvent {
+  readonly notification: Notification;
+}
+
 export const SW_CACHE_VERSION = "v1";
 export const STATIC_CACHE_NAME = `onepiecedle-static-${SW_CACHE_VERSION}`;
 export const APP_SHELL_CACHE_NAME = `onepiecedle-shell-${SW_CACHE_VERSION}`;
