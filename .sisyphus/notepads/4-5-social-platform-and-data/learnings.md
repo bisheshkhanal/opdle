@@ -59,6 +59,12 @@
 - Faction profile data is best split into identity plus current-week contribution, with `joinedAt` surfaced as the public `memberSince` timestamp.
 - Challenge streaks can be derived safely from ordered public attempt rows, while pack completion counts stay public by comparing solved challenge IDs against pack entries.
 
+## [S15] Faction E2E Coverage
+- `How to Play` can open by default on first-load and blocks header icon clicks (`Leaderboard` / `Challenges`), so the E2E suite needs an explicit close step before interacting with header actions.
+- The social/faction coverage is more stable when API responses are mocked in-browser for leaderboard/challenges endpoints, because DB-backed routes can be unavailable in local runs while UI behavior still needs deterministic verification.
+- `/profile/[username]` uses a server-side fetch to `NEXTAUTH_URL` fallback (`localhost:3000`), so profile fallback coverage in port-3001 E2E is reliable only when a lightweight local profile API responder is available on 3000.
+- For challenges modal assertions, scope tab selectors inside `getByRole("dialog", { name: "Challenges" })` to avoid collisions with the header `Leaderboard` icon button.
+
 ## Push Reminder Schema Notes
 - `getTableConfig(table).indexes` is the useful introspection hook for Drizzle unique indexes in this repo/version; `uniqueConstraints` stayed empty for the new tables.
 - Zod 4.3.x supports `z.url()`, `z.base64()`, and `z.uuid()` for the push payload validators without extra helpers.
@@ -146,6 +152,12 @@
 - Incoming payloads can safely normalize to `/characters/{id}.png` in reporting, but the report should still surface non-standard incoming image URLs for auditability.
 - Provenance completeness should be reported separately from schema validity so enrichment can remain optional while still tracking metadata quality over time.
 
+## [P10] SW Push Handling
+- Validate push payloads before notification rendering; parse JSON from `event.data.text()` and drop malformed or shape-missing payloads with a warning.
+- Normalize notification deep links against `self.location.origin` so relative URLs survive the push -> click round trip.
+- `clients.matchAll({ type: "window", includeUncontrolled: true })` is enough to avoid duplicate tabs; focus the first available window client before calling `openWindow()`.
+- The worker logic is easier to test when the shared helper module exports the push/click handlers and URL normalization, while `public/sw.js` mirrors the same runtime behavior.
+
 ## [S6] Daily Comparison Analytics
 - Keep daily comparison analytics pure and fixture-driven: the service should aggregate immutable facts, not touch the DB, so percentile/rank logic stays easy to test.
 - Guess distributions are 6 buckets for wins only (`1..6`), while losses still count toward sample size and can leave rank/percentile null.
@@ -174,3 +186,11 @@
 - Created a `ChallengesModal` with `Packs`, `History & Streaks`, and `Leaderboard` tabs to cleanly separate the new tracked challenges from the `Leaderboard` component which handles daily/infinite modes.
 - Utilized the `useGameUiState` to seamlessly hook the `ChallengesModal` visibility into the existing `GameModalRegistry` and header patterns, maintaining application state consistency.
 - Maintained user access patterns by introducing an explicit unauthenticated state with a "Sign In" prompt inside the modal, ensuring unauthenticated users understand the value of tracked challenges without silent failures.
+
+## [S13] DailyComparison UI Upgrade
+- Upgraded `src/app/api/daily-results/route.ts` to return the full `DailyComparisonAnalyticsResult` using `buildDailyComparisonAnalytics`.
+- Included a left join with `factionMemberships` to provide faction data when available.
+- Updated `DailyComparison.tsx` to show global stats, rank/percentile messaging, a guess distribution chart with highlight on the user's bucket, a faction comparison row, and a historical trend chart.
+- Ensured graceful fallback when the user is anonymous or the sample size is under 5.
+- Wrote tests to ensure components behave correctly under various states (anon, low sample, full data).
+- Validated tests passed locally without affecting unrelated suites.
