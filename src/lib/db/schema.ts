@@ -8,6 +8,7 @@ import {
   jsonb,
   primaryKey,
   check,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
@@ -140,6 +141,62 @@ export const monthlyCollections = pgTable(
   })
 );
 
+export const pushSubscriptions = pgTable(
+  "push_subscriptions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    endpoint: text("endpoint").notNull(),
+    p256dhKey: text("p256dh_key").notNull(),
+    authKey: text("auth_key").notNull(),
+    userAgent: text("user_agent").notNull(),
+    timezone: text("timezone"),
+    utcOffset: integer("utc_offset"),
+    appOptIn: boolean("app_opt_in").default(true).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => ({
+    endpointUnique: uniqueIndex("push_subscriptions_endpoint_unique").on(
+      t.endpoint
+    ),
+  })
+);
+
+export const reminderAudit = pgTable(
+  "reminder_audit",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    subscriptionId: uuid("subscription_id")
+      .references(() => pushSubscriptions.id, { onDelete: "cascade" })
+      .notNull(),
+    date: text("date").notNull(),
+    tier: text("tier").notNull(),
+    sentAt: timestamp("sent_at", { withTimezone: true }).defaultNow().notNull(),
+    status: text("status").notNull(),
+  },
+  (t) => ({
+    dedupeUnique: uniqueIndex("reminder_audit_user_date_tier_unique").on(
+      t.userId,
+      t.date,
+      t.tier
+    ),
+    statusCheck: check(
+      "reminder_audit_status_check",
+      sql`${t.status} in ('sent', 'failed', 'skipped')`
+    ),
+  })
+);
+
 // Inferred types for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -151,3 +208,7 @@ export type UserAchievement = typeof userAchievements.$inferSelect;
 export type NewUserAchievement = typeof userAchievements.$inferInsert;
 export type MonthlyCollection = typeof monthlyCollections.$inferSelect;
 export type NewMonthlyCollection = typeof monthlyCollections.$inferInsert;
+export type PushSubscription = typeof pushSubscriptions.$inferSelect;
+export type NewPushSubscription = typeof pushSubscriptions.$inferInsert;
+export type ReminderAudit = typeof reminderAudit.$inferSelect;
+export type NewReminderAudit = typeof reminderAudit.$inferInsert;
