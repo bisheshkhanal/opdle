@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import characters from "./characters.v2.json";
 
-const MINIMUM_CHARACTER_COUNT = 231;
+const MINIMUM_STAGED_CHARACTER_COUNT = 231;
 
 type OptionalEnrichmentFields = {
   age?: number | null;
@@ -27,7 +27,9 @@ type OptionalEnrichmentFields = {
 
 describe("characters.v2.json data quality", () => {
   it("has at least the staged baseline number of characters", () => {
-    expect(characters.length).toBeGreaterThanOrEqual(MINIMUM_CHARACTER_COUNT);
+    expect(characters.length).toBeGreaterThanOrEqual(
+      MINIMUM_STAGED_CHARACTER_COUNT
+    );
   });
 
   it("keeps optional enrichment fields valid when present", () => {

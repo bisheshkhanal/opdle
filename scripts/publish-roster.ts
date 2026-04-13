@@ -130,6 +130,16 @@ function missingOrIncompleteProvenance(characters: Character[]): Character[] {
   });
 }
 
+function formatIds(characters: Character[], limit = 20): string {
+  const ids = characters.map((character) => character.id);
+  if (ids.length <= limit) {
+    return ids.join(", ");
+  }
+
+  const visible = ids.slice(0, limit);
+  return `${visible.join(", ")} ... (+${ids.length - limit} more)`;
+}
+
 function main(): void {
   const options = parseCliOptions();
 
@@ -161,6 +171,7 @@ function main(): void {
     stagedCharacters,
     options.imageDirPath
   );
+  const datasetProvenanceGaps = missingOrIncompleteProvenance(existing);
   const stagedProvenanceGaps = missingOrIncompleteProvenance(stagedCharacters);
 
   console.log("=== Roster Staged Publish Dry Run ===");
@@ -211,31 +222,29 @@ function main(): void {
   console.log("Step 3) Image gap report");
   console.log(`- Missing dataset images: ${datasetImageGaps.length}`);
   if (datasetImageGaps.length > 0) {
-    console.log(
-      `  Missing dataset image IDs: ${datasetImageGaps
-        .map((character) => character.id)
-        .join(", ")}`
-    );
+    console.log(`  Missing dataset image IDs: ${formatIds(datasetImageGaps)}`);
   }
   console.log(`- Missing staged images: ${stagedImageGaps.length}`);
   if (stagedImageGaps.length > 0) {
-    console.log(
-      `  Missing staged image IDs: ${stagedImageGaps
-        .map((character) => character.id)
-        .join(", ")}`
-    );
+    console.log(`  Missing staged image IDs: ${formatIds(stagedImageGaps)}`);
   }
   console.log("");
 
   console.log("Step 4) Provenance completeness report (staged additions)");
   console.log(
+    `- Dataset entries missing/incomplete provenance: ${datasetProvenanceGaps.length}`
+  );
+  if (datasetProvenanceGaps.length > 0) {
+    console.log(
+      `  Dataset missing provenance IDs: ${formatIds(datasetProvenanceGaps)}`
+    );
+  }
+  console.log(
     `- Staged additions missing/incomplete provenance: ${stagedProvenanceGaps.length}`
   );
   if (stagedProvenanceGaps.length > 0) {
     console.log(
-      `  Missing provenance IDs: ${stagedProvenanceGaps
-        .map((character) => character.id)
-        .join(", ")}`
+      `  Staged missing provenance IDs: ${formatIds(stagedProvenanceGaps)}`
     );
   }
   console.log("");
