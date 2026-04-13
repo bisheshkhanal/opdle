@@ -168,3 +168,9 @@
 - Late-week timing works best as a preference flag (`requireLateWeek`) rather than a hard blocker, so the same helper can support cron scheduling and manual backfills.
 - For cron-safe dispatch, choose one active subscription per user, then write a `reminder_audit` row with `onConflictDoNothing()` so reruns stay idempotent.
 - Deep links can stay simple: the root app URL with `?mode=daily&tier=...&date=...` is enough for the reminder payload and keeps the base URL configurable.
+
+### Task S11: Challenge UI Surfaces
+- Integrated tracked Challenge UI without disrupting the lightweight URL `?challenge=` flow. 
+- Created a `ChallengesModal` with `Packs`, `History & Streaks`, and `Leaderboard` tabs to cleanly separate the new tracked challenges from the `Leaderboard` component which handles daily/infinite modes.
+- Utilized the `useGameUiState` to seamlessly hook the `ChallengesModal` visibility into the existing `GameModalRegistry` and header patterns, maintaining application state consistency.
+- Maintained user access patterns by introducing an explicit unauthenticated state with a "Sign In" prompt inside the modal, ensuring unauthenticated users understand the value of tracked challenges without silent failures.

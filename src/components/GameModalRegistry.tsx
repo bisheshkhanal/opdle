@@ -16,6 +16,7 @@ import { SettingsModal } from "@/components/SettingsModal";
 import { AuthModal } from "@/components/AuthModal";
 import { HowToPlayModal } from "@/components/HowToPlayModal";
 import { ArchiveModal } from "@/components/ArchiveModal";
+import { ChallengesModal } from "@/components/ChallengesModal";
 
 interface GameModalRegistryProps {
   tier: Tier;
@@ -36,11 +37,14 @@ interface GameModalRegistryProps {
   showSettings: boolean;
   closeSettings: () => void;
   showAuthModal: boolean;
+  openAuthModal: () => void;
   closeAuthModal: () => void;
   showHowToPlay: boolean;
   closeHowToPlay: () => void;
   showArchive: boolean;
   closeArchive: () => void;
+  showChallenges: boolean;
+  closeChallenges: () => void;
 }
 
 export function GameModalRegistry({
@@ -61,11 +65,14 @@ export function GameModalRegistry({
   showSettings,
   closeSettings,
   showAuthModal,
+  openAuthModal,
   closeAuthModal,
   showHowToPlay,
   closeHowToPlay,
   showArchive,
   closeArchive,
+  showChallenges,
+  closeChallenges,
 }: GameModalRegistryProps) {
   return (
     <>
@@ -112,6 +119,21 @@ export function GameModalRegistry({
         characters={characters}
         tier={tier}
       />
+
+      <Modal
+        isOpen={showChallenges}
+        onClose={closeChallenges}
+        title="Challenges"
+        maxWidth="2xl"
+      >
+        <ChallengesModal
+          onClose={closeChallenges}
+          onSignInClick={() => {
+            closeChallenges();
+            openAuthModal();
+          }}
+        />
+      </Modal>
     </>
   );
 }

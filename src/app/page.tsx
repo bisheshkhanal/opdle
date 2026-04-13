@@ -172,6 +172,9 @@ export default function Home() {
     showSettings,
     showHowToPlay,
     showArchive,
+    showChallenges,
+    openChallenges,
+    closeChallenges,
     compassState,
     openStats,
     closeStats,
@@ -230,6 +233,7 @@ export default function Home() {
         onOpenArchive={openArchive}
         onOpenSettings={openSettings}
         onOpenHowToPlay={openHowToPlay}
+        onOpenChallenges={openChallenges}
         onOpenLeaderboard={openLeaderboard}
         onOpenBountyBoard={openBountyBoard}
         onOpenStats={openStats}
@@ -453,11 +457,14 @@ export default function Home() {
         showSettings={showSettings}
         closeSettings={closeSettings}
         showAuthModal={showAuthModal}
+        openAuthModal={openAuthModal}
         closeAuthModal={closeAuthModal}
         showHowToPlay={showHowToPlay}
         closeHowToPlay={closeHowToPlay}
         showArchive={showArchive}
         closeArchive={closeArchive}
+        showChallenges={showChallenges}
+        closeChallenges={closeChallenges}
       />
       <InstallPrompt
         settings={settings}

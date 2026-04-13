@@ -107,6 +107,7 @@ export function useGameUiState(game: GameControllerState): GameUiState {
     showSettings,
     showHowToPlay,
     showArchive,
+    showChallenges,
     compassState,
     settings,
     handleSettingsChange,
@@ -124,5 +125,7 @@ export function useGameUiState(game: GameControllerState): GameUiState {
     closeHowToPlay,
     openArchive: useCallback(() => setShowArchive(true), []),
     closeArchive: useCallback(() => setShowArchive(false), []),
+    openChallenges: useCallback(() => setShowChallenges(true), []),
+    closeChallenges: useCallback(() => setShowChallenges(false), []),
   };
 }
