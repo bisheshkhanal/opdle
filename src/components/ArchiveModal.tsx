@@ -2,11 +2,13 @@
 
 import { useMemo } from "react";
 import type { Character, Tier } from "@/lib/types";
-import { loadStorage } from "@/lib/storage";
+import { getLogPose, loadStorage } from "@/lib/storage";
 import { selectDailyCharacter, getUTCDateString } from "@/lib/daily";
 import { getCharactersForTier } from "@/lib/tier";
 import { getLocalCharacterImageUrl } from "@/lib/images";
 import { Modal } from "@/components/Modal";
+import { getSagaDef } from "@/lib/progression/sagaCatalog";
+import { getSagaIdForArc } from "@/lib/progression/sagaMapping";
 
 interface ArchiveModalProps {
   isOpen: boolean;
@@ -22,6 +24,7 @@ interface ArchiveEntry {
   isWon: boolean;
   isFinished: boolean;
   guessCount: number;
+  tags: string[];
 }
 
 function formatDate(dateString: string): string {
@@ -35,6 +38,10 @@ function formatDate(dateString: string): string {
   });
 }
 
+function formatProtectedDay(protectedDay: string): string {
+  return protectedDay.endsWith("+1") ? protectedDay.slice(0, -2) : protectedDay;
+}
+
 export function ArchiveModal({
   isOpen,
   onClose,
@@ -45,6 +52,7 @@ export function ArchiveModal({
     const storage = loadStorage();
     const today = getUTCDateString();
     const tierPrefix = `${tier}:`;
+    const logPose = getLogPose(tier);
 
     const tierCharacters = getCharactersForTier(characters, tier);
 
@@ -59,6 +67,14 @@ export function ArchiveModal({
 
       try {
         const target = selectDailyCharacter(tierCharacters, date, tier);
+        const sagaId = getSagaIdForArc(target.firstArc);
+        const sagaLabel = sagaId
+          ? getSagaDef(sagaId).label.replace(/\s+Saga$/, "")
+          : null;
+        const wasProtected = logPose.consumptions.some(
+          (consumption) => formatProtectedDay(consumption.protectedDay) === date
+        );
+
         results.push({
           date,
           formattedDate: formatDate(date),
@@ -66,6 +82,10 @@ export function ArchiveModal({
           isWon: dailyState.isWon,
           isFinished: dailyState.isFinished,
           guessCount: dailyState.guesses.length,
+          tags: [
+            ...(sagaLabel ? [`🗺️ ${sagaLabel}`] : []),
+            ...(wasProtected ? ["🧭 Protected"] : []),
+          ],
         });
       } catch {
         continue;
@@ -106,6 +126,18 @@ export function ArchiveModal({
                 <p className="text-xs text-navy-500 dark:text-slate-400">
                   {entry.formattedDate}
                 </p>
+                {entry.tags.length > 0 ? (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {entry.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className={`rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${tag.startsWith("🗺️") ? "bg-gold-400/15 text-gold-700 dark:bg-gold-500/15 dark:text-gold-200" : "bg-navy-100/80 text-navy-700 dark:bg-slate-700/80 dark:text-slate-200"}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
               </div>
 
               <div className="flex flex-shrink-0 flex-col items-end gap-0.5">

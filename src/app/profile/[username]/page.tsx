@@ -21,6 +21,21 @@ interface ProfileData {
     createdAt: string;
   };
   stats: UserStatsRow[];
+  meta: {
+    completedSagaCount: number;
+    achievementCount: number;
+    completedCollectionCount: number;
+    recentAchievements: Array<{
+      id: string;
+      label: string;
+      unlockedAt: string;
+    }>;
+    completedCollections: Array<{
+      seasonKey: string;
+      collectibleType: string;
+      completedAt: string;
+    }>;
+  };
 }
 
 const TIER_LABELS: Record<Tier, string> = {
@@ -102,6 +117,14 @@ function getWinRate(totalWins: number, totalGames: number): string {
   return `${Math.round((totalWins / totalGames) * 100)}%`;
 }
 
+function formatMetaDate(value: string): string {
+  return new Date(value).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export default async function ProfilePage({
   params,
 }: {
@@ -120,7 +143,7 @@ export default async function ProfilePage({
     throw new Error("Failed to fetch profile");
   }
 
-  const { user, stats } = (await response.json()) as ProfileData;
+  const { user, stats, meta } = (await response.json()) as ProfileData;
   const joinedDate = new Date(user.createdAt).toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
@@ -263,6 +286,83 @@ export default async function ProfilePage({
               );
             })
           )}
+
+          <section className="game-card space-y-6 p-6 sm:p-7">
+            <div>
+              <h2 className="font-display text-xl font-semibold text-navy-800 dark:text-slate-100 sm:text-2xl">
+                Completed Sagas
+              </h2>
+              <p className="mt-1 text-sm text-navy-500 dark:text-slate-400">
+                {meta.completedSagaCount > 0
+                  ? `${meta.completedSagaCount} saga${meta.completedSagaCount === 1 ? "" : "s"} completed`
+                  : "No sagas completed yet."}
+              </p>
+            </div>
+
+            <div>
+              <h2 className="font-display text-xl font-semibold text-navy-800 dark:text-slate-100 sm:text-2xl">
+                Monthly Collections
+              </h2>
+              {meta.completedCollections.length === 0 ? (
+                <p className="mt-2 text-sm text-navy-500 dark:text-slate-400">
+                  None yet.
+                </p>
+              ) : (
+                <div className="mt-3 space-y-2">
+                  {meta.completedCollections.map((collection) => (
+                    <div
+                      key={`${collection.seasonKey}-${collection.collectibleType}`}
+                      className="rounded-lg border border-parchment-300/60 bg-parchment-50/80 px-4 py-3 dark:border-slate-700/60 dark:bg-slate-800/80"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="font-medium text-navy-800 dark:text-slate-100">
+                          {collection.seasonKey}
+                        </p>
+                        <span className="rounded-full bg-gold-400/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold-700 dark:bg-gold-500/15 dark:text-gold-200">
+                          {collection.collectibleType.replace("-", " ")}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-navy-500 dark:text-slate-400">
+                        Completed {formatMetaDate(collection.completedAt)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h2 className="font-display text-xl font-semibold text-navy-800 dark:text-slate-100 sm:text-2xl">
+                Recent Achievements
+              </h2>
+              {meta.recentAchievements.length === 0 ? (
+                <p className="mt-2 text-sm text-navy-500 dark:text-slate-400">
+                  None yet.
+                </p>
+              ) : (
+                <div className="mt-3 space-y-2">
+                  {meta.recentAchievements.map((achievement) => (
+                    <div
+                      key={achievement.id}
+                      className="rounded-lg border border-parchment-300/60 bg-parchment-50/80 px-4 py-3 dark:border-slate-700/60 dark:bg-slate-800/80"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="font-medium text-navy-800 dark:text-slate-100">
+                          {achievement.label}
+                        </p>
+                        <span className="rounded-full bg-gold-400/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-gold-700 dark:bg-gold-500/15 dark:text-gold-200">
+                          Unlocked
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-navy-500 dark:text-slate-400">
+                        {formatMetaDate(achievement.unlockedAt)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
         </div>
       </div>
     </main>

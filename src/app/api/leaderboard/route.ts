@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { userStats, users } from "@/lib/db/schema";
+import { userStats, users, userProgression } from "@/lib/db/schema";
 import { eq, desc, and } from "drizzle-orm";
 import { tierSchema, modeSchema } from "@/lib/validators";
 
@@ -28,9 +28,13 @@ export async function GET(request: Request) {
       maxStreak: userStats.maxStreak,
       totalWins: userStats.totalWins,
       totalGames: userStats.totalGames,
+      achievementCount: userProgression.achievementCount,
+      completedSagaCount: userProgression.completedSagaCount,
+      completedCollectionCount: userProgression.completedCollectionCount,
     })
     .from(userStats)
     .innerJoin(users, eq(users.id, userStats.userId))
+    .leftJoin(userProgression, eq(users.id, userProgression.userId))
     .where(
       and(
         eq(userStats.tier, tierParsed.data),
@@ -40,5 +44,12 @@ export async function GET(request: Request) {
     .orderBy(desc(userStats.maxStreak), desc(userStats.totalWins))
     .limit(50);
 
-  return NextResponse.json(rows);
+  return NextResponse.json(
+    rows.map((row) => ({
+      ...row,
+      achievementCount: row.achievementCount ?? 0,
+      completedSagaCount: row.completedSagaCount ?? 0,
+      completedCollectionCount: row.completedCollectionCount ?? 0,
+    }))
+  );
 }
