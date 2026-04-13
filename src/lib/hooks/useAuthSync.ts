@@ -16,7 +16,12 @@ export function useAuthSync() {
 
   // Full sync on login (session transitions from unauthenticated → authenticated)
   useEffect(() => {
-    if (status !== "authenticated" || hasSyncedRef.current) return;
+    if (
+      status !== "authenticated" ||
+      hasSyncedRef.current ||
+      !session?.user?.id
+    )
+      return;
     hasSyncedRef.current = true;
 
     const storage = loadStorage();
@@ -31,7 +36,7 @@ export function useAuthSync() {
     }).catch(() => {
       // Silent failure — localStorage remains source of truth
     });
-  }, [status]);
+  }, [session?.user?.id, status]);
 
   // Reset sync flag on logout so next login re-syncs
   useEffect(() => {
@@ -49,7 +54,7 @@ export function useAuthSync() {
       isWon: boolean;
       hintUsed: boolean;
     }) => {
-      if (!session?.user?.id) return;
+      if (status !== "authenticated" || !session?.user?.id) return;
 
       fetch("/api/stats/daily-result", {
         method: "POST",
@@ -59,7 +64,7 @@ export function useAuthSync() {
         // Silent failure
       });
     },
-    [session]
+    [session?.user?.id, status]
   );
 
   return {

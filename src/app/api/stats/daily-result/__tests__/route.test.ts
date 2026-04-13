@@ -32,6 +32,18 @@ describe("POST /api/stats/daily-result", () => {
     expect(res.status).toBe(401);
   });
 
+  it("returns 401 before parsing JSON when not authenticated", async () => {
+    mockAuth.mockResolvedValue(null);
+    const { POST } = await import("../route");
+    const req = new Request("http://localhost/api/stats/daily-result", {
+      method: "POST",
+      body: "{",
+      headers: { "Content-Type": "application/json" },
+    });
+    const res = await POST(req);
+    expect(res.status).toBe(401);
+  });
+
   it("returns 400 for invalid date format", async () => {
     mockAuth.mockResolvedValue({
       user: { id: "uuid-1", name: "luffy", email: null, image: null },

@@ -11,6 +11,9 @@
     "heightCm": 185,
     "origin": "South Blue",
     "firstArc": "Arabasta",
+    "age": 20,
+    "status": "Deceased",
+    "epithet": "Fire Fist",
     "aliases": ["Fire Fist", "Ace"],
     "minTier": "casual",
     "bountyHistory": [
@@ -48,6 +51,9 @@
     "heightCm": 306,
     "origin": "North Blue",
     "firstArc": "Marineford",
+    "age": 55,
+    "status": "Alive",
+    "epithet": "Red Dog",
     "aliases": ["Akainu", "Red Dog"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -87,6 +93,9 @@
     "heightCm": 298,
     "origin": "South Blue",
     "firstArc": "Long Ring Long Land",
+    "age": 49,
+    "status": "Alive",
+    "epithet": "Blue Pheasant",
     "aliases": ["Aokiji", "Blue Pheasant"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -221,6 +230,9 @@
     "heightCm": 880,
     "origin": "Grand Line",
     "firstArc": "Fish-Man Island",
+    "age": 68,
+    "status": "Unknown",
+    "epithet": "Big Mom",
     "aliases": ["Big Mom"],
     "minTier": "casual",
     "bountyHistory": [
@@ -258,6 +270,9 @@
     "heightCm": 344,
     "origin": "Grand Line",
     "firstArc": "Jaya",
+    "age": 40,
+    "status": "Alive",
+    "epithet": "Blackbeard",
     "aliases": ["Blackbeard"],
     "minTier": "casual",
     "bountyHistory": [
@@ -284,6 +299,9 @@
     "heightCm": 191,
     "origin": "Calm Belt",
     "firstArc": "Amazon Lily",
+    "age": 31,
+    "status": "Alive",
+    "epithet": "Pirate Empress",
     "aliases": ["Snake Princess", "Pirate Empress"],
     "minTier": "casual",
     "bountyHistory": [
@@ -357,6 +375,9 @@
     "heightCm": 277,
     "origin": "West Blue",
     "firstArc": "Thriller Bark",
+    "age": 90,
+    "status": "Alive",
+    "epithet": "Soul King",
     "aliases": ["Soul King", "Dead Bones"],
     "minTier": "casual",
     "bountyHistory": [
@@ -390,6 +411,8 @@
     "heightCm": 192,
     "origin": "Grand Line",
     "firstArc": "Orange Town",
+    "age": 39,
+    "status": "Alive",
     "aliases": ["Buggy the Clown", "Star Clown"],
     "minTier": "casual",
     "bountyHistory": [
@@ -439,6 +462,8 @@
     "heightCm": 309,
     "origin": "Grand Line",
     "firstArc": "Punk Hazard",
+    "age": 58,
+    "status": "Alive",
     "aliases": ["Master", "Gangster Gastino"],
     "minTier": "fan",
     "bountyHistory": [],
@@ -519,6 +544,8 @@
     "heightCm": 208,
     "origin": "Grand Line",
     "firstArc": "Dressrosa",
+    "age": 24,
+    "status": "Alive",
     "aliases": ["White Cavendish", "Hakuba"],
     "minTier": "fan",
     "bountyHistory": [
@@ -545,6 +572,9 @@
     "heightCm": 90,
     "origin": "Drum Island",
     "firstArc": "Drum Island",
+    "age": 17,
+    "status": "Alive",
+    "epithet": "Cotton Candy Lover",
     "aliases": ["Cotton Candy Lover", "Chopper"],
     "minTier": "casual",
     "bountyHistory": [
@@ -578,6 +608,9 @@
     "heightCm": 167,
     "origin": "East Blue",
     "firstArc": "Romance Dawn",
+    "age": 18,
+    "status": "Alive",
+    "epithet": "Hero Coby",
     "aliases": ["Coby", "Hero Coby"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -625,6 +658,9 @@
     "heightCm": 253,
     "origin": "Grand Line",
     "firstArc": "Little Garden",
+    "age": 46,
+    "status": "Alive",
+    "epithet": "Desert King",
     "aliases": ["Sir Crocodile", "Mr. 0"],
     "minTier": "casual",
     "bountyHistory": [
@@ -713,6 +749,9 @@
     "heightCm": 305,
     "origin": "Red Line",
     "firstArc": "Jaya",
+    "age": 41,
+    "status": "Alive",
+    "epithet": "Heavenly Yaksha",
     "aliases": ["Joker", "Heavenly Yaksha"],
     "minTier": "casual",
     "bountyHistory": [
@@ -768,6 +807,9 @@
     "heightCm": 256,
     "origin": "East Blue",
     "firstArc": "Loguetown",
+    "age": 55,
+    "status": "Alive",
+    "epithet": "World's Worst Criminal",
     "aliases": ["Dragon", "World's Worst Criminal"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -854,6 +896,9 @@
     "heightCm": 240,
     "origin": "South Blue",
     "firstArc": "Water 7",
+    "age": 36,
+    "status": "Alive",
+    "epithet": "Cyborg",
     "aliases": ["Cutty Flam", "Cyborg"],
     "minTier": "casual",
     "bountyHistory": [
@@ -926,6 +971,9 @@
     "heightCm": 287,
     "origin": "East Blue",
     "firstArc": "Arlong Park",
+    "age": 78,
+    "status": "Alive",
+    "epithet": "Hero of the Marines",
     "aliases": ["Garp", "Hero of the Marines", "Garp the Fist"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -1096,6 +1144,9 @@
     "heightCm": 301,
     "origin": "Grand Line",
     "firstArc": "Impel Down",
+    "age": 46,
+    "status": "Alive",
+    "epithet": "Knight of the Sea",
     "aliases": ["Knight of the Sea", "First Son of the Sea"],
     "minTier": "casual",
     "bountyHistory": [
@@ -1149,6 +1200,9 @@
     "heightCm": 710,
     "origin": "Grand Line",
     "firstArc": "Dressrosa",
+    "age": 59,
+    "status": "Unknown",
+    "epithet": "King of the Beasts",
     "aliases": ["Kaido of the Beasts", "Strongest Creature"],
     "minTier": "casual",
     "bountyHistory": [
@@ -1352,6 +1406,9 @@
     "heightCm": 302,
     "origin": "North Blue",
     "firstArc": "Sabaody Archipelago",
+    "age": 58,
+    "status": "Alive",
+    "epithet": "Yellow Monkey",
     "aliases": ["Kizaru", "Yellow Monkey"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -1453,6 +1510,9 @@
     "heightCm": 191,
     "origin": "North Blue",
     "firstArc": "Sabaody Archipelago",
+    "age": 26,
+    "status": "Alive",
+    "epithet": "Surgeon of Death",
     "aliases": ["Law", "Surgeon of Death"],
     "minTier": "casual",
     "bountyHistory": [
@@ -1489,12 +1549,39 @@
     "heightCm": 174,
     "origin": "East Blue",
     "firstArc": "Romance Dawn",
+    "age": 19,
+    "status": "Alive",
+    "epithet": "Straw Hat",
     "aliases": ["Luffy", "Straw Hat", "Mugiwara"],
     "minTier": "casual",
     "bountyHistory": [
       {
+        "amount": 30000000,
+        "arc": "Arlong Park"
+      },
+      {
+        "amount": 100000000,
+        "arc": "Arabasta"
+      },
+      {
+        "amount": 300000000,
+        "arc": "Enies Lobby"
+      },
+      {
+        "amount": 400000000,
+        "arc": "Marineford"
+      },
+      {
+        "amount": 500000000,
+        "arc": "Dressrosa"
+      },
+      {
+        "amount": 1500000000,
+        "arc": "Whole Cake Island"
+      },
+      {
         "amount": 3000000000,
-        "arc": "Romance Dawn"
+        "arc": "Wano Country"
       }
     ],
     "devilFruitRevealedInArc": "Romance Dawn",
@@ -1512,7 +1599,8 @@
         "kind": "quote",
         "text": "I'm going to be King of the Pirates!"
       }
-    ]
+    ],
+    "quotesOrLaughs": ["Shishishi", "I'm going to be King of the Pirates!"]
   },
   {
     "id": "magellan",
@@ -1544,6 +1632,9 @@
     "heightCm": 203,
     "origin": "Grand Line",
     "firstArc": "Jaya",
+    "age": 45,
+    "status": "Alive",
+    "epithet": "Phoenix",
     "aliases": ["Marco the Phoenix", "Phoenix"],
     "minTier": "casual",
     "bountyHistory": [
@@ -1570,6 +1661,9 @@
     "heightCm": 198,
     "origin": "Grand Line",
     "firstArc": "Baratie",
+    "age": 43,
+    "status": "Alive",
+    "epithet": "Hawk Eyes",
     "aliases": ["Hawk Eyes", "Greatest Swordsman"],
     "minTier": "casual",
     "bountyHistory": [
@@ -1657,22 +1751,46 @@
     "heightCm": 170,
     "origin": "East Blue",
     "firstArc": "Orange Town",
+    "age": 20,
+    "status": "Alive",
+    "epithet": "Cat Burglar",
     "aliases": ["Cat Burglar"],
     "minTier": "casual",
     "bountyHistory": [
       {
+        "amount": 16000000,
+        "arc": "Enies Lobby"
+      },
+      {
+        "amount": 66000000,
+        "arc": "Dressrosa"
+      },
+      {
         "amount": 366000000,
-        "arc": "Orange Town"
+        "arc": "Wano Country"
       }
     ],
     "devilFruitRevealedInArc": null,
     "hakiRevealedInArc": {},
+    "crewHistory": [
+      {
+        "crew": "Arlong Pirates",
+        "role": "Cartographer",
+        "toArc": "Arlong Park"
+      },
+      {
+        "crew": "Straw Hat Pirates",
+        "role": "Navigator",
+        "fromArc": "Arlong Park"
+      }
+    ],
     "clues": [
       {
         "kind": "quote",
         "text": "I'll draw a map of the world."
       }
-    ]
+    ],
+    "quotesOrLaughs": ["I'll draw a map of the world."]
   },
   {
     "id": "nekomamushi",
@@ -1907,6 +2025,9 @@
     "heightCm": 188,
     "origin": "Grand Line",
     "firstArc": "Sabaody Archipelago",
+    "age": 78,
+    "status": "Alive",
+    "epithet": "Dark King",
     "aliases": ["Dark King", "Rayleigh"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -1968,16 +2089,43 @@
     "heightCm": 188,
     "origin": "West Blue",
     "firstArc": "Whisky Peak",
+    "age": 30,
+    "status": "Alive",
+    "epithet": "Devil Child",
     "aliases": ["Robin", "Devil Child"],
     "minTier": "casual",
     "bountyHistory": [
       {
+        "amount": 79000000,
+        "arc": "Ohara"
+      },
+      {
+        "amount": 80000000,
+        "arc": "Enies Lobby"
+      },
+      {
+        "amount": 130000000,
+        "arc": "Dressrosa"
+      },
+      {
         "amount": 930000000,
-        "arc": "Whisky Peak"
+        "arc": "Wano Country"
       }
     ],
     "devilFruitRevealedInArc": "Whisky Peak",
     "hakiRevealedInArc": {},
+    "crewHistory": [
+      {
+        "crew": "Baroque Works",
+        "role": "Vice President",
+        "toArc": "Alabasta"
+      },
+      {
+        "crew": "Straw Hat Pirates",
+        "role": "Archaeologist",
+        "fromArc": "Alabasta"
+      }
+    ],
     "clues": [
       {
         "kind": "quote",
@@ -1987,7 +2135,8 @@
         "kind": "epithet",
         "text": "Devil Child"
       }
-    ]
+    ],
+    "quotesOrLaughs": ["I want to live!", "Dereshishishi"]
   },
   {
     "id": "sabo",
@@ -2001,6 +2150,9 @@
     "heightCm": 187,
     "origin": "East Blue",
     "firstArc": "Post-War",
+    "age": 22,
+    "status": "Alive",
+    "epithet": "Flame Emperor",
     "aliases": ["Flame Emperor"],
     "minTier": "casual",
     "bountyHistory": [
@@ -2027,12 +2179,27 @@
     "heightCm": 180,
     "origin": "North Blue",
     "firstArc": "Baratie",
+    "age": 21,
+    "status": "Alive",
+    "epithet": "Black Leg",
     "aliases": ["Sanji", "Black Leg"],
     "minTier": "casual",
     "bountyHistory": [
       {
+        "amount": 77000000,
+        "arc": "Enies Lobby"
+      },
+      {
+        "amount": 177000000,
+        "arc": "Dressrosa"
+      },
+      {
+        "amount": 330000000,
+        "arc": "Whole Cake Island"
+      },
+      {
         "amount": 1032000000,
-        "arc": "Baratie"
+        "arc": "Wano Country"
       }
     ],
     "devilFruitRevealedInArc": null,
@@ -2040,6 +2207,18 @@
       "O": "Baratie",
       "A": "Baratie"
     },
+    "crewHistory": [
+      {
+        "crew": "Baratie",
+        "role": "Cook",
+        "toArc": "Baratie"
+      },
+      {
+        "crew": "Straw Hat Pirates",
+        "role": "Cook",
+        "fromArc": "Baratie"
+      }
+    ],
     "clues": [
       {
         "kind": "laugh",
@@ -2049,7 +2228,8 @@
         "kind": "quote",
         "text": "A chef must never use his hands for fighting."
       }
-    ]
+    ],
+    "quotesOrLaughs": ["Pffft", "A chef must never use his hands for fighting."]
   },
   {
     "id": "saturn",
@@ -2085,6 +2265,9 @@
     "heightCm": 278,
     "origin": "South Blue",
     "firstArc": "Jaya",
+    "age": 79,
+    "status": "Alive",
+    "epithet": "Buddha",
     "aliases": ["Sengoku the Buddha"],
     "minTier": "casual",
     "bountyHistory": [],
@@ -2336,24 +2519,48 @@
     "heightCm": 176,
     "origin": "East Blue",
     "firstArc": "Syrup Village",
+    "age": 19,
+    "status": "Alive",
+    "epithet": "God Usopp",
     "aliases": ["Sogeking", "God Usopp"],
     "minTier": "casual",
     "bountyHistory": [
       {
+        "amount": 30000000,
+        "arc": "Enies Lobby"
+      },
+      {
+        "amount": 200000000,
+        "arc": "Dressrosa"
+      },
+      {
         "amount": 500000000,
-        "arc": "Syrup Village"
+        "arc": "Wano Country"
       }
     ],
     "devilFruitRevealedInArc": null,
     "hakiRevealedInArc": {
       "O": "Syrup Village"
     },
+    "crewHistory": [
+      {
+        "crew": "Usopp Pirates",
+        "role": "Captain",
+        "toArc": "Syrup Village"
+      },
+      {
+        "crew": "Straw Hat Pirates",
+        "role": "Sniper",
+        "fromArc": "Syrup Village"
+      }
+    ],
     "clues": [
       {
         "kind": "quote",
         "text": "I am the great warrior Usopp!"
       }
-    ]
+    ],
+    "quotesOrLaughs": ["I am the great warrior Usopp!"]
   },
   {
     "id": "van-augur",
@@ -2492,6 +2699,9 @@
     "heightCm": 666,
     "origin": "Grand Line",
     "firstArc": "Jaya",
+    "age": 72,
+    "status": "Deceased",
+    "epithet": "Whitebeard",
     "aliases": ["Whitebeard", "Strongest Man in the World"],
     "minTier": "casual",
     "bountyHistory": [
@@ -2569,12 +2779,27 @@
     "heightCm": 181,
     "origin": "East Blue",
     "firstArc": "Romance Dawn",
+    "age": 21,
+    "status": "Alive",
+    "epithet": "Pirate Hunter",
     "aliases": ["Zoro", "Pirate Hunter"],
     "minTier": "casual",
     "bountyHistory": [
       {
+        "amount": 60000000,
+        "arc": "Arabasta"
+      },
+      {
+        "amount": 120000000,
+        "arc": "Enies Lobby"
+      },
+      {
+        "amount": 320000000,
+        "arc": "Dressrosa"
+      },
+      {
         "amount": 1111000000,
-        "arc": "Romance Dawn"
+        "arc": "Wano Country"
       }
     ],
     "devilFruitRevealedInArc": null,
@@ -2588,7 +2813,8 @@
         "kind": "quote",
         "text": "Nothing happened."
       }
-    ]
+    ],
+    "quotesOrLaughs": ["Nothing happened."]
   },
   {
     "id": "zunisha",
@@ -2719,7 +2945,7 @@
   {
     "id": "shiryu",
     "name": "Shiryu",
-    "aliases": ["\"Shiryu of the Rain\""],
+    "aliases": ["Shiryu of the Rain"],
     "imageUrl": "/characters/shiryu.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
@@ -2739,7 +2965,7 @@
   {
     "id": "avalo-pizarro",
     "name": "Avalo Pizarro",
-    "aliases": ["\"Corrupt King\""],
+    "aliases": ["Corrupt King"],
     "imageUrl": "/characters/avalo-pizarro.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
@@ -2757,7 +2983,7 @@
   {
     "id": "catarina-devon",
     "name": "Catarina Devon",
-    "aliases": ["\"Crescent Moon Hunter\""],
+    "aliases": ["Crescent Moon Hunter"],
     "imageUrl": "/characters/catarina-devon.png",
     "gender": "Female",
     "affiliationPrimary": "Blackbeard Pirates",
@@ -2775,7 +3001,7 @@
   {
     "id": "laffitte",
     "name": "Laffitte",
-    "aliases": ["\"Demon Sheriff\""],
+    "aliases": ["Demon Sheriff"],
     "imageUrl": "/characters/laffitte.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
@@ -2798,7 +3024,7 @@
   {
     "id": "vasco-shot",
     "name": "Vasco Shot",
-    "aliases": ["\"Heavy Drinker\" Vasco Shot"],
+    "aliases": ["Heavy Drinker Vasco Shot"],
     "imageUrl": "/characters/vasco-shot.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
@@ -2816,7 +3042,7 @@
   {
     "id": "sanjuan-wolf",
     "name": "Sanjuan Wolf",
-    "aliases": ["\"Colossal Battleship\""],
+    "aliases": ["Colossal Battleship"],
     "imageUrl": "/characters/sanjuan-wolf.png",
     "gender": "Male",
     "affiliationPrimary": "Blackbeard Pirates",
@@ -2834,7 +3060,7 @@
   {
     "id": "whos-who",
     "name": "Who's-Who",
-    "aliases": ["\"Who of the Droplets\""],
+    "aliases": ["Who of the Droplets"],
     "imageUrl": "/characters/whos-who.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
@@ -2860,7 +3086,7 @@
   {
     "id": "sasaki",
     "name": "Sasaki",
-    "aliases": ["\"Overflowing Sasaki\""],
+    "aliases": ["Overflowing Sasaki"],
     "imageUrl": "/characters/sasaki.png",
     "gender": "Male",
     "affiliationPrimary": "Beasts Pirates (Tobiroppo)",
@@ -3000,7 +3226,7 @@
   {
     "id": "chaka",
     "name": "Chaka",
-    "aliases": ["\"Chaka the Jackal\""],
+    "aliases": ["Chaka the Jackal"],
     "imageUrl": "/characters/chaka.png",
     "gender": "Male",
     "affiliationPrimary": "Arabasta Kingdom",
@@ -3018,7 +3244,7 @@
   {
     "id": "daz-bonez",
     "name": "Daz Bonez",
-    "aliases": ["\"The Killer\""],
+    "aliases": ["The Killer"],
     "imageUrl": "/characters/daz-bonez.png",
     "gender": "Male",
     "affiliationPrimary": "Cross Guild",
@@ -3207,7 +3433,7 @@
   {
     "id": "kawamatsu",
     "name": "Kawamatsu",
-    "aliases": ["\"Kawamatsu the Kappa\"", "\"Yokozuna Kawamatsu\""],
+    "aliases": ["Kawamatsu the Kappa", "Yokozuna Kawamatsu"],
     "imageUrl": "/characters/kawamatsu.png",
     "gender": "Male",
     "affiliationPrimary": "Kozuki Family",
@@ -3228,7 +3454,7 @@
   {
     "id": "kikunojo",
     "name": "Kikunojo",
-    "aliases": ["\"Kikunojo of the Lingering Snow\""],
+    "aliases": ["Kikunojo of the Lingering Snow"],
     "imageUrl": "/characters/kikunojo.png",
     "gender": "Female",
     "affiliationPrimary": "Kozuki Family",
@@ -3249,7 +3475,7 @@
   {
     "id": "denjiro",
     "name": "Denjiro",
-    "aliases": ["\"Dozing Kyoshiro\""],
+    "aliases": ["Dozing Kyoshiro"],
     "imageUrl": "/characters/denjiro.png",
     "gender": "Male",
     "affiliationPrimary": "Kozuki Family",
@@ -3365,7 +3591,7 @@
   {
     "id": "vinsmoke-ichiji",
     "name": "Vinsmoke Ichiji",
-    "aliases": ["\"Sparking Red\""],
+    "aliases": ["Sparking Red"],
     "imageUrl": "/characters/vinsmoke-ichiji.png",
     "gender": "Male",
     "affiliationPrimary": "Vinsmoke Family",
@@ -3383,7 +3609,7 @@
   {
     "id": "vinsmoke-niji",
     "name": "Vinsmoke Niji",
-    "aliases": ["\"Dengeki Blue\""],
+    "aliases": ["Dengeki Blue"],
     "imageUrl": "/characters/vinsmoke-niji.png",
     "gender": "Male",
     "affiliationPrimary": "Vinsmoke Family",
@@ -3401,7 +3627,7 @@
   {
     "id": "vinsmoke-yonji",
     "name": "Vinsmoke Yonji",
-    "aliases": ["\"Winch Green\""],
+    "aliases": ["Winch Green"],
     "imageUrl": "/characters/vinsmoke-yonji.png",
     "gender": "Male",
     "affiliationPrimary": "Vinsmoke Family",
@@ -3445,7 +3671,7 @@
   {
     "id": "tamago",
     "name": "Tamago",
-    "aliases": ["\"Baron Tamago\""],
+    "aliases": ["Baron Tamago"],
     "imageUrl": "/characters/tamago.png",
     "gender": "Male",
     "affiliationPrimary": "Big Mom Pirates",
@@ -3471,7 +3697,7 @@
   {
     "id": "pedro",
     "name": "Pedro",
-    "aliases": ["\"Pedro of the Treetops\""],
+    "aliases": ["Pedro of the Treetops"],
     "imageUrl": "/characters/pedro.png",
     "gender": "Male",
     "affiliationPrimary": "Mokomo Dukedom",
@@ -3590,7 +3816,7 @@
   {
     "id": "foxy",
     "name": "Foxy",
-    "aliases": ["\"Silver Fox\""],
+    "aliases": ["Silver Fox"],
     "imageUrl": "/characters/foxy.png",
     "gender": "Male",
     "affiliationPrimary": "Foxy Pirates",
@@ -3613,7 +3839,7 @@
   {
     "id": "hina",
     "name": "Hina",
-    "aliases": ["\"Black Cage Hina\""],
+    "aliases": ["Black Cage Hina"],
     "imageUrl": "/characters/hina.png",
     "gender": "Female",
     "affiliationPrimary": "Marines (Black Cage Corps)",
@@ -3907,7 +4133,7 @@
   {
     "id": "bastille",
     "name": "Bastille",
-    "aliases": ["\"Shark Cutter\""],
+    "aliases": ["Shark Cutter"],
     "imageUrl": "/characters/bastille.png",
     "gender": "Male",
     "affiliationPrimary": "Marines",
@@ -4046,7 +4272,7 @@
   {
     "id": "cabaji",
     "name": "Cabaji",
-    "aliases": ["\"Cabaji the Acrobat\""],
+    "aliases": ["Cabaji the Acrobat"],
     "imageUrl": "/characters/cabaji.png",
     "gender": "Male",
     "affiliationPrimary": "Cross Guild",
@@ -4100,7 +4326,7 @@
   {
     "id": "fukurou",
     "name": "Fukurou",
-    "aliases": ["\"Fukurou the Silent\""],
+    "aliases": ["Fukurou the Silent"],
     "imageUrl": "/characters/fukurou.png",
     "gender": "Male",
     "affiliationPrimary": "CP0",
@@ -4157,7 +4383,7 @@
   {
     "id": "ideo",
     "name": "Ideo",
-    "aliases": ["\"Destruction Cannon\""],
+    "aliases": ["Destruction Cannon"],
     "imageUrl": "/characters/ideo.png",
     "gender": "Male",
     "affiliationPrimary": "Ideo Pirates",
@@ -4391,6 +4617,9 @@
     "heightCm": 199,
     "origin": "West Blue",
     "firstArc": "Romance Dawn",
+    "age": 39,
+    "status": "Alive",
+    "epithet": "Red-Haired",
     "minTier": "casual",
     "bountyHistory": [
       {
@@ -4424,6 +4653,9 @@
     "heightCm": 274,
     "origin": "East Blue",
     "firstArc": "Romance Dawn",
+    "age": 53,
+    "status": "Deceased",
+    "epithet": "Pirate King",
     "minTier": "casual",
     "bountyHistory": [],
     "devilFruitRevealedInArc": null,

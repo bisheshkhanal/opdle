@@ -305,12 +305,16 @@ export const factionSelectionUpdateSchema = z.object({
   factionSlug: factionSlugSchema,
 });
 
+export const factionUpdateSchema = factionSelectionUpdateSchema;
+
 export const weeklyLeaderboardFiltersSchema = z.object({
   weekKey: weekKeySchema,
   factionSlug: factionSlugSchema.optional(),
   tier: tierSchema.optional(),
   limit: z.coerce.number().int().min(1).max(100).default(20),
 });
+
+export const weeklyLeaderboardQuerySchema = weeklyLeaderboardFiltersSchema;
 
 export const challengeCreationSchema = z.object({
   title: z.string().min(1),

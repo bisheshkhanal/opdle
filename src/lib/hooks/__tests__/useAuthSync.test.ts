@@ -176,6 +176,31 @@ describe("useAuthSync", () => {
     );
   });
 
+  it("syncDailyResult stays silent for signed-out sessions even with stale user data", async () => {
+    mockUseSession.mockReturnValue({
+      data: { user: { id: "uuid-1", name: "luffy" }, expires: "" },
+      status: "unauthenticated",
+    });
+
+    const { useAuthSync } = await import("../useAuthSync");
+    const { result } = renderHook(() => useAuthSync());
+
+    act(() => {
+      result.current.syncDailyResult({
+        date: "2026-03-30",
+        tier: "casual",
+        guessCount: 3,
+        isWon: true,
+        hintUsed: false,
+      });
+    });
+
+    expect(fetchSpy).not.toHaveBeenCalledWith(
+      "/api/stats/daily-result",
+      expect.anything()
+    );
+  });
+
   it("swallows fetch errors silently", async () => {
     mockUseSession.mockReturnValue({
       data: { user: { id: "uuid-1", name: "luffy" }, expires: "" },

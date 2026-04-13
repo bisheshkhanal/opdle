@@ -6,6 +6,10 @@ const EXPECTED_CHARACTER_COUNT = 231;
 type OptionalEnrichmentFields = {
   age?: number | null;
   status?: "Alive" | "Deceased" | "Unknown" | null;
+  bountyHistory?: Array<{
+    amount: number;
+    arc: string;
+  }>;
   crewHistory?: Array<{
     crew: string;
     role?: string;
@@ -28,6 +32,34 @@ describe("characters.v2.json data quality", () => {
 
   it("keeps optional enrichment fields valid when present", () => {
     const validStatus = new Set(["Alive", "Deceased", "Unknown"]);
+
+    const expectedBountyProgressions: Array<[string, number]> = [
+      ["luffy", 7],
+      ["nami", 3],
+      ["robin", 4],
+      ["sanji", 4],
+      ["usopp", 3],
+      ["zoro", 4],
+    ];
+
+    for (const [id, expectedLength] of expectedBountyProgressions) {
+      const character = characters.find((entry) => entry.id === id);
+      expect(character?.bountyHistory).toHaveLength(expectedLength);
+      expect(character?.bountyHistory?.at(-1)?.amount).toBe(character?.bounty);
+    }
+
+    expect(
+      characters.find((entry) => entry.id === "nami")?.crewHistory
+    ).toHaveLength(2);
+    expect(
+      characters.find((entry) => entry.id === "robin")?.crewHistory
+    ).toHaveLength(2);
+    expect(
+      characters.find((entry) => entry.id === "usopp")?.crewHistory
+    ).toHaveLength(2);
+    expect(
+      characters.find((entry) => entry.id === "sanji")?.crewHistory
+    ).toHaveLength(2);
 
     const bad = characters.filter((c) => {
       const character = c as Record<string, unknown> & OptionalEnrichmentFields;
@@ -54,6 +86,52 @@ describe("characters.v2.json data quality", () => {
         typeof character.epithet !== "string"
       ) {
         return true;
+      }
+
+      if (character.bountyHistory !== undefined) {
+        if (!Array.isArray(character.bountyHistory)) {
+          return true;
+        }
+
+        if (
+          character.bountyHistory.some((entry, index, array) => {
+            if (!entry || typeof entry !== "object") {
+              return true;
+            }
+
+            const bountyEntry = entry as Record<string, unknown>;
+            if (
+              typeof bountyEntry.amount !== "number" ||
+              !Number.isFinite(bountyEntry.amount)
+            ) {
+              return true;
+            }
+
+            if (
+              typeof bountyEntry.arc !== "string" ||
+              bountyEntry.arc.length === 0
+            ) {
+              return true;
+            }
+
+            if (index > 0 && array[index - 1].amount >= bountyEntry.amount) {
+              return true;
+            }
+
+            return false;
+          })
+        ) {
+          return true;
+        }
+
+        const lastEntry = character.bountyHistory.at(-1);
+        if (
+          lastEntry !== undefined &&
+          typeof character.bounty === "number" &&
+          lastEntry.amount !== character.bounty
+        ) {
+          return true;
+        }
       }
 
       if (character.quotesOrLaughs !== undefined) {
@@ -165,9 +243,11 @@ describe("characters.v2.json data quality", () => {
     expect(bad).toEqual([]);
   });
 
-  it("has no aliases with adjacent double quotes", () => {
+  it("has no alias artifact wrappers", () => {
     const bad = characters.filter((c) =>
-      (c.aliases || []).some((a) => a.includes('""'))
+      (c.aliases || []).some(
+        (a) => a.includes('""') || a.startsWith('"') || a.endsWith('"')
+      )
     );
     expect(bad).toEqual([]);
   });

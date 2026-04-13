@@ -1,4 +1,5 @@
 import characters from "../../data/characters.v2.json";
+import { categories, evaluateCharacter } from "../categories";
 import { Character, validateCharacter } from "../types";
 import { describe, expect, test } from "vitest";
 
@@ -31,6 +32,16 @@ describe("characters.v2.json dataset invariants", () => {
         ...sample,
         age: 53,
         status: "Deceased",
+        bountyHistory: [
+          {
+            amount: 16000000,
+            arc: "Enies Lobby",
+          },
+          {
+            amount: 66000000,
+            arc: "Dressrosa",
+          },
+        ],
         crewHistory: [
           {
             crew: "Whitebeard Pirates",
@@ -48,6 +59,51 @@ describe("characters.v2.json dataset invariants", () => {
         },
       })
     ).toBe(true);
+  });
+
+  test("batch A enrichment fields are populated on canonical major characters", () => {
+    const lookup = new Map(
+      dataset.map((character) => [character.id, character])
+    );
+
+    const expectations = [
+      ["ace", 20, "Deceased", "Fire Fist"],
+      ["luffy", 19, "Alive", "Straw Hat"],
+      ["zoro", 21, "Alive", "Pirate Hunter"],
+      ["nami", 20, "Alive", "Cat Burglar"],
+      ["robin", 30, "Alive", "Devil Child"],
+      ["sanji", 21, "Alive", "Black Leg"],
+      ["whitebeard", 72, "Deceased", "Whitebeard"],
+      ["shanks", 39, "Alive", "Red-Haired"],
+      ["kizaru", 58, "Alive", "Yellow Monkey"],
+      ["kaido", 59, "Unknown", "King of the Beasts"],
+    ] as const;
+
+    for (const [id, age, status, epithet] of expectations) {
+      const character = lookup.get(id);
+      expect(character).toBeDefined();
+      expect(character?.age).toBe(age);
+      expect(character?.status).toBe(status);
+      expect(character?.epithet).toBe(epithet);
+    }
+  });
+
+  test("quotesOrLaughs do not affect gameplay categories", () => {
+    const guess = {
+      ...sample,
+      quotesOrLaughs: ["Test quote", "Test laugh"],
+    };
+
+    const baseline = evaluateCharacter(sample, sample);
+    const enriched = evaluateCharacter(guess, sample);
+
+    expect(enriched).toEqual(baseline);
+    expect(categories.map((category) => category.key)).not.toContain(
+      "quotesOrLaughs"
+    );
+    expect(categories.map((category) => category.key)).not.toContain(
+      "crewHistory"
+    );
   });
 
   test("rejects invalid optional enrichment values", () => {

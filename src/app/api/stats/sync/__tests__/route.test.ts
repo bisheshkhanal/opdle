@@ -2,6 +2,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const { mockAuth } = vi.hoisted(() => ({ mockAuth: vi.fn() }));
 const { mockInsert } = vi.hoisted(() => ({ mockInsert: vi.fn() }));
+const { mockOnConflictDoUpdate } = vi.hoisted(() => ({
+  mockOnConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
+}));
 
 vi.mock("@/lib/auth", () => ({ auth: mockAuth }));
 vi.mock("@/lib/db", () => ({
@@ -11,9 +14,6 @@ vi.mock("@/lib/db", () => ({
 }));
 vi.mock("@/lib/db/schema", () => ({
   userStats: {},
-  userProgression: {},
-  userAchievements: {},
-  monthlyCollections: {},
 }));
 vi.mock("drizzle-orm", () => ({
   sql: vi.fn((s: TemplateStringsArray) => s[0]),
@@ -21,7 +21,7 @@ vi.mock("drizzle-orm", () => ({
 
 const chain = {
   values: vi.fn().mockReturnValue({
-    onConflictDoUpdate: vi.fn().mockResolvedValue(undefined),
+    onConflictDoUpdate: mockOnConflictDoUpdate,
   }),
 };
 
@@ -93,9 +93,10 @@ describe("POST /api/stats/sync", () => {
   beforeEach(() => {
     vi.resetModules();
     mockAuth.mockReset();
+    mockInsert.mockClear();
     mockInsert.mockReturnValue(chain);
     chain.values.mockClear();
-    chain.values().onConflictDoUpdate.mockClear();
+    mockOnConflictDoUpdate.mockClear();
   });
 
   it("returns 401 when not authenticated", async () => {
@@ -138,9 +139,11 @@ describe("POST /api/stats/sync", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(200);
+    expect(mockInsert).toHaveBeenCalledTimes(1);
+    expect(mockOnConflictDoUpdate).toHaveBeenCalledTimes(1);
   });
 
-  it("accepts valid sync payload with optional meta fields", async () => {
+  it("ignores extra meta fields and only writes vanity stats", async () => {
     mockAuth.mockResolvedValue({
       user: { id: "uuid-1", name: "luffy", email: null, image: null },
       expires: "",
@@ -153,9 +156,10 @@ describe("POST /api/stats/sync", () => {
     });
     const res = await POST(req);
     expect(res.status).toBe(200);
+    expect(mockInsert).toHaveBeenCalledTimes(1);
   });
 
-  it("rejects malformed meta fields", async () => {
+  it("ignores malformed meta fields while syncing vanity stats", async () => {
     mockAuth.mockResolvedValue({
       user: { id: "uuid-1", name: "luffy", email: null, image: null },
       expires: "",
@@ -172,6 +176,28 @@ describe("POST /api/stats/sync", () => {
       headers: { "Content-Type": "application/json" },
     });
     const res = await POST(req);
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(200);
+    expect(mockInsert).toHaveBeenCalledTimes(1);
+  });
+
+  it("uses max-based upserts for duplicate sync attempts", async () => {
+    mockAuth.mockResolvedValue({
+      user: { id: "uuid-1", name: "luffy", email: null, image: null },
+      expires: "",
+    });
+    const { POST } = await import("../route");
+    const req = new Request("http://localhost/api/stats/sync", {
+      method: "POST",
+      body: JSON.stringify(validPayload),
+      headers: { "Content-Type": "application/json" },
+    });
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+
+    const conflictConfig = mockOnConflictDoUpdate.mock.calls[0]?.[0];
+    expect(conflictConfig?.set.streak).toContain("GREATEST");
+    expect(conflictConfig?.set.maxStreak).toContain("GREATEST");
+    expect(conflictConfig?.set.totalWins).toContain("GREATEST");
+    expect(conflictConfig?.set.totalGames).toContain("GREATEST");
   });
 });
