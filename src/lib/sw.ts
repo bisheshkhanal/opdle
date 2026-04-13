@@ -1,8 +1,17 @@
 export const SW_CACHE_VERSION = "v1";
 export const STATIC_CACHE_NAME = `onepiecedle-static-${SW_CACHE_VERSION}`;
 export const APP_SHELL_CACHE_NAME = `onepiecedle-shell-${SW_CACHE_VERSION}`;
+export const SW_DATA_VERSION = "v1";
+export const DATA_CACHE_NAME = "onepiecedle-data-v1";
+export const IMAGE_CACHE_NAME = "onepiecedle-images-v1";
+export const DATA_VERSION_CACHE_KEY = "/__sw-data-version__";
 
-const CURRENT_CACHE_NAMES = [STATIC_CACHE_NAME, APP_SHELL_CACHE_NAME] as const;
+const CURRENT_CACHE_NAMES = [
+  STATIC_CACHE_NAME,
+  APP_SHELL_CACHE_NAME,
+  DATA_CACHE_NAME,
+  IMAGE_CACHE_NAME,
+] as const;
 const API_DENY_PREFIXES = ["/api/auth", "/api/stats"] as const;
 const AUTH_DENY_PREFIXES = ["/profile"] as const;
 const STATIC_PATH_PREFIXES = [
@@ -47,6 +56,24 @@ export function isAppShellRequest(request: Request): boolean {
   return url.pathname === "/";
 }
 
+export function isCharactersDataRequest(request: Request): boolean {
+  if (request.method !== "GET") {
+    return false;
+  }
+
+  return new URL(request.url).pathname === "/api/characters";
+}
+
+export function isCharacterImageRequest(request: Request): boolean {
+  if (request.method !== "GET") {
+    return false;
+  }
+
+  const pathname = new URL(request.url).pathname;
+
+  return pathname.startsWith("/characters/") && pathname.endsWith(".png");
+}
+
 export function shouldBypassCache(request: Request): boolean {
   return isDeniedPathname(new URL(request.url).pathname);
 }
@@ -73,6 +100,32 @@ export async function cleanupOldCaches(): Promise<string[]> {
   );
 
   return staleCacheNames;
+}
+
+async function writeDataCacheVersion(cache: Cache): Promise<void> {
+  await cache.put(
+    DATA_VERSION_CACHE_KEY,
+    new Response(SW_DATA_VERSION, {
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    })
+  );
+}
+
+export async function cleanupDataCacheIfVersionChanged(): Promise<boolean> {
+  const cache = await caches.open(DATA_CACHE_NAME);
+  const versionResponse = await cache.match(DATA_VERSION_CACHE_KEY);
+  const cachedVersion = versionResponse ? await versionResponse.text() : null;
+
+  if (cachedVersion === SW_DATA_VERSION) {
+    return false;
+  }
+
+  const keys = await cache.keys();
+
+  await Promise.all(keys.map((request) => cache.delete(request)));
+  await writeDataCacheVersion(cache);
+
+  return true;
 }
 
 export function extractShellAssetUrls(html: string, baseUrl: string): string[] {
