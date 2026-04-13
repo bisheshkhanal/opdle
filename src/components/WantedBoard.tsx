@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import Image from "next/image";
 import { Character } from "@/lib/types";
 import { WantedState } from "@/lib/wanted";
@@ -32,6 +31,11 @@ function getClipPathForStep(step: number): string {
   }
 }
 
+function formatBounty(bounty: number | null): string {
+  if (bounty === null) return "???";
+  return bounty.toLocaleString("en-US") + "-";
+}
+
 export function WantedBoard({
   targetCharacter,
   allCharacters,
@@ -49,6 +53,8 @@ export function WantedBoard({
       ? "inset(0%)"
       : getClipPathForStep(revealStep);
 
+  const imageFilter = isFinished ? "sepia(0.1)" : "sepia(0.3) contrast(1.05)";
+
   return (
     <div
       data-testid="wanted-board"
@@ -56,22 +62,53 @@ export function WantedBoard({
       aria-label="Wanted poster game board"
       className="mx-auto w-full max-w-lg space-y-6"
     >
-      <div className="shadow-elevated relative mx-auto flex h-64 w-64 items-center justify-center overflow-hidden rounded-xl border-4 border-parchment-300 bg-parchment-100 dark:border-slate-600 dark:bg-slate-800">
-        {targetImage ? (
-          <Image
-            src={targetImage}
-            alt="Wanted poster"
-            data-testid="wanted-image"
-            aria-label={`Wanted poster, step ${revealStep} of 6 revealed`}
-            fill
-            sizes="264px"
-            quality={85}
-            className="object-contain object-top transition-all duration-500 ease-in-out"
-            style={{ clipPath: clipPathStyle }}
-          />
-        ) : (
-          <div className="text-navy-400 dark:text-slate-400">No Image</div>
-        )}
+      <div className="bounty-poster">
+        <h2
+          className="font-pirata text-treasure text-2xl tracking-widest"
+          style={{ letterSpacing: "0.2em" }}
+        >
+          W A N T E D
+        </h2>
+        <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-navy-700 dark:text-parchment-300">
+          DEAD OR ALIVE
+        </div>
+
+        <div className="bounty-poster-frame">
+          {targetImage ? (
+            <Image
+              src={targetImage}
+              alt="Wanted poster"
+              data-testid="wanted-image"
+              aria-label={`Wanted poster, step ${revealStep} of 6 revealed`}
+              fill
+              sizes="264px"
+              quality={85}
+              className="object-cover object-top transition-all duration-500 ease-in-out"
+              style={{
+                clipPath: clipPathStyle,
+                filter: imageFilter,
+              }}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-navy-400 dark:text-slate-400">
+              No Image
+            </div>
+          )}
+        </div>
+
+        <div
+          className={`font-pirata mt-2 text-xl ${
+            isWon && isFinished
+              ? "text-treasure drop-shadow-sm"
+              : "text-navy-800 dark:text-parchment-100"
+          }`}
+        >
+          {isFinished ? targetCharacter.name : "???"}
+        </div>
+
+        <div className="font-pirata text-lg text-gold-600 dark:text-gold-400">
+          {isFinished ? `Bs. ${formatBounty(targetCharacter.bounty)}` : "???"}
+        </div>
       </div>
 
       {!isFinished && (
@@ -126,12 +163,6 @@ export function WantedBoard({
         >
           <p className="font-pirata text-3xl text-navy-800 drop-shadow-sm dark:text-gold-400">
             {isWon ? "Correct!" : "Game Over!"}
-          </p>
-          <p className="font-alegreya mt-1 text-lg text-navy-600 dark:text-parchment-200">
-            The character was{" "}
-            <strong className="text-gold-600 dark:text-gold-400">
-              {targetCharacter.name}
-            </strong>
           </p>
         </div>
       )}
