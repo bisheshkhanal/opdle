@@ -46,6 +46,7 @@ describe("settings", () => {
       const saved: UserSettings = {
         silhouetteReveal: true,
         progressiveHints: false,
+        autoUseLogPose: false,
       };
       ls.store[SETTINGS_KEY] = JSON.stringify(saved);
 
@@ -66,6 +67,17 @@ describe("settings", () => {
       const result = loadSettings();
       expect(result.silhouetteReveal).toBe(true);
       expect(result.progressiveHints).toBe(false);
+      expect(result.autoUseLogPose).toBe(true);
+    });
+
+    it("defaults missing autoUseLogPose to true for legacy data", () => {
+      ls.store[SETTINGS_KEY] = JSON.stringify({
+        silhouetteReveal: true,
+        progressiveHints: true,
+      });
+
+      const result = loadSettings();
+      expect(result.autoUseLogPose).toBe(true);
     });
   });
 
@@ -74,6 +86,7 @@ describe("settings", () => {
       const settings: UserSettings = {
         silhouetteReveal: true,
         progressiveHints: false,
+        autoUseLogPose: false,
       };
       saveSettings(settings);
 
@@ -89,22 +102,53 @@ describe("settings", () => {
       ls.store[SETTINGS_KEY] = JSON.stringify({
         silhouetteReveal: false,
         progressiveHints: false,
+        autoUseLogPose: true,
       });
 
       const result = updateSetting("silhouetteReveal", true);
       expect(result.silhouetteReveal).toBe(true);
       expect(result.progressiveHints).toBe(false);
+      expect(result.autoUseLogPose).toBe(true);
     });
 
     it("preserves other settings when updating one", () => {
       ls.store[SETTINGS_KEY] = JSON.stringify({
         silhouetteReveal: true,
         progressiveHints: false,
+        autoUseLogPose: true,
       });
 
       const result = updateSetting("progressiveHints", true);
       expect(result.silhouetteReveal).toBe(true);
       expect(result.progressiveHints).toBe(true);
+      expect(result.autoUseLogPose).toBe(true);
+    });
+
+    it("updates autoUseLogPose and persists it", () => {
+      ls.store[SETTINGS_KEY] = JSON.stringify({
+        silhouetteReveal: false,
+        progressiveHints: false,
+        autoUseLogPose: true,
+      });
+
+      const result = updateSetting("autoUseLogPose", false);
+      expect(result.autoUseLogPose).toBe(false);
+      expect(JSON.parse(ls.store[SETTINGS_KEY])).toEqual(result);
+    });
+  });
+
+  describe("roundtrip", () => {
+    it("persists autoUseLogPose across save and reload", () => {
+      const settings: UserSettings = {
+        silhouetteReveal: false,
+        progressiveHints: true,
+        autoUseLogPose: false,
+      };
+
+      saveSettings(settings);
+
+      const result = loadSettings();
+      expect(result).toEqual(settings);
     });
   });
 });

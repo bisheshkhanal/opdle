@@ -1,4 +1,5 @@
 import { isValidArc } from "./arcs";
+import type { AchievementId, SagaId } from "./progression/types";
 
 // Tile status for visual encoding
 export type TileStatus =
@@ -163,6 +164,63 @@ export interface RulesetInfiniteState {
   revealStep?: number;
 }
 
+export interface SagaProgress {
+  uniqueSolvedIds: string[];
+  unlockedAt?: string;
+  completedAt?: string;
+  progressCount: number;
+}
+
+export interface TierProgression {
+  sagas: Record<SagaId, SagaProgress>;
+  completedSagaCount: number;
+}
+
+export interface LogPoseConsumption {
+  protectedDay: string;
+  consumedAt: string;
+  source: "streak-7";
+}
+
+export interface TierLogPose {
+  charges: number;
+  earnedMilestones: number[];
+  lastEarnedAt?: string;
+  consumptions: LogPoseConsumption[];
+}
+
+export interface AchievementProgress {
+  progress: number;
+  target: number;
+  status: "locked" | "revealed" | "unlocked";
+  unlockedAt?: string;
+  lastUpdatedAt: string;
+  seasonKey?: string | null;
+}
+
+export interface MonthlySeason {
+  collectibleId: string;
+  collectibleType: "bounty-poster" | "vivre-card";
+  targetFragments: number;
+  revealedDays: string[];
+  revealedFragmentIndexes: number[];
+  completedAt?: string;
+}
+
+export interface MonthlyCollections {
+  activeSeasonKey: string;
+  seasons: Record<string, MonthlySeason>;
+}
+
+export interface MetaInboxEntry {
+  id: string;
+  type: "achievement" | "saga" | "monthly" | "log-pose";
+  title: string;
+  body: string;
+  createdAt: string;
+  dismissedAt?: string;
+}
+
 export interface StorageSchema {
   version: number;
   tier: Tier;
@@ -175,6 +233,11 @@ export interface StorageSchema {
   rulesetDaily?: Record<string, RulesetDailyState>;
   /** Optional: per-ruleset infinite state, keyed "tier:ruleset" */
   rulesetInfinite?: Record<string, RulesetInfiniteState>;
+  progressionByTier?: Record<Tier, TierProgression>;
+  logPoseByTier?: Record<Tier, TierLogPose>;
+  achievementProgress?: Record<AchievementId, AchievementProgress>;
+  monthlyCollections?: MonthlyCollections;
+  metaInbox?: MetaInboxEntry[];
 }
 
 const VALID_GENDERS: Gender[] = ["Male", "Female", "Unknown", "Other"];

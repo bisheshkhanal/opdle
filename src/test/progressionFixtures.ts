@@ -1,12 +1,19 @@
 import type {
+  AchievementProgress,
   DailyState,
   DailyStats,
   GuessResult,
   InfiniteState,
   InfiniteStats,
+  MetaInboxEntry,
+  MonthlyCollections,
   StorageSchema,
   Tier,
+  TierLogPose,
+  TierProgression,
+  SagaProgress,
 } from "@/lib/types";
+import type { AchievementId, SagaId } from "@/lib/progression/types";
 
 type TierStatsMap<T> = {
   casual?: Partial<T>;
@@ -49,6 +56,60 @@ function createInfiniteState(): InfiniteState {
     totalWins: 0,
     totalGames: 0,
   };
+}
+
+function createSagaProgress(): SagaProgress {
+  return {
+    uniqueSolvedIds: [],
+    progressCount: 0,
+  };
+}
+
+function createTierProgression(): TierProgression {
+  const sagas = {
+    "east-blue": createSagaProgress(),
+    arabasta: createSagaProgress(),
+    "sky-island": createSagaProgress(),
+    "water-7": createSagaProgress(),
+    "thriller-bark": createSagaProgress(),
+    "summit-war": createSagaProgress(),
+    "fish-man-island": createSagaProgress(),
+    dressrosa: createSagaProgress(),
+    "whole-cake-island": createSagaProgress(),
+    "wano-country": createSagaProgress(),
+    final: createSagaProgress(),
+  } as Record<SagaId, SagaProgress>;
+
+  return {
+    sagas,
+    completedSagaCount: 0,
+  };
+}
+
+function createLogPose(): TierLogPose {
+  return {
+    charges: 0,
+    earnedMilestones: [],
+    consumptions: [],
+  };
+}
+
+function createMonthlyCollections(): MonthlyCollections {
+  return {
+    activeSeasonKey: "",
+    seasons: {},
+  };
+}
+
+function createAchievementProgress(): Record<
+  AchievementId,
+  AchievementProgress
+> {
+  return {} as Record<AchievementId, AchievementProgress>;
+}
+
+function createMetaInbox(): MetaInboxEntry[] {
+  return [];
 }
 
 function createDailyState(date: string): DailyState {
@@ -113,6 +174,33 @@ export function createEmptyStorage(): StorageSchema {
     infinite: getDefaultTierStatsMap(createInfiniteState),
     dailyStats: getDefaultTierStatsMap(createDailyStats),
     infiniteStats: getDefaultTierStatsMap(createInfiniteStats),
+  };
+}
+
+export function createEmptyStorageV4(): StorageSchema {
+  return {
+    version: 4,
+    tier: "casual",
+    hasSelectedTier: true,
+    daily: {},
+    infinite: getDefaultTierStatsMap(createInfiniteState),
+    dailyStats: getDefaultTierStatsMap(createDailyStats),
+    infiniteStats: getDefaultTierStatsMap(createInfiniteStats),
+    rulesetDaily: {},
+    rulesetInfinite: {},
+    progressionByTier: {
+      casual: createTierProgression(),
+      fan: createTierProgression(),
+      nakama: createTierProgression(),
+    },
+    logPoseByTier: {
+      casual: createLogPose(),
+      fan: createLogPose(),
+      nakama: createLogPose(),
+    },
+    achievementProgress: createAchievementProgress(),
+    monthlyCollections: createMonthlyCollections(),
+    metaInbox: createMetaInbox(),
   };
 }
 

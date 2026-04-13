@@ -3,6 +3,7 @@
  */
 
 import type {
+  AchievementProgress,
   DailyState,
   InfiniteState,
   StorageSchema,
@@ -14,15 +15,29 @@ import type {
   Ruleset,
   RulesetDailyState,
   RulesetInfiniteState,
+  LogPoseConsumption,
+  MetaInboxEntry,
+  MonthlyCollections,
+  MonthlySeason,
+  SagaProgress,
+  TierLogPose,
+  TierProgression,
 } from "./types";
+import type { AchievementId, SagaId } from "./progression/types";
+import { ACHIEVEMENT_CATALOG } from "./progression/achievementCatalog";
+import { SAGA_CATALOG } from "./progression/sagaCatalog";
 import { getUTCDateString } from "./daily";
 import { generateRoundId } from "./infinite";
 import { getLocalCharacterImageUrl } from "./images";
 
 const STORAGE_KEY = "onepiecedle_v2";
-const CURRENT_VERSION = 3;
+const CURRENT_VERSION = 4;
 
 const ALL_TIERS: Tier[] = ["casual", "fan", "nakama"];
+const ALL_SAGA_IDS = SAGA_CATALOG.map((saga) => saga.id);
+const ALL_ACHIEVEMENT_IDS = ACHIEVEMENT_CATALOG.map(
+  (achievement) => achievement.id
+);
 
 function getDefaultDailyStats(): DailyStats {
   return { streak: 0, maxStreak: 0, winDistribution: {} };
@@ -50,6 +65,233 @@ function getDefaultInfiniteState(): InfiniteState {
     totalWins: 0,
     totalGames: 0,
   };
+}
+
+function getDefaultSagaProgress(): SagaProgress {
+  return { uniqueSolvedIds: [], progressCount: 0 };
+}
+
+function getDefaultTierProgression(): TierProgression {
+  const sagas: Record<SagaId, SagaProgress> = {} as Record<
+    SagaId,
+    SagaProgress
+  >;
+
+  for (const sagaId of ALL_SAGA_IDS) {
+    sagas[sagaId] = getDefaultSagaProgress();
+  }
+
+  return {
+    sagas,
+    completedSagaCount: 0,
+  };
+}
+
+function getDefaultLogPose(): TierLogPose {
+  return { charges: 0, earnedMilestones: [], consumptions: [] };
+}
+
+function getDefaultMonthlyCollections(): MonthlyCollections {
+  return {
+    activeSeasonKey: "",
+    seasons: {},
+  };
+}
+
+function getDefaultAchievementProgress(): Record<
+  AchievementId,
+  AchievementProgress
+> {
+  return {} as Record<AchievementId, AchievementProgress>;
+}
+
+function getDefaultMetaInbox(): MetaInboxEntry[] {
+  return [];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isValidSagaProgress(value: unknown): value is SagaProgress {
+  return (
+    isRecord(value) &&
+    Array.isArray(value.uniqueSolvedIds) &&
+    value.uniqueSolvedIds.every((id) => typeof id === "string") &&
+    typeof value.progressCount === "number" &&
+    Number.isFinite(value.progressCount) &&
+    (value.unlockedAt === undefined || typeof value.unlockedAt === "string") &&
+    (value.completedAt === undefined || typeof value.completedAt === "string")
+  );
+}
+
+function isValidTierProgression(value: unknown): value is TierProgression {
+  if (!isRecord(value) || !isRecord(value.sagas)) return false;
+
+  for (const sagaId of ALL_SAGA_IDS) {
+    if (!isValidSagaProgress(value.sagas[sagaId])) return false;
+  }
+
+  return (
+    typeof value.completedSagaCount === "number" &&
+    Number.isFinite(value.completedSagaCount)
+  );
+}
+
+function isValidLogPoseConsumption(
+  value: unknown
+): value is LogPoseConsumption {
+  return (
+    isRecord(value) &&
+    typeof value.protectedDay === "string" &&
+    typeof value.consumedAt === "string" &&
+    value.source === "streak-7"
+  );
+}
+
+function isValidLogPose(value: unknown): value is TierLogPose {
+  return (
+    isRecord(value) &&
+    typeof value.charges === "number" &&
+    Number.isFinite(value.charges) &&
+    Array.isArray(value.earnedMilestones) &&
+    value.earnedMilestones.every((milestone) => Number.isInteger(milestone)) &&
+    (value.lastEarnedAt === undefined ||
+      typeof value.lastEarnedAt === "string") &&
+    Array.isArray(value.consumptions) &&
+    value.consumptions.every(isValidLogPoseConsumption)
+  );
+}
+
+function isValidAchievementProgress(
+  value: unknown
+): value is AchievementProgress {
+  return (
+    isRecord(value) &&
+    typeof value.progress === "number" &&
+    Number.isFinite(value.progress) &&
+    typeof value.target === "number" &&
+    Number.isFinite(value.target) &&
+    (value.status === "locked" ||
+      value.status === "revealed" ||
+      value.status === "unlocked") &&
+    (value.unlockedAt === undefined || typeof value.unlockedAt === "string") &&
+    typeof value.lastUpdatedAt === "string" &&
+    (value.seasonKey === undefined ||
+      value.seasonKey === null ||
+      typeof value.seasonKey === "string")
+  );
+}
+
+function isValidMonthlySeason(value: unknown): value is MonthlySeason {
+  return (
+    isRecord(value) &&
+    typeof value.collectibleId === "string" &&
+    (value.collectibleType === "bounty-poster" ||
+      value.collectibleType === "vivre-card") &&
+    typeof value.targetFragments === "number" &&
+    Number.isFinite(value.targetFragments) &&
+    Array.isArray(value.revealedDays) &&
+    value.revealedDays.every((day) => typeof day === "string") &&
+    Array.isArray(value.revealedFragmentIndexes) &&
+    value.revealedFragmentIndexes.every((index) => Number.isInteger(index)) &&
+    (value.completedAt === undefined || typeof value.completedAt === "string")
+  );
+}
+
+function isValidMonthlyCollections(
+  value: unknown
+): value is MonthlyCollections {
+  if (
+    !isRecord(value) ||
+    typeof value.activeSeasonKey !== "string" ||
+    !isRecord(value.seasons)
+  ) {
+    return false;
+  }
+
+  return Object.values(value.seasons).every(isValidMonthlySeason);
+}
+
+function isValidMetaInboxEntry(value: unknown): value is MetaInboxEntry {
+  return (
+    isRecord(value) &&
+    typeof value.id === "string" &&
+    (value.type === "achievement" ||
+      value.type === "saga" ||
+      value.type === "monthly" ||
+      value.type === "log-pose") &&
+    typeof value.title === "string" &&
+    typeof value.body === "string" &&
+    typeof value.createdAt === "string" &&
+    (value.dismissedAt === undefined || typeof value.dismissedAt === "string")
+  );
+}
+
+function ensureV4StorageSections(storage: StorageSchema): boolean {
+  let changed = false;
+
+  if (
+    !storage.progressionByTier ||
+    !ALL_TIERS.every((tier) =>
+      isValidTierProgression(storage.progressionByTier?.[tier])
+    )
+  ) {
+    storage.progressionByTier = {
+      casual: getDefaultTierProgression(),
+      fan: getDefaultTierProgression(),
+      nakama: getDefaultTierProgression(),
+    };
+    changed = true;
+  }
+
+  if (
+    !storage.logPoseByTier ||
+    !ALL_TIERS.every((tier) => isValidLogPose(storage.logPoseByTier?.[tier]))
+  ) {
+    storage.logPoseByTier = {
+      casual: getDefaultLogPose(),
+      fan: getDefaultLogPose(),
+      nakama: getDefaultLogPose(),
+    };
+    changed = true;
+  }
+
+  if (!storage.achievementProgress || !isRecord(storage.achievementProgress)) {
+    storage.achievementProgress = getDefaultAchievementProgress();
+    changed = true;
+  } else {
+    const keys = Object.keys(storage.achievementProgress);
+    const invalidKey = keys.some(
+      (key) => !ALL_ACHIEVEMENT_IDS.includes(key as AchievementId)
+    );
+    const invalidValue = keys.some(
+      (key) =>
+        !isValidAchievementProgress(
+          storage.achievementProgress?.[key as AchievementId]
+        )
+    );
+
+    if (invalidKey || invalidValue) {
+      storage.achievementProgress = getDefaultAchievementProgress();
+      changed = true;
+    }
+  }
+
+  if (!isValidMonthlyCollections(storage.monthlyCollections)) {
+    storage.monthlyCollections = getDefaultMonthlyCollections();
+    changed = true;
+  }
+
+  if (
+    !Array.isArray(storage.metaInbox) ||
+    !storage.metaInbox.every(isValidMetaInboxEntry)
+  ) {
+    storage.metaInbox = getDefaultMetaInbox();
+    changed = true;
+  }
+
+  return changed;
 }
 
 /**
@@ -80,6 +322,21 @@ function getDefaultSchema(): StorageSchema {
     infinite,
     dailyStats,
     infiniteStats,
+    rulesetDaily: {},
+    rulesetInfinite: {},
+    progressionByTier: {
+      casual: getDefaultTierProgression(),
+      fan: getDefaultTierProgression(),
+      nakama: getDefaultTierProgression(),
+    },
+    logPoseByTier: {
+      casual: getDefaultLogPose(),
+      fan: getDefaultLogPose(),
+      nakama: getDefaultLogPose(),
+    },
+    achievementProgress: getDefaultAchievementProgress(),
+    monthlyCollections: getDefaultMonthlyCollections(),
+    metaInbox: getDefaultMetaInbox(),
   };
 }
 
@@ -142,22 +399,21 @@ export function loadStorage(): StorageSchema {
     }
 
     const parsed = JSON.parse(stored) as StorageSchema;
+    const normalizedStorage =
+      parsed.version !== CURRENT_VERSION
+        ? migrateStorage(parsed as unknown as Record<string, unknown>)
+        : parsed;
 
-    // Version migration if needed
-    if (parsed.version !== CURRENT_VERSION) {
-      const migratedStorage = migrateStorage(
-        parsed as unknown as Record<string, unknown>
-      );
-      saveStorage(migratedStorage);
-      return migratedStorage;
-    }
+    const changed =
+      parsed.version !== CURRENT_VERSION ||
+      normalizeStorageImages(normalizedStorage) ||
+      ensureV4StorageSections(normalizedStorage);
 
-    const changed = normalizeStorageImages(parsed);
     if (changed) {
-      saveStorage(parsed);
+      saveStorage(normalizedStorage);
     }
 
-    return parsed;
+    return normalizedStorage;
   } catch {
     const defaultStorage = getDefaultSchema();
     saveStorage(defaultStorage);
@@ -245,6 +501,45 @@ function migrateStorage(old: Record<string, unknown>): StorageSchema {
       infinite,
       dailyStats: migratedDailyStats,
       infiniteStats: migratedInfiniteStats,
+      rulesetDaily: {},
+      rulesetInfinite: {},
+      progressionByTier: {
+        casual: getDefaultTierProgression(),
+        fan: getDefaultTierProgression(),
+        nakama: getDefaultTierProgression(),
+      },
+      logPoseByTier: {
+        casual: getDefaultLogPose(),
+        fan: getDefaultLogPose(),
+        nakama: getDefaultLogPose(),
+      },
+      achievementProgress: getDefaultAchievementProgress(),
+      monthlyCollections: getDefaultMonthlyCollections(),
+      metaInbox: getDefaultMetaInbox(),
+    };
+  }
+
+  if (version < 4) {
+    const v3Storage = old as unknown as StorageSchema;
+
+    return {
+      ...v3Storage,
+      version: CURRENT_VERSION,
+      progressionByTier: {
+        casual: getDefaultTierProgression(),
+        fan: getDefaultTierProgression(),
+        nakama: getDefaultTierProgression(),
+      },
+      logPoseByTier: {
+        casual: getDefaultLogPose(),
+        fan: getDefaultLogPose(),
+        nakama: getDefaultLogPose(),
+      },
+      achievementProgress: getDefaultAchievementProgress(),
+      monthlyCollections: getDefaultMonthlyCollections(),
+      metaInbox: [],
+      rulesetDaily: v3Storage.rulesetDaily ?? {},
+      rulesetInfinite: v3Storage.rulesetInfinite ?? {},
     };
   }
 
@@ -632,5 +927,83 @@ export function saveRulesetInfiniteState(
     storage.rulesetInfinite = {};
   }
   storage.rulesetInfinite[key] = state;
+  saveStorage(storage);
+}
+
+export function getProgressionByTier(tier: Tier): TierProgression {
+  const storage = loadStorage();
+  return storage.progressionByTier?.[tier] || getDefaultTierProgression();
+}
+
+export function saveProgressionByTier(tier: Tier, data: TierProgression): void {
+  const storage = loadStorage();
+
+  if (!storage.progressionByTier) {
+    storage.progressionByTier = {
+      casual: getDefaultTierProgression(),
+      fan: getDefaultTierProgression(),
+      nakama: getDefaultTierProgression(),
+    };
+  }
+
+  storage.progressionByTier[tier] = data;
+  saveStorage(storage);
+}
+
+export function getLogPose(tier: Tier): TierLogPose {
+  const storage = loadStorage();
+  return storage.logPoseByTier?.[tier] || getDefaultLogPose();
+}
+
+export function saveLogPose(tier: Tier, data: TierLogPose): void {
+  const storage = loadStorage();
+
+  if (!storage.logPoseByTier) {
+    storage.logPoseByTier = {
+      casual: getDefaultLogPose(),
+      fan: getDefaultLogPose(),
+      nakama: getDefaultLogPose(),
+    };
+  }
+
+  storage.logPoseByTier[tier] = data;
+  saveStorage(storage);
+}
+
+export function getAchievementProgress(): Record<
+  AchievementId,
+  AchievementProgress
+> {
+  const storage = loadStorage();
+  return storage.achievementProgress || getDefaultAchievementProgress();
+}
+
+export function saveAchievementProgress(
+  data: Record<AchievementId, AchievementProgress>
+): void {
+  const storage = loadStorage();
+  storage.achievementProgress = data;
+  saveStorage(storage);
+}
+
+export function getMonthlyCollections(): MonthlyCollections {
+  const storage = loadStorage();
+  return storage.monthlyCollections || getDefaultMonthlyCollections();
+}
+
+export function saveMonthlyCollections(data: MonthlyCollections): void {
+  const storage = loadStorage();
+  storage.monthlyCollections = data;
+  saveStorage(storage);
+}
+
+export function getMetaInbox(): MetaInboxEntry[] {
+  const storage = loadStorage();
+  return storage.metaInbox || [];
+}
+
+export function saveMetaInbox(data: MetaInboxEntry[]): void {
+  const storage = loadStorage();
+  storage.metaInbox = data;
   saveStorage(storage);
 }

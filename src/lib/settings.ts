@@ -6,11 +6,13 @@
 export interface UserSettings {
   silhouetteReveal: boolean;
   progressiveHints: boolean;
+  autoUseLogPose: boolean;
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
   silhouetteReveal: false,
   progressiveHints: false,
+  autoUseLogPose: true,
 };
 
 const SETTINGS_KEY = "onepiecedle_settings";

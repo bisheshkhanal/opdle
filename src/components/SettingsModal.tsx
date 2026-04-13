@@ -27,6 +27,12 @@ const SETTINGS_CONFIG: {
     label: "Progressive Hints",
     description: "Show progressively clearer hints after 3+ wrong guesses",
   },
+  {
+    key: "autoUseLogPose",
+    label: "Auto-use Log Pose",
+    description:
+      "When enabled, Log Pose charges are automatically consumed to protect your streak on the first missed day. Log Pose is non-retroactive — if no charge exists when a missed day is first evaluated, the streak breaks.",
+  },
 ];
 
 export function SettingsModal({
