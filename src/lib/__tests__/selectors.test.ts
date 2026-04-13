@@ -127,8 +127,8 @@ describe("selectors.ts", () => {
     });
   });
 
-  describe("selectTarget — ruleset independence for daily", () => {
-    it("returns same character for classic and silhouette rulesets on same date", () => {
+  describe("selectTarget — each ruleset produces its own unique seed for daily", () => {
+    it("returns different seeds for classic and wanted rulesets on same date", () => {
       const classicResult = selectTarget(allCharacters, {
         runKind: "daily",
         ruleset: "classic",
@@ -136,21 +136,19 @@ describe("selectors.ts", () => {
         dateString: "2025-01-01",
       });
 
-      const silhouetteResult = selectTarget(allCharacters, {
+      const wantedResult = selectTarget(allCharacters, {
         runKind: "daily",
-        ruleset: "silhouette",
+        ruleset: "wanted",
         tier: "casual",
         dateString: "2025-01-01",
       });
 
       expect(classicResult.kind).toBe("single");
-      expect(silhouetteResult.kind).toBe("single");
-      expect((classicResult as { character: Character }).character.id).toBe(
-        (silhouetteResult as { character: Character }).character.id
-      );
+      expect(wantedResult.kind).toBe("single");
+      expect(classicResult.seed).not.toBe(wantedResult.seed);
     });
 
-    it("returns same character for wanted and quote rulesets on same date", () => {
+    it("returns different seeds for wanted and quote rulesets on same date", () => {
       const wantedResult = selectTarget(allCharacters, {
         runKind: "daily",
         ruleset: "wanted",
@@ -167,9 +165,29 @@ describe("selectors.ts", () => {
 
       expect(wantedResult.kind).toBe("single");
       expect(quoteResult.kind).toBe("single");
-      expect((wantedResult as { character: Character }).character.id).toBe(
-        (quoteResult as { character: Character }).character.id
-      );
+      expect(wantedResult.seed).not.toBe(quoteResult.seed);
+    });
+  });
+
+  describe("selectTarget — each ruleset produces its own unique seed for infinite", () => {
+    it("returns different seeds for classic and wanted infinite rounds", () => {
+      const classicResult = selectTarget(allCharacters, {
+        runKind: "infinite",
+        ruleset: "classic",
+        tier: "casual",
+        roundId: "test-round",
+      });
+
+      const wantedResult = selectTarget(allCharacters, {
+        runKind: "infinite",
+        ruleset: "wanted",
+        tier: "casual",
+        roundId: "test-round",
+      });
+
+      expect(classicResult.kind).toBe("single");
+      expect(wantedResult.kind).toBe("single");
+      expect(classicResult.seed).not.toBe(wantedResult.seed);
     });
   });
 

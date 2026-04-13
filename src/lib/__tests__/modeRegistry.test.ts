@@ -7,22 +7,15 @@ import {
   getSupportedRulesets,
 } from "../modeRegistry";
 
-const ALL_RULESET_IDS: Ruleset[] = [
-  "classic",
-  "silhouette",
-  "wanted",
-  "quote",
-  "arc",
-  "four-seas",
-];
+const ALL_RULESET_IDS: Ruleset[] = ["classic", "wanted", "quote", "four-seas"];
 
 describe("modeRegistry", () => {
   it("returns correct maxGuesses for classic", () => {
     expect(getRulesetDef("classic").maxGuesses).toBe(6);
   });
 
-  it("returns usesProgressiveReveal = true for silhouette", () => {
-    expect(getRulesetDef("silhouette").usesProgressiveReveal).toBe(true);
+  it("returns usesClueProgression = true for wanted", () => {
+    expect(getRulesetDef("wanted").usesClueProgression).toBe(true);
   });
 
   it("returns isMultiBoard = true and boardCount = 4 for four-seas", () => {
@@ -31,25 +24,25 @@ describe("modeRegistry", () => {
     expect(def.boardCount).toBe(4);
   });
 
-  it("contains all 6 rulesets in RULESET_REGISTRY", () => {
+  it("contains all 4 rulesets in RULESET_REGISTRY", () => {
     for (const id of ALL_RULESET_IDS) {
       expect(RULESET_REGISTRY[id]).toBeDefined();
       expect(RULESET_REGISTRY[id].id).toBe(id);
     }
-    expect(Object.keys(RULESET_REGISTRY)).toHaveLength(6);
+    expect(Object.keys(RULESET_REGISTRY)).toHaveLength(4);
   });
 
-  it("silhouette does not support challenge run kind", () => {
-    expect(isRulesetSupported("silhouette", "challenge")).toBe(false);
+  it("wanted does not support challenge run kind", () => {
+    expect(isRulesetSupported("wanted", "challenge")).toBe(false);
   });
 
   it("classic supports challenge run kind", () => {
     expect(isRulesetSupported("classic", "challenge")).toBe(true);
   });
 
-  it("getSupportedRulesets returns all 6 entries", () => {
+  it("getSupportedRulesets returns all 4 entries", () => {
     const rulesets = getSupportedRulesets();
-    expect(rulesets).toHaveLength(6);
+    expect(rulesets).toHaveLength(4);
     for (const id of ALL_RULESET_IDS) {
       expect(rulesets).toContain(id);
     }
@@ -62,14 +55,10 @@ describe("modeRegistry", () => {
       switch (ruleset) {
         case "classic":
           return "c";
-        case "silhouette":
-          return "s";
         case "wanted":
           return "w";
         case "quote":
           return "q";
-        case "arc":
-          return "a";
         case "four-seas":
           return "f";
       }

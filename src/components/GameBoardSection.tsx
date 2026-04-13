@@ -215,7 +215,6 @@ export function GameBoardSection({
                     isWon={isWon}
                     guessCount={guesses.length}
                     mode={mode}
-                    silhouetteReveal={settings.silhouetteReveal}
                     onPlayAgain={
                       mode === "infinite" ? handlePlayAgain : undefined
                     }

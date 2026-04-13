@@ -14,19 +14,10 @@ interface SettingsModalProps {
 }
 
 const SETTINGS_CONFIG: {
-  key:
-    | "silhouetteReveal"
-    | "progressiveHints"
-    | "autoUseLogPose"
-    | "notificationsOptIn";
+  key: "progressiveHints" | "autoUseLogPose" | "notificationsOptIn";
   label: string;
   description: string;
 }[] = [
-  {
-    key: "silhouetteReveal",
-    label: "3D Silhouette Reveal",
-    description: "Show a 3D character reveal animation when the game ends",
-  },
   {
     key: "progressiveHints",
     label: "Progressive Hints",

@@ -551,8 +551,8 @@ describe("storage.ts", () => {
 
   describe("ruleset key builders", () => {
     it("buildRulesetDailyKey produces tier:ruleset:date format", () => {
-      expect(buildRulesetDailyKey("casual", "silhouette", "2026-04-12")).toBe(
-        "casual:silhouette:2026-04-12"
+      expect(buildRulesetDailyKey("casual", "wanted", "2026-04-12")).toBe(
+        "casual:wanted:2026-04-12"
       );
     });
 
@@ -563,14 +563,14 @@ describe("storage.ts", () => {
 
   describe("ruleset daily state", () => {
     it("returns default state when no ruleset daily exists", () => {
-      const state = getRulesetDailyState("casual", "silhouette", "2026-04-12");
+      const state = getRulesetDailyState("casual", "wanted", "2026-04-12");
       expect(state.guesses).toEqual([]);
       expect(state.guessedIds).toEqual([]);
       expect(state.isFinished).toBe(false);
       expect(state.isWon).toBe(false);
     });
 
-    it("saves and loads silhouette daily state", () => {
+    it("saves and loads wanted daily state", () => {
       const date = "2026-04-12";
       const guess = createGuess("luffy", true);
       const state = {
@@ -581,8 +581,8 @@ describe("storage.ts", () => {
         revealStep: 3,
       };
 
-      saveRulesetDailyState(state, "casual", "silhouette", date);
-      const loaded = getRulesetDailyState("casual", "silhouette", date);
+      saveRulesetDailyState(state, "casual", "wanted", date);
+      const loaded = getRulesetDailyState("casual", "wanted", date);
 
       expect(loaded.guesses).toHaveLength(1);
       expect(loaded.guessedIds).toEqual(["luffy"]);
@@ -612,7 +612,7 @@ describe("storage.ts", () => {
       const date = "2026-04-12";
       addDailyGuess(createGuess("nami", true), "casual", date);
 
-      const rulesetState = getRulesetDailyState("casual", "silhouette", date);
+      const rulesetState = getRulesetDailyState("casual", "wanted", date);
       expect(rulesetState.guesses).toEqual([]);
       expect(rulesetState.isWon).toBe(false);
     });
@@ -620,14 +620,14 @@ describe("storage.ts", () => {
 
   describe("ruleset infinite state", () => {
     it("returns default state when no ruleset infinite exists", () => {
-      const state = getRulesetInfiniteState("casual", "silhouette");
+      const state = getRulesetInfiniteState("casual", "wanted");
       expect(state.guesses).toEqual([]);
       expect(state.guessedIds).toEqual([]);
       expect(state.isFinished).toBe(false);
       expect(state.isWon).toBe(false);
     });
 
-    it("saves and loads silhouette infinite state", () => {
+    it("saves and loads wanted infinite state", () => {
       const state = {
         guesses: [createGuess("sanji", true)],
         guessedIds: ["sanji"],
@@ -636,8 +636,8 @@ describe("storage.ts", () => {
         revealStep: 5,
       };
 
-      saveRulesetInfiniteState(state, "casual", "silhouette");
-      const loaded = getRulesetInfiniteState("casual", "silhouette");
+      saveRulesetInfiniteState(state, "casual", "wanted");
+      const loaded = getRulesetInfiniteState("casual", "wanted");
 
       expect(loaded.guesses).toHaveLength(1);
       expect(loaded.guessedIds).toEqual(["sanji"]);
@@ -664,33 +664,33 @@ describe("storage.ts", () => {
     it("isolates ruleset infinite from classic infinite", () => {
       addInfiniteGuess(createGuess("chopper", true), "casual");
 
-      const rulesetState = getRulesetInfiniteState("casual", "silhouette");
+      const rulesetState = getRulesetInfiniteState("casual", "wanted");
       expect(rulesetState.guesses).toEqual([]);
       expect(rulesetState.isWon).toBe(false);
     });
 
     it("different rulesets for same tier have independent state", () => {
-      const silhouetteState = {
+      const wantedState = {
         guesses: [createGuess("brook", true)],
         guessedIds: ["brook"],
         isFinished: true,
         isWon: true,
       };
-      const wantedState = {
+      const quoteState = {
         guesses: [createGuess("franky", false)],
         guessedIds: ["franky"],
         isFinished: false,
         isWon: false,
       };
 
-      saveRulesetInfiniteState(silhouetteState, "casual", "silhouette");
       saveRulesetInfiniteState(wantedState, "casual", "wanted");
+      saveRulesetInfiniteState(quoteState, "casual", "quote");
 
-      const loadedSilhouette = getRulesetInfiniteState("casual", "silhouette");
       const loadedWanted = getRulesetInfiniteState("casual", "wanted");
+      const loadedQuote = getRulesetInfiniteState("casual", "quote");
 
-      expect(loadedSilhouette.guessedIds).toEqual(["brook"]);
-      expect(loadedWanted.guessedIds).toEqual(["franky"]);
+      expect(loadedWanted.guessedIds).toEqual(["brook"]);
+      expect(loadedQuote.guessedIds).toEqual(["franky"]);
     });
   });
 });

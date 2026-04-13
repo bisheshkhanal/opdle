@@ -2,12 +2,12 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import type { Character, Tier, RunKind } from "@/lib/types";
 import { selectTarget } from "@/lib/selectors";
 import { getUTCDateString } from "@/lib/daily";
-import { generateRoundId } from "@/lib/infinite";
 import {
   getRulesetDailyState,
   saveRulesetDailyState,
   getRulesetInfiniteState,
   saveRulesetInfiniteState,
+  clearRulesetInfiniteState,
 } from "@/lib/storage";
 import type { RulesetDailyState, RulesetInfiniteState } from "@/lib/types";
 import {
@@ -25,6 +25,7 @@ export function useFourSeasGame(
   allCharacters: Character[]
 ) {
   const [state, setState] = useState<FourSeasState | null>(null);
+  const [resetToken, setResetToken] = useState(0);
 
   const { targetCharactersArray, targetCharacterMap } = useMemo(() => {
     if (!allCharacters.length)
@@ -40,6 +41,7 @@ export function useFourSeasGame(
       ruleset: "four-seas",
       tier,
       dateString: runKind === "daily" ? getUTCDateString() : undefined,
+      infiniteSeedModifier: runKind === "infinite" ? resetToken : undefined,
     });
 
     if (result.kind === "multi") {
@@ -53,7 +55,7 @@ export function useFourSeasGame(
       };
     }
     return { targetCharactersArray: [], targetCharacterMap: {} };
-  }, [allCharacters, runKind, tier]);
+  }, [allCharacters, runKind, tier, resetToken]);
 
   const initState = useCallback(() => {
     if (targetCharactersArray.length !== 4) return null;
@@ -74,7 +76,7 @@ export function useFourSeasGame(
     } else if (runKind === "infinite") {
       const saved = getRulesetInfiniteState(tier, "four-seas");
       const deserialized = deserializeFourSeasState(saved);
-      if (deserialized) {
+      if (deserialized && resetToken === 0) {
         setState(deserialized);
       } else {
         setState(initState());
@@ -83,7 +85,7 @@ export function useFourSeasGame(
       // Challenge or other
       setState(initState());
     }
-  }, [runKind, tier, initState, targetCharactersArray]);
+  }, [runKind, tier, initState, targetCharactersArray, resetToken]);
 
   const handleFourSeasGuess = useCallback(
     (boardId: BoardId, guessId: string) => {
@@ -122,9 +124,17 @@ export function useFourSeasGame(
     [state, targetCharacterMap, allCharacters, runKind, tier]
   );
 
+  const handlePlayAgain = useCallback(() => {
+    if (runKind === "infinite") {
+      clearRulesetInfiniteState(tier, "four-seas");
+    }
+    setResetToken((prev) => prev + 1);
+  }, [runKind, tier]);
+
   return {
     fourSeasState: state,
     targetCharacters: targetCharacterMap,
     handleFourSeasGuess,
+    handlePlayAgain,
   };
 }

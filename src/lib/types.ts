@@ -102,13 +102,7 @@ export type GameMode = "daily" | "infinite";
 export type RunKind = "daily" | "infinite" | "challenge";
 
 // Ruleset: WHAT gameplay rules are used (category comparison, reveal mechanics, etc.)
-export type Ruleset =
-  | "classic"
-  | "silhouette"
-  | "wanted"
-  | "quote"
-  | "arc"
-  | "four-seas";
+export type Ruleset = "classic" | "wanted" | "quote" | "four-seas";
 
 export interface GameState {
   mode: GameMode;

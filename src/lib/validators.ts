@@ -17,10 +17,8 @@ export const modeSchema = z.enum(["daily", "infinite"]);
 export const runKindSchema = z.enum(["daily", "infinite", "challenge"]);
 export const rulesetSchema = z.enum([
   "classic",
-  "silhouette",
   "wanted",
   "quote",
-  "arc",
   "four-seas",
 ]);
 

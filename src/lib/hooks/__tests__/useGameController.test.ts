@@ -129,7 +129,16 @@ vi.mock("@/lib/storage", () => ({
 
 vi.mock("@/lib/settings", () => ({
   loadSettings: mockLoadSettings,
-  DEFAULT_SETTINGS: { silhouetteReveal: false, progressiveHints: false },
+  DEFAULT_SETTINGS: {
+    progressiveHints: false,
+    autoUseLogPose: true,
+    notificationsOptIn: false,
+    installPrompt: {
+      dismissed: false,
+      dismissedAt: null,
+      completedDailiesCount: 0,
+    },
+  },
 }));
 
 vi.mock("@/lib/daily", () => ({
@@ -186,8 +195,14 @@ function setupMocks() {
   });
   mockGetAllDiscoveredIds.mockReturnValue([]);
   mockLoadSettings.mockReturnValue({
-    silhouetteReveal: false,
     progressiveHints: false,
+    autoUseLogPose: true,
+    notificationsOptIn: false,
+    installPrompt: {
+      dismissed: false,
+      dismissedAt: null,
+      completedDailiesCount: 0,
+    },
   });
   mockGetCharactersForTier.mockReturnValue(mockCharacters);
   mockSelectDailyCharacter.mockReturnValue(mockCharacters[0]);

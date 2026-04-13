@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface HintImageProps {
   imageUrl: string;
@@ -46,13 +47,15 @@ export function HintImage({
           👁 Show Hint
         </button>
       ) : (
-        <div className="mx-auto h-[120px] w-[120px] overflow-hidden rounded-xl border border-parchment-300/60 bg-parchment-100/60 shadow-soft dark:border-slate-600/70 dark:bg-slate-800/70">
-          <img
+        <div className="relative mx-auto h-[120px] w-[120px] overflow-hidden rounded-xl border border-parchment-300/60 bg-parchment-100/60 shadow-soft dark:border-slate-600/70 dark:bg-slate-800/70">
+          <Image
             src={imageUrl}
             alt="Character hint"
-            className="h-full w-full object-cover"
+            fill
+            sizes="120px"
+            quality={85}
+            className="object-contain object-top"
             style={{ filter: `blur(${blurLevel}px)` }}
-            loading="lazy"
           />
         </div>
       )}

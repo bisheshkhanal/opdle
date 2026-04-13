@@ -4,7 +4,6 @@
  */
 
 export interface UserSettings {
-  silhouetteReveal: boolean;
   progressiveHints: boolean;
   autoUseLogPose: boolean;
   notificationsOptIn: boolean;
@@ -16,7 +15,6 @@ export interface UserSettings {
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
-  silhouetteReveal: false,
   progressiveHints: false,
   autoUseLogPose: true,
   notificationsOptIn: false,

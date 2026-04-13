@@ -44,7 +44,6 @@ describe("settings", () => {
 
     it("returns saved settings when present", () => {
       const saved: UserSettings = {
-        silhouetteReveal: true,
         progressiveHints: false,
         autoUseLogPose: false,
         notificationsOptIn: true,
@@ -68,11 +67,10 @@ describe("settings", () => {
     });
 
     it("merges saved partial settings with defaults", () => {
-      ls.store[SETTINGS_KEY] = JSON.stringify({ silhouetteReveal: true });
+      ls.store[SETTINGS_KEY] = JSON.stringify({ progressiveHints: true });
 
       const result = loadSettings();
-      expect(result.silhouetteReveal).toBe(true);
-      expect(result.progressiveHints).toBe(false);
+      expect(result.progressiveHints).toBe(true);
       expect(result.autoUseLogPose).toBe(true);
       expect(result.notificationsOptIn).toBe(false);
       expect(result.installPrompt).toEqual(DEFAULT_SETTINGS.installPrompt);
@@ -88,22 +86,11 @@ describe("settings", () => {
       expect(result.installPrompt.dismissedAt).toBe(null);
       expect(result.installPrompt.completedDailiesCount).toBe(0);
     });
-
-    it("defaults missing autoUseLogPose to true for legacy data", () => {
-      ls.store[SETTINGS_KEY] = JSON.stringify({
-        silhouetteReveal: true,
-        progressiveHints: true,
-      });
-
-      const result = loadSettings();
-      expect(result.autoUseLogPose).toBe(true);
-    });
   });
 
   describe("saveSettings", () => {
     it("writes to localStorage with correct key", () => {
       const settings: UserSettings = {
-        silhouetteReveal: true,
         progressiveHints: false,
         autoUseLogPose: false,
         notificationsOptIn: true,
@@ -125,35 +112,34 @@ describe("settings", () => {
   describe("updateSetting", () => {
     it("updates a single setting and returns the full settings object", () => {
       ls.store[SETTINGS_KEY] = JSON.stringify({
-        silhouetteReveal: false,
         progressiveHints: false,
         autoUseLogPose: true,
+        notificationsOptIn: false,
       });
 
-      const result = updateSetting("silhouetteReveal", true);
-      expect(result.silhouetteReveal).toBe(true);
-      expect(result.progressiveHints).toBe(false);
+      const result = updateSetting("progressiveHints", true);
+      expect(result.progressiveHints).toBe(true);
       expect(result.autoUseLogPose).toBe(true);
     });
 
     it("preserves other settings when updating one", () => {
       ls.store[SETTINGS_KEY] = JSON.stringify({
-        silhouetteReveal: true,
         progressiveHints: false,
         autoUseLogPose: true,
+        notificationsOptIn: false,
       });
 
-      const result = updateSetting("progressiveHints", true);
-      expect(result.silhouetteReveal).toBe(true);
-      expect(result.progressiveHints).toBe(true);
-      expect(result.autoUseLogPose).toBe(true);
+      const result = updateSetting("autoUseLogPose", false);
+      expect(result.progressiveHints).toBe(false);
+      expect(result.autoUseLogPose).toBe(false);
+      expect(result.notificationsOptIn).toBe(false);
     });
 
     it("updates autoUseLogPose and persists it", () => {
       ls.store[SETTINGS_KEY] = JSON.stringify({
-        silhouetteReveal: false,
         progressiveHints: false,
         autoUseLogPose: true,
+        notificationsOptIn: false,
       });
 
       const result = updateSetting("autoUseLogPose", false);
@@ -163,9 +149,8 @@ describe("settings", () => {
   });
 
   describe("roundtrip", () => {
-    it("persists autoUseLogPose across save and reload", () => {
+    it("persists settings across save and reload", () => {
       const settings: UserSettings = {
-        silhouetteReveal: false,
         progressiveHints: true,
         autoUseLogPose: false,
         notificationsOptIn: true,

@@ -12,14 +12,10 @@ import { AnswerReveal } from "@/components/AnswerReveal";
 import { ResultsShare } from "@/components/ResultsShare";
 import { getUTCDateString } from "@/lib/daily";
 import { GameBoardSection } from "@/components/GameBoardSection";
-import { SilhouetteBoard } from "@/components/SilhouetteBoard";
 import { WantedBoard } from "@/components/WantedBoard";
 import { QuoteBoard } from "@/components/QuoteBoard";
-import { ArcBoard } from "@/components/ArcBoard";
-import type { SilhouetteState } from "@/lib/silhouette";
 import type { WantedState } from "@/lib/wanted";
 import type { QuoteState } from "@/lib/quote";
-import type { ArcState } from "@/lib/arc";
 import { GameModalRegistry } from "@/components/GameModalRegistry";
 import { useGameController } from "@/lib/hooks/useGameController";
 import { useGameUiState } from "@/lib/hooks/useGameUiState";
@@ -151,7 +147,7 @@ export default function Home() {
 
   const rulesetGame = useRulesetGame(
     activeRuleset === "classic" || activeRuleset === "four-seas"
-      ? "silhouette"
+      ? "wanted"
       : activeRuleset,
     game.challengeMode ? "challenge" : game.mode,
     game.tier,
@@ -298,14 +294,6 @@ export default function Home() {
         rulesetGame.state &&
         rulesetGame.targetCharacter && (
           <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 sm:py-10">
-            {activeRuleset === "silhouette" && (
-              <SilhouetteBoard
-                targetCharacter={rulesetGame.targetCharacter}
-                allCharacters={characters}
-                state={rulesetGame.state as SilhouetteState}
-                onGuess={rulesetGame.handleGuess}
-              />
-            )}
             {activeRuleset === "wanted" && (
               <WantedBoard
                 targetCharacter={rulesetGame.targetCharacter}
@@ -322,14 +310,6 @@ export default function Home() {
                 onGuess={rulesetGame.handleGuess}
               />
             )}
-            {activeRuleset === "arc" && (
-              <ArcBoard
-                targetCharacter={rulesetGame.targetCharacter}
-                allCharacters={characters}
-                state={rulesetGame.state as ArcState}
-                onGuess={rulesetGame.handleGuess}
-              />
-            )}
 
             {rulesetGame.state.isFinished && (
               <div className="mt-8 flex flex-col items-center gap-6">
@@ -338,9 +318,10 @@ export default function Home() {
                   isWon={rulesetGame.state.isWon}
                   guessCount={rulesetGame.state.guesses.length}
                   mode={mode}
-                  silhouetteReveal={settings.silhouetteReveal}
                   onPlayAgain={
-                    mode === "infinite" ? handlePlayAgain : undefined
+                    mode === "infinite"
+                      ? rulesetGame.handlePlayAgain
+                      : undefined
                   }
                   streak={mode === "daily" ? dailyState?.streak : undefined}
                   ruleset={activeRuleset}
@@ -386,9 +367,10 @@ export default function Home() {
                     fourSeasGame.fourSeasState
                   )}
                   mode={mode}
-                  silhouetteReveal={settings.silhouetteReveal}
                   onPlayAgain={
-                    mode === "infinite" ? handlePlayAgain : undefined
+                    mode === "infinite"
+                      ? fourSeasGame.handlePlayAgain
+                      : undefined
                   }
                   streak={undefined}
                   ruleset={activeRuleset}

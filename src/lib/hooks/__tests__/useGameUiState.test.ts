@@ -288,8 +288,14 @@ describe("useGameUiState", () => {
   describe("settings pass-through", () => {
     it("exposes settings from game controller", () => {
       const customSettings = {
-        silhouetteReveal: true,
         progressiveHints: true,
+        autoUseLogPose: false,
+        notificationsOptIn: true,
+        installPrompt: {
+          dismissed: false,
+          dismissedAt: null,
+          completedDailiesCount: 3,
+        },
       };
       const { result } = renderHook(() =>
         useGameUiState(createMockGame({ settings: customSettings }))
@@ -304,7 +310,16 @@ describe("useGameUiState", () => {
         useGameUiState(createMockGame({ handleSettingsChange: mockHandler }))
       );
 
-      const newSettings = { silhouetteReveal: true, progressiveHints: false };
+      const newSettings = {
+        progressiveHints: false,
+        autoUseLogPose: true,
+        notificationsOptIn: false,
+        installPrompt: {
+          dismissed: false,
+          dismissedAt: null,
+          completedDailiesCount: 0,
+        },
+      };
       result.current.handleSettingsChange(newSettings);
       expect(mockHandler).toHaveBeenCalledWith(newSettings);
     });
@@ -315,21 +330,38 @@ describe("useGameUiState", () => {
         {
           initialProps: {
             game: createMockGame({
-              settings: { silhouetteReveal: false, progressiveHints: false },
+              settings: {
+                progressiveHints: false,
+                autoUseLogPose: true,
+                notificationsOptIn: false,
+                installPrompt: {
+                  dismissed: false,
+                  dismissedAt: null,
+                  completedDailiesCount: 0,
+                },
+              },
             }),
           },
         }
       );
 
-      expect(result.current.settings.silhouetteReveal).toBe(false);
+      expect(result.current.settings.progressiveHints).toBe(false);
 
       rerender({
         game: createMockGame({
-          settings: { silhouetteReveal: true, progressiveHints: true },
+          settings: {
+            progressiveHints: true,
+            autoUseLogPose: false,
+            notificationsOptIn: true,
+            installPrompt: {
+              dismissed: true,
+              dismissedAt: "2026-04-13T00:00:00Z",
+              completedDailiesCount: 5,
+            },
+          },
         }),
       });
 
-      expect(result.current.settings.silhouetteReveal).toBe(true);
       expect(result.current.settings.progressiveHints).toBe(true);
     });
   });

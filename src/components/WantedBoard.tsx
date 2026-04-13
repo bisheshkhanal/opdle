@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Image from "next/image";
 import { Character } from "@/lib/types";
 import { WantedState } from "@/lib/wanted";
 import { Autocomplete } from "@/components/Autocomplete";
@@ -55,14 +56,17 @@ export function WantedBoard({
       aria-label="Wanted poster game board"
       className="mx-auto w-full max-w-lg space-y-6"
     >
-      <div className="shadow-elevated mx-auto flex h-64 w-64 items-center justify-center overflow-hidden rounded-xl border-4 border-parchment-300 bg-parchment-100 dark:border-slate-600 dark:bg-slate-800">
+      <div className="shadow-elevated relative mx-auto flex h-64 w-64 items-center justify-center overflow-hidden rounded-xl border-4 border-parchment-300 bg-parchment-100 dark:border-slate-600 dark:bg-slate-800">
         {targetImage ? (
-          <img
+          <Image
             src={targetImage}
             alt="Wanted poster"
             data-testid="wanted-image"
             aria-label={`Wanted poster, step ${revealStep} of 6 revealed`}
-            className="h-full w-full object-cover transition-all duration-500 ease-in-out"
+            fill
+            sizes="264px"
+            quality={85}
+            className="object-contain object-top transition-all duration-500 ease-in-out"
             style={{ clipPath: clipPathStyle }}
           />
         ) : (

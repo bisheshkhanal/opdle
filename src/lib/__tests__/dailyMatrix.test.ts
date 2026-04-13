@@ -19,14 +19,7 @@ import sampleData from "../../data/characters.v2.json";
 
 const characters = sampleData as Character[];
 const TIERS: Tier[] = ["casual", "fan", "nakama"];
-const RULESETS: Ruleset[] = [
-  "classic",
-  "silhouette",
-  "wanted",
-  "quote",
-  "arc",
-  "four-seas",
-];
+const RULESETS: Ruleset[] = ["classic", "wanted", "quote", "four-seas"];
 const SAMPLE_DATES = [
   "2025-01-01",
   "2025-03-15",
@@ -92,8 +85,8 @@ describe("Daily matrix: determinism across all tier × ruleset pairs", () => {
           }
         });
 
-        if (ruleset !== "four-seas") {
-          it("same underlying character across all non-four-seas rulesets", () => {
+        if (ruleset !== "four-seas" && ruleset !== "classic") {
+          it(`produces different seed than classic for ruleset=${ruleset}`, () => {
             const dateString = "2025-06-15";
             const classicCtx = {
               runKind: "daily" as RunKind,
@@ -110,7 +103,6 @@ describe("Daily matrix: determinism across all tier × ruleset pairs", () => {
               dateString,
             });
 
-            // Both should be single results
             expect(classicResult.kind).toBe("single");
             expect(thisResult.kind).toBe("single");
 
@@ -118,7 +110,7 @@ describe("Daily matrix: determinism across all tier × ruleset pairs", () => {
               classicResult.kind === "single" &&
               thisResult.kind === "single"
             ) {
-              expect(classicResult.character.id).toBe(thisResult.character.id);
+              expect(classicResult.seed).not.toBe(thisResult.seed);
             }
           });
         }

@@ -930,6 +930,18 @@ export function saveRulesetInfiniteState(
   saveStorage(storage);
 }
 
+export function clearRulesetInfiniteState(tier: Tier, ruleset: Ruleset): void {
+  const storage = loadStorage();
+  const key = buildRulesetInfiniteKey(tier, ruleset);
+
+  if (!storage.rulesetInfinite?.[key]) {
+    return;
+  }
+
+  delete storage.rulesetInfinite[key];
+  saveStorage(storage);
+}
+
 export function getProgressionByTier(tier: Tier): TierProgression {
   const storage = loadStorage();
   return storage.progressionByTier?.[tier] || getDefaultTierProgression();

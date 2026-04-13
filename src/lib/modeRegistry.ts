@@ -24,18 +24,6 @@ export const RULESET_REGISTRY: Record<Ruleset, RulesetDef> = {
     isMultiBoard: false,
     boardCount: 1,
   },
-  silhouette: {
-    id: "silhouette",
-    label: "Silhouette",
-    description:
-      "A shadowy silhouette is progressively revealed with each wrong guess",
-    maxGuesses: 6,
-    supportedRunKinds: ["daily", "infinite"],
-    usesProgressiveReveal: true,
-    usesClueProgression: false,
-    isMultiBoard: false,
-    boardCount: 1,
-  },
   wanted: {
     id: "wanted",
     label: "Wanted",
@@ -57,18 +45,6 @@ export const RULESET_REGISTRY: Record<Ruleset, RulesetDef> = {
     supportedRunKinds: ["daily", "infinite"],
     usesProgressiveReveal: false,
     usesClueProgression: true,
-    isMultiBoard: false,
-    boardCount: 1,
-  },
-  arc: {
-    id: "arc",
-    label: "Arc",
-    description:
-      "Guess the character by arc proximity — each guess reveals how close their debut arc is",
-    maxGuesses: 6,
-    supportedRunKinds: ["daily", "infinite"],
-    usesProgressiveReveal: false,
-    usesClueProgression: false,
     isMultiBoard: false,
     boardCount: 1,
   },

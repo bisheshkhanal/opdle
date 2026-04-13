@@ -10,7 +10,7 @@
 
 import type { Character, Ruleset, RunKind, Tier } from "./types";
 import { seededRandom } from "./daily";
-import { selectDailyCharacter, getUTCDateString } from "./daily";
+import { getUTCDateString } from "./daily";
 import { selectInfiniteCharacter } from "./infinite";
 import { getCharactersForTier } from "./tier";
 
@@ -26,6 +26,8 @@ export interface SelectionContext {
   dateString?: string;
   /** For infinite: round ID string. */
   roundId?: string;
+  /** For infinite: optional seed variation used to force a new round target. */
+  infiniteSeedModifier?: number;
   /** For challenge: encoded seed string. */
   challengeSeed?: string;
 }
@@ -54,10 +56,10 @@ export type SelectionResult = SingleTarget | MultiTarget;
  * Select target character(s) for any run kind / ruleset combination.
  *
  * Rules:
- * - daily + classic/silhouette/wanted/quote/arc → delegates to selectDailyCharacter
- *   (same underlying character regardless of ruleset; ruleset only affects presentation)
+ * - daily + classic/wanted/quote → each ruleset gets its own deterministic character
+ *   via a ruleset-aware seed (${tier}:${ruleset}:${date})
  * - daily + four-seas → selects 4 linked targets via selectFourSeasTargets
- * - infinite + any ruleset → delegates to selectInfiniteCharacter (same char for non-four-seas)
+ * - infinite + any ruleset → each ruleset gets its own character via ruleset-prefixed roundId
  * - challenge → uses challengeSeed as the deterministic seed
  */
 export function selectTarget(
@@ -78,20 +80,19 @@ export function selectTarget(
     return { kind: "multi", characters, seed };
   }
 
-  // All non-four-seas rulesets select the same underlying character.
-  // The ruleset only changes how clues are presented / evaluated.
+  // Each non-four-seas ruleset selects its own character via a ruleset-aware seed.
   if (runKind === "daily") {
-    const character = selectDailyCharacter(
-      tiered,
-      context.dateString,
-      context.tier
-    );
     const seed = buildDailySeed(context);
+    const character = selectBySeed(tiered, seed);
     return { kind: "single", character, seed };
   }
 
   if (runKind === "infinite") {
-    const roundId = context.roundId ?? "default";
+    const baseRoundId = context.roundId ?? "default";
+    const roundId =
+      context.infiniteSeedModifier !== undefined
+        ? `${context.ruleset}:${baseRoundId}:${context.infiniteSeedModifier}`
+        : `${context.ruleset}:${baseRoundId}`;
     const character = selectInfiniteCharacter(tiered, roundId);
     return { kind: "single", character, seed: roundId };
   }
@@ -172,7 +173,10 @@ function resolveSeed(context: SelectionContext): string {
     return buildDailySeed(context);
   }
   if (context.runKind === "infinite") {
-    return context.roundId ?? "default";
+    const baseRoundId = context.roundId ?? "default";
+    return context.infiniteSeedModifier !== undefined
+      ? `${baseRoundId}:${context.infiniteSeedModifier}`
+      : baseRoundId;
   }
   if (context.runKind === "challenge") {
     return context.challengeSeed ?? "default-challenge";
@@ -182,7 +186,7 @@ function resolveSeed(context: SelectionContext): string {
 
 function buildDailySeed(context: SelectionContext): string {
   const date = context.dateString ?? getUTCDateString();
-  return `${context.tier}:${date}`;
+  return `${context.tier}:${context.ruleset}:${date}`;
 }
 
 function selectBySeed(characters: Character[], seed: string): Character {

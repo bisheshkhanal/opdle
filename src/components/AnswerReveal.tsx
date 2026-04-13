@@ -13,17 +13,11 @@ const WinCelebration = dynamic(
   { ssr: false }
 );
 
-const SilhouetteReveal = dynamic(
-  () => import("@/components/three/SilhouetteReveal"),
-  { ssr: false }
-);
-
 interface AnswerRevealProps {
   character: Character;
   isWon: boolean;
   guessCount: number;
   mode: GameMode;
-  silhouetteReveal?: boolean;
   onPlayAgain?: () => void;
   streak?: number;
   ruleset?: Ruleset;
@@ -34,14 +28,11 @@ export function AnswerReveal({
   isWon,
   guessCount,
   mode,
-  silhouetteReveal = false,
   onPlayAgain,
   streak,
   ruleset,
 }: AnswerRevealProps) {
   const [celebrationVisible, setCelebrationVisible] = useState(false);
-  const [revealComplete, setRevealComplete] = useState(!silhouetteReveal);
-  const [showSilhouette, setShowSilhouette] = useState(false);
 
   const rulesetLabel =
     ruleset && ruleset !== "classic" ? RULESET_REGISTRY[ruleset].label : null;
@@ -55,32 +46,9 @@ export function AnswerReveal({
     }
   }, [isWon]);
 
-  useEffect(() => {
-    if (!silhouetteReveal) {
-      setShowSilhouette(false);
-      setRevealComplete(true);
-      return;
-    }
-
-    if (isWon || guessCount > 0) {
-      setShowSilhouette(true);
-      setRevealComplete(false);
-    }
-  }, [character.id, guessCount, isWon, silhouetteReveal]);
-
   return (
     <>
       {isWon && <WinCelebration isVisible={celebrationVisible} />}
-      {silhouetteReveal && showSilhouette && !revealComplete && (
-        <SilhouetteReveal
-          imageUrl={character.imageUrl}
-          isVisible={showSilhouette && !revealComplete}
-          onComplete={() => {
-            setRevealComplete(true);
-            setShowSilhouette(false);
-          }}
-        />
-      )}
       <div className="game-card win-celebrate w-full max-w-sm p-7 sm:p-8">
         {/* Result message */}
         <div className="mb-6 text-center">

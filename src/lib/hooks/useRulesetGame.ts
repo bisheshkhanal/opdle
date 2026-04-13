@@ -8,34 +8,21 @@ import {
   saveRulesetDailyState,
   getRulesetInfiniteState,
   saveRulesetInfiniteState,
+  clearRulesetInfiniteState,
 } from "@/lib/storage";
 
-import { initSilhouetteState, applySilhouetteGuess } from "@/lib/silhouette";
 import { initWantedState, applyWantedGuess } from "@/lib/wanted";
 import { initQuoteState, applyQuoteGuess } from "@/lib/quote";
-import { initArcState, applyArcGuess } from "@/lib/arc";
-import type { SilhouetteState } from "@/lib/silhouette";
 import type { WantedState } from "@/lib/wanted";
 import type { QuoteState } from "@/lib/quote";
-import type { ArcState } from "@/lib/arc";
 
-export type RulesetState =
-  | SilhouetteState
-  | WantedState
-  | QuoteState
-  | ArcState;
+export type RulesetState = WantedState | QuoteState;
 
 function normalizeRulesetDailyState(
   ruleset: Exclude<Ruleset, "classic" | "four-seas">,
   state: RulesetDailyState
 ): RulesetState {
   switch (ruleset) {
-    case "silhouette":
-      return {
-        ...initSilhouetteState(),
-        ...state,
-        revealStep: state.revealStep ?? 0,
-      };
     case "wanted":
       return {
         ...initWantedState(),
@@ -47,12 +34,6 @@ function normalizeRulesetDailyState(
         ...initQuoteState(),
         ...state,
         clueIndex: state.clueIndex ?? 0,
-      };
-    case "arc":
-      return {
-        ...initArcState(),
-        ...state,
-        arcGuesses: [],
       };
   }
 }
@@ -62,12 +43,6 @@ function normalizeRulesetInfiniteState(
   state: RulesetInfiniteState
 ): RulesetState {
   switch (ruleset) {
-    case "silhouette":
-      return {
-        ...initSilhouetteState(),
-        ...state,
-        revealStep: state.revealStep ?? 0,
-      };
     case "wanted":
       return {
         ...initWantedState(),
@@ -79,12 +54,6 @@ function normalizeRulesetInfiniteState(
         ...initQuoteState(),
         ...state,
         clueIndex: state.clueIndex ?? 0,
-      };
-    case "arc":
-      return {
-        ...initArcState(),
-        ...state,
-        arcGuesses: [],
       };
   }
 }
@@ -96,6 +65,7 @@ export function useRulesetGame(
   allCharacters: Character[]
 ) {
   const [state, setState] = useState<RulesetState | null>(null);
+  const [resetToken, setResetToken] = useState(0);
 
   const targetCharacter = useMemo(() => {
     if (!allCharacters.length) return null;
@@ -104,45 +74,30 @@ export function useRulesetGame(
       ruleset,
       tier,
       dateString: runKind === "daily" ? getUTCDateString() : undefined,
+      infiniteSeedModifier: runKind === "infinite" ? resetToken : undefined,
     });
     if (result.kind === "single") {
       return result.character;
     }
     return null;
-  }, [allCharacters, runKind, ruleset, tier]);
+  }, [allCharacters, runKind, ruleset, tier, resetToken]);
 
   const initState = useCallback(() => {
     switch (ruleset) {
-      case "silhouette":
-        return initSilhouetteState();
       case "wanted":
         return initWantedState();
       case "quote":
         return initQuoteState();
-      case "arc":
-        return initArcState();
-      default:
-        return null;
     }
   }, [ruleset]);
 
   const applyGuess = useCallback(
     (currentState: RulesetState, guess: Character, target: Character) => {
       switch (ruleset) {
-        case "silhouette":
-          return applySilhouetteGuess(
-            currentState as SilhouetteState,
-            guess,
-            target
-          );
         case "wanted":
           return applyWantedGuess(currentState as WantedState, guess, target);
         case "quote":
           return applyQuoteGuess(currentState as QuoteState, guess, target);
-        case "arc":
-          return applyArcGuess(currentState as ArcState, guess, target);
-        default:
-          return currentState;
       }
     },
     [ruleset]
@@ -158,13 +113,13 @@ export function useRulesetGame(
       }
     } else if (runKind === "infinite") {
       const saved = getRulesetInfiniteState(tier, ruleset);
-      if (saved) {
+      if (saved && resetToken === 0) {
         setState(normalizeRulesetInfiniteState(ruleset, saved));
       } else {
         setState(initState());
       }
     }
-  }, [ruleset, runKind, tier, initState]);
+  }, [ruleset, runKind, tier, initState, resetToken]);
 
   const handleGuess = useCallback(
     (guessId: string) => {
@@ -185,9 +140,17 @@ export function useRulesetGame(
     [state, targetCharacter, allCharacters, ruleset, runKind, tier, applyGuess]
   );
 
+  const handlePlayAgain = useCallback(() => {
+    if (runKind === "infinite") {
+      clearRulesetInfiniteState(tier, ruleset);
+    }
+    setResetToken((prev) => prev + 1);
+  }, [runKind, tier, ruleset]);
+
   return {
     state,
     targetCharacter,
     handleGuess,
+    handlePlayAgain,
   };
 }

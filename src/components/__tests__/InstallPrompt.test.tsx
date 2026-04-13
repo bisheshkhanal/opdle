@@ -17,7 +17,6 @@ describe("InstallPrompt", () => {
   const mockOnSettingsChange = vi.fn();
 
   const defaultSettings: UserSettings = {
-    silhouetteReveal: false,
     progressiveHints: false,
     autoUseLogPose: true,
     notificationsOptIn: false,

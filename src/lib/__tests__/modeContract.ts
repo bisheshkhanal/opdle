@@ -6,7 +6,7 @@
  *
  * Usage:
  *   describe("my-ruleset contract", () => {
- *     runModeContractTests({ ruleset: "silhouette", runKind: "daily", sampleCharacters });
+ *     runModeContractTests({ ruleset: "wanted", runKind: "daily", sampleCharacters });
  *   });
  */
 
@@ -86,8 +86,7 @@ export function runModeContractTests(config: ModeContractConfig): void {
 
   it("storage isolation between rulesets", () => {
     const tier = "casual";
-    const otherRuleset: Ruleset =
-      ruleset === "silhouette" ? "wanted" : "silhouette";
+    const otherRuleset: Ruleset = ruleset === "wanted" ? "quote" : "wanted";
 
     // Save state for the primary ruleset
     saveRulesetDailyState(
@@ -123,7 +122,6 @@ export function runModeContractTests(config: ModeContractConfig): void {
     if (ruleset === "classic") {
       // Classic should NOT include a ruleset label
       expect(headerLine).toContain("Onepiecedle Daily");
-      expect(headerLine).not.toContain("Silhouette");
       expect(headerLine).not.toContain("Wanted");
     } else {
       // Non-classic rulesets must include the ruleset label
