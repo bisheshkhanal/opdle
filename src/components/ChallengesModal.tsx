@@ -8,6 +8,222 @@ interface ChallengesModalProps {
   onSignInClick: () => void;
 }
 
+interface ChallengePack {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface ChallengePackProgress {
+  completed: number;
+  total: number;
+  percentage: number;
+}
+
+interface ChallengeHistoryItem {
+  id: string;
+  challengeId: string;
+  guessCount: number;
+  solvedAt: string | null;
+  createdAt: string;
+  isWon?: boolean;
+  isExpired?: boolean;
+}
+
+interface ChallengeLeaderboard {
+  challenge?: {
+    title?: string;
+  } | null;
+  history?: ChallengeLeaderboardAttempt[];
+}
+
+interface ChallengeLeaderboardAttempt {
+  id: string;
+  userId: string;
+  guessCount: number;
+  factionSnapshotAtSubmit: string;
+}
+
+function isChallengePack(value: unknown): value is ChallengePack {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as ChallengePack).id === "string" &&
+    typeof (value as ChallengePack).title === "string" &&
+    typeof (value as ChallengePack).description === "string"
+  );
+}
+
+function parsePacksResponse(data: unknown): ChallengePack[] {
+  if (
+    typeof data !== "object" ||
+    data === null ||
+    !Array.isArray((data as { packs?: unknown[] }).packs)
+  ) {
+    return [];
+  }
+
+  return ((data as { packs: unknown[] }).packs ?? []).filter(isChallengePack);
+}
+
+function parsePackProgressResponse(
+  data: unknown
+): ChallengePackProgress | null {
+  if (typeof data !== "object" || data === null) {
+    return null;
+  }
+
+  const progress = (data as { progress?: unknown }).progress;
+
+  if (typeof progress !== "object" || progress === null) {
+    return null;
+  }
+
+  const completed = (progress as { completed?: unknown }).completed;
+  const total = (progress as { total?: unknown }).total;
+  const percentageValue =
+    (progress as { percentage?: unknown }).percentage ??
+    (progress as { percent?: unknown }).percent;
+
+  if (
+    typeof completed !== "number" ||
+    typeof total !== "number" ||
+    typeof percentageValue !== "number"
+  ) {
+    return null;
+  }
+
+  return {
+    completed,
+    total,
+    percentage: percentageValue,
+  };
+}
+
+function isChallengeHistoryItem(value: unknown): value is ChallengeHistoryItem {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as ChallengeHistoryItem).id === "string" &&
+    typeof (value as ChallengeHistoryItem).challengeId === "string" &&
+    typeof (value as ChallengeHistoryItem).guessCount === "number" &&
+    ((value as ChallengeHistoryItem).solvedAt === null ||
+      typeof (value as ChallengeHistoryItem).solvedAt === "string") &&
+    typeof (value as ChallengeHistoryItem).createdAt === "string"
+  );
+}
+
+function parseHistoryResponse(data: unknown): ChallengeHistoryItem[] {
+  if (
+    typeof data !== "object" ||
+    data === null ||
+    !Array.isArray((data as { history?: unknown[] }).history)
+  ) {
+    return [];
+  }
+
+  return ((data as { history: unknown[] }).history ?? []).filter(
+    isChallengeHistoryItem
+  );
+}
+
+function toUtcDayKey(value: string): string | null {
+  const parsedDate = new Date(value);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return null;
+  }
+
+  return parsedDate.toISOString().slice(0, 10);
+}
+
+function dayDifferenceUtc(
+  laterDateKey: string,
+  earlierDateKey: string
+): number {
+  const later = new Date(`${laterDateKey}T00:00:00.000Z`).getTime();
+  const earlier = new Date(`${earlierDateKey}T00:00:00.000Z`).getTime();
+  return Math.round((later - earlier) / (24 * 60 * 60 * 1000));
+}
+
+function calculateStreak(history: ChallengeHistoryItem[]): number {
+  const sortedHistory = [...history].sort((a, b) => {
+    const aTime = new Date(a.solvedAt ?? a.createdAt).getTime();
+    const bTime = new Date(b.solvedAt ?? b.createdAt).getTime();
+    return bTime - aTime;
+  });
+
+  let streak = 0;
+  let previousDayKey: string | null = null;
+
+  for (const item of sortedHistory) {
+    const isWon = item.isWon ?? Boolean(item.solvedAt);
+    if (!isWon) {
+      break;
+    }
+
+    const dayKey = toUtcDayKey(item.solvedAt ?? item.createdAt);
+    if (!dayKey) {
+      break;
+    }
+
+    if (previousDayKey === null) {
+      streak += 1;
+      previousDayKey = dayKey;
+      continue;
+    }
+
+    const gap = dayDifferenceUtc(previousDayKey, dayKey);
+    if (gap > 1) {
+      break;
+    }
+
+    streak += 1;
+    previousDayKey = dayKey;
+  }
+
+  return streak;
+}
+
+function isChallengeLeaderboardAttempt(
+  value: unknown
+): value is ChallengeLeaderboardAttempt {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as ChallengeLeaderboardAttempt).id === "string" &&
+    typeof (value as ChallengeLeaderboardAttempt).userId === "string" &&
+    typeof (value as ChallengeLeaderboardAttempt).guessCount === "number" &&
+    typeof (value as ChallengeLeaderboardAttempt).factionSnapshotAtSubmit ===
+      "string"
+  );
+}
+
+function parseChallengeLeaderboard(data: unknown): ChallengeLeaderboard {
+  if (typeof data !== "object" || data === null) {
+    return { challenge: null, history: [] };
+  }
+
+  const challengeData = (data as { challenge?: unknown }).challenge;
+  const historyData = (data as { history?: unknown }).history;
+
+  const challenge =
+    typeof challengeData === "object" && challengeData !== null
+      ? {
+          title:
+            typeof (challengeData as { title?: unknown }).title === "string"
+              ? (challengeData as { title: string }).title
+              : undefined,
+        }
+      : null;
+
+  const history = Array.isArray(historyData)
+    ? historyData.filter(isChallengeLeaderboardAttempt)
+    : [];
+
+  return { challenge, history };
+}
+
 export function ChallengesModal({
   onClose,
   onSignInClick,
@@ -90,14 +306,35 @@ export function ChallengesModal({
 }
 
 function ChallengePacksTab() {
-  const [packs, setPacks] = useState<any[]>([]);
+  const [packs, setPacks] = useState<ChallengePack[]>([]);
+  const [packProgressById, setPackProgressById] = useState<
+    Record<string, ChallengePackProgress | null>
+  >({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/challenges/packs")
       .then((res) => res.json())
-      .then((data) => {
-        setPacks(data.packs || []);
+      .then(async (data: unknown) => {
+        const parsedPacks = parsePacksResponse(data);
+        setPacks(parsedPacks);
+
+        const progressEntries = await Promise.all(
+          parsedPacks.map(async (pack) => {
+            try {
+              const response = await fetch(`/api/challenges/packs/${pack.id}`);
+              const progressData: unknown = await response.json();
+              return [
+                pack.id,
+                parsePackProgressResponse(progressData),
+              ] as const;
+            } catch {
+              return [pack.id, null] as const;
+            }
+          })
+        );
+
+        setPackProgressById(Object.fromEntries(progressEntries));
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -124,20 +361,30 @@ function ChallengePacksTab() {
           key={pack.id}
           className="rounded-xl border border-parchment-300 bg-parchment-100 p-4 dark:border-slate-700 dark:bg-slate-800"
         >
-          <h4 className="font-bold text-navy-800 dark:text-slate-100">
-            {pack.title}
-          </h4>
-          <p className="mt-1 text-sm text-navy-600 dark:text-slate-400">
-            {pack.description}
-          </p>
-          <div className="mt-4 flex items-center justify-between">
-            <span className="text-xs font-medium text-navy-500 dark:text-slate-500">
-              Partial progress (0/5)
-            </span>
-            <button className="rounded-lg bg-navy-100 px-3 py-1.5 text-xs font-bold text-navy-700 hover:bg-navy-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
-              View Challenges
-            </button>
-          </div>
+          {(() => {
+            const progress = packProgressById[pack.id];
+            const completed = progress?.completed ?? 0;
+            const total = progress?.total ?? 0;
+
+            return (
+              <>
+                <h4 className="font-bold text-navy-800 dark:text-slate-100">
+                  {pack.title}
+                </h4>
+                <p className="mt-1 text-sm text-navy-600 dark:text-slate-400">
+                  {pack.description}
+                </p>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="text-xs font-medium text-navy-500 dark:text-slate-500">
+                    Partial progress ({completed}/{total})
+                  </span>
+                  <button className="rounded-lg bg-navy-100 px-3 py-1.5 text-xs font-bold text-navy-700 hover:bg-navy-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+                    View Challenges
+                  </button>
+                </div>
+              </>
+            );
+          })()}
         </div>
       ))}
     </div>
@@ -145,19 +392,17 @@ function ChallengePacksTab() {
 }
 
 function ChallengeHistoryTab() {
-  const [history, setHistory] = useState<any[]>([]);
+  const [history, setHistory] = useState<ChallengeHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [streak, setStreak] = useState(0);
 
   useEffect(() => {
     fetch("/api/challenges")
       .then((res) => res.json())
-      .then((data) => {
-        setHistory(data.history || []);
-        // Calculate streak from history
-        let currentStreak = 0;
-        // mock logic
-        setStreak(currentStreak);
+      .then((data: unknown) => {
+        const parsedHistory = parseHistoryResponse(data);
+        setHistory(parsedHistory);
+        setStreak(calculateStreak(parsedHistory));
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -226,7 +471,9 @@ function ChallengeHistoryTab() {
 
 function ChallengeLeaderboardTab() {
   const [challengeId, setChallengeId] = useState("");
-  const [leaderboard, setLeaderboard] = useState<any>(null);
+  const [leaderboard, setLeaderboard] = useState<ChallengeLeaderboard | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
 
   const fetchLeaderboard = (e: React.FormEvent) => {
@@ -235,8 +482,8 @@ function ChallengeLeaderboardTab() {
     setLoading(true);
     fetch(`/api/challenges/${challengeId}`)
       .then((res) => res.json())
-      .then((data) => {
-        setLeaderboard(data);
+      .then((data: unknown) => {
+        setLeaderboard(parseChallengeLeaderboard(data));
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -270,7 +517,7 @@ function ChallengeLeaderboardTab() {
             Leaderboard for {leaderboard.challenge?.title || challengeId}
           </h4>
           <div className="space-y-2">
-            {leaderboard.history?.map((attempt: any, i: number) => (
+            {leaderboard.history?.map((attempt, i) => (
               <div
                 key={attempt.id}
                 className="flex items-center justify-between rounded-lg bg-parchment-100 p-2 dark:bg-slate-800"

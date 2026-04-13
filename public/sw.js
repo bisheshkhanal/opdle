@@ -407,6 +407,9 @@ self.addEventListener("notificationclick", (event) => {
       );
 
       if (existingClient) {
+        if (typeof existingClient.navigate === "function") {
+          await existingClient.navigate(notificationUrl);
+        }
         await existingClient.focus();
         return;
       }

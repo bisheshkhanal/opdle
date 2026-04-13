@@ -260,6 +260,9 @@ export function handleNotificationClickEvent(event: NotificationEvent): void {
       );
 
       if (existingClient) {
+        if (typeof existingClient.navigate === "function") {
+          await existingClient.navigate(notificationUrl);
+        }
         await existingClient.focus();
         return;
       }

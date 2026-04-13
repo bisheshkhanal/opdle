@@ -57,17 +57,27 @@ describe("ChallengesModal", () => {
     });
 
     it("renders packs tab by default with partial progress", async () => {
-      vi.mocked(global.fetch).mockResolvedValueOnce({
-        json: async () => ({
-          packs: [
-            {
-              id: "p1",
-              title: "East Blue Pack",
-              description: "Start of romance",
+      vi.mocked(global.fetch)
+        .mockResolvedValueOnce({
+          json: async () => ({
+            packs: [
+              {
+                id: "p1",
+                title: "East Blue Pack",
+                description: "Start of romance",
+              },
+            ],
+          }),
+        } as any)
+        .mockResolvedValueOnce({
+          json: async () => ({
+            progress: {
+              completed: 0,
+              total: 5,
+              percentage: 0,
             },
-          ],
-        }),
-      } as any);
+          }),
+        } as any);
 
       render(<ChallengesModal onClose={vi.fn()} onSignInClick={vi.fn()} />);
 
@@ -123,6 +133,7 @@ describe("ChallengesModal", () => {
               id: "h1",
               challengeId: "chal-1",
               solvedAt: "2026-04-12T00:00:00Z",
+              createdAt: "2026-04-12T00:00:00Z",
               guessCount: 3,
               isExpired: false,
             },
@@ -130,6 +141,7 @@ describe("ChallengesModal", () => {
               id: "h2",
               challengeId: "chal-2",
               solvedAt: null,
+              createdAt: "2026-04-11T00:00:00Z",
               guessCount: 6,
               isExpired: true,
             },

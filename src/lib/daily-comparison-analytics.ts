@@ -208,7 +208,6 @@ function buildTrendData(
     const windowDate = addUtcDays(date, startOffset + index);
     const windowResults = filterByDateAndTier(results, windowDate, tier);
     const wins = getWins(windowResults);
-    const percentile = wins.length > 0 ? 100 : null;
 
     return {
       date: windowDate,
@@ -216,7 +215,7 @@ function buildTrendData(
       totalWins: wins.length,
       avgGuesses: averageGuessCount(windowResults),
       guessDistribution: buildGuessDistribution(windowResults),
-      percentile,
+      percentile: null,
     };
   });
 }

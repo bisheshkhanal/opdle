@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { challengeAttempts, challengePacks } from "@/lib/db/schema";
+import {
+  challengeAttempts,
+  challengePackEntries,
+  challengePacks,
+} from "@/lib/db/schema";
 
 function jsonError(error: string, status: number): NextResponse {
   return NextResponse.json({ error }, { status });
@@ -26,29 +30,36 @@ export async function GET(
     return NextResponse.json({ pack, progress: null });
   }
 
-  const attempts = await db
-    .select()
-    .from(challengeAttempts)
-    .where(eq(challengeAttempts.userId, session.user.id));
+  const packEntries = await db
+    .select({ challengeId: challengePackEntries.challengeId })
+    .from(challengePackEntries)
+    .where(eq(challengePackEntries.packId, params.packId));
 
-  const challengeIds = Array.isArray(
-    (pack as { challengeIds?: string[] }).challengeIds
-  )
-    ? ((pack as { challengeIds?: string[] }).challengeIds ?? [])
-    : [];
-  const completed = attempts.filter((attempt) =>
-    challengeIds.includes(attempt.challengeId)
-  ).length;
+  const challengeIds = packEntries.map((entry) => entry.challengeId);
+
+  const attempts =
+    challengeIds.length > 0
+      ? await db
+          .select({ challengeId: challengeAttempts.challengeId })
+          .from(challengeAttempts)
+          .where(
+            and(
+              eq(challengeAttempts.userId, session.user.id),
+              inArray(challengeAttempts.challengeId, challengeIds)
+            )
+          )
+      : [];
+
+  const completed = attempts.length;
+  const total = challengeIds.length;
+  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return NextResponse.json({
     pack,
     progress: {
       completed,
-      total: challengeIds.length,
-      percent:
-        challengeIds.length > 0
-          ? Math.round((completed / challengeIds.length) * 100)
-          : 0,
+      total,
+      percentage,
     },
   });
 }

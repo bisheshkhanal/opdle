@@ -80,7 +80,7 @@ describe("buildDailyComparisonAnalytics", () => {
         totalWins: 4,
         avgGuesses: 4.0,
         guessDistribution: [0, 1, 0, 1, 2, 0],
-        percentile: 100,
+        percentile: null,
       },
     ]);
   });
@@ -250,7 +250,7 @@ describe("buildDailyComparisonAnalytics", () => {
         totalWins: 1,
         avgGuesses: 6,
         guessDistribution: [0, 0, 0, 0, 0, 1],
-        percentile: 100,
+        percentile: null,
       },
       {
         date: "2026-04-11",
@@ -258,7 +258,7 @@ describe("buildDailyComparisonAnalytics", () => {
         totalWins: 2,
         avgGuesses: 4.5,
         guessDistribution: [0, 0, 0, 1, 1, 0],
-        percentile: 100,
+        percentile: null,
       },
       {
         date: "2026-04-12",
@@ -274,7 +274,7 @@ describe("buildDailyComparisonAnalytics", () => {
         totalWins: 1,
         avgGuesses: 2,
         guessDistribution: [0, 1, 0, 0, 0, 0],
-        percentile: 100,
+        percentile: null,
       },
     ]);
   });
