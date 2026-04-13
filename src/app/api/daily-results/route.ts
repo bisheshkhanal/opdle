@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { dailyResults } from "@/lib/db/schema";
-import { eq, and, sql, count } from "drizzle-orm";
+import { dailyResults, factionMemberships } from "@/lib/db/schema";
+import { eq, and, gte, lte } from "drizzle-orm";
 import { tierSchema } from "@/lib/validators";
 import { z } from "zod";
+import {
+  buildDailyComparisonAnalytics,
+  type DailyComparisonResultFact,
+} from "@/lib/daily-comparison-analytics";
+import type { Tier } from "@/lib/types";
 
 export const revalidate = 60;
 
@@ -24,56 +29,74 @@ export async function GET(request: Request) {
 
   const session = await auth();
   const date = dateParsed.data;
-  const tier = tierParsed.data;
+  const tier = tierParsed.data as Tier;
+  const viewerUserId = session?.user?.id ?? null;
 
-  const [aggregate] = await db
+  const trendWindowDays = 7;
+  const windowSize = Math.max(1, Math.floor(trendWindowDays));
+  const startOffset = 1 - windowSize; // -6
+  const value = new Date(`${date}T00:00:00.000Z`);
+  value.setUTCDate(value.getUTCDate() + startOffset);
+  const startDate = value.toISOString().slice(0, 10);
+
+  const rows = await db
     .select({
-      totalPlayers: count(),
-      totalWins: sql<number>`SUM(CASE WHEN ${dailyResults.isWon} THEN 1 ELSE 0 END)::int`,
-      avgGuesses: sql<string>`AVG(${dailyResults.guessCount}) FILTER (WHERE ${dailyResults.isWon})`,
+      userId: dailyResults.userId,
+      date: dailyResults.date,
+      tier: dailyResults.tier,
+      guessCount: dailyResults.guessCount,
+      isWon: dailyResults.isWon,
+      completedAtUtc: dailyResults.completedAt,
+      factionSlug: factionMemberships.factionSlug,
     })
     .from(dailyResults)
-    .where(and(eq(dailyResults.date, date), eq(dailyResults.tier, tier)));
+    .leftJoin(
+      factionMemberships,
+      eq(dailyResults.userId, factionMemberships.userId)
+    )
+    .where(
+      and(
+        gte(dailyResults.date, startDate),
+        lte(dailyResults.date, date),
+        eq(dailyResults.tier, tier)
+      )
+    );
 
-  let userRank: number | null = null;
-  let userGuessCount: number | null = null;
+  const facts: DailyComparisonResultFact[] = rows.map((r) => ({
+    userId: r.userId,
+    date: r.date,
+    tier: r.tier as Tier,
+    guessCount: r.guessCount,
+    isWon: r.isWon,
+    factionSlug: r.factionSlug,
+    completedAtUtc: r.completedAtUtc.toISOString(),
+  }));
 
-  if (session?.user?.id) {
-    const [userResult] = await db
-      .select({ guessCount: dailyResults.guessCount })
-      .from(dailyResults)
-      .where(
-        and(
-          eq(dailyResults.userId, session.user.id),
-          eq(dailyResults.date, date),
-          eq(dailyResults.tier, tier)
-        )
-      );
-
-    if (userResult) {
-      userGuessCount = userResult.guessCount;
-      const [rankResult] = await db
-        .select({ rank: count() })
-        .from(dailyResults)
-        .where(
-          and(
-            eq(dailyResults.date, date),
-            eq(dailyResults.tier, tier),
-            eq(dailyResults.isWon, true),
-            sql`${dailyResults.guessCount} < ${userResult.guessCount}`
-          )
-        );
-      userRank = (rankResult?.rank ?? 0) + 1;
+  let viewerFactionSlug: string | null = null;
+  if (viewerUserId) {
+    const viewerFact = facts.find((f) => f.userId === viewerUserId);
+    if (viewerFact?.factionSlug) {
+      viewerFactionSlug = viewerFact.factionSlug;
+    } else {
+      const [membership] = await db
+        .select({ factionSlug: factionMemberships.factionSlug })
+        .from(factionMemberships)
+        .where(eq(factionMemberships.userId, viewerUserId));
+      if (membership) {
+        viewerFactionSlug = membership.factionSlug;
+      }
     }
   }
 
-  return NextResponse.json({
-    totalPlayers: aggregate?.totalPlayers ?? 0,
-    totalWins: aggregate?.totalWins ?? 0,
-    avgGuesses: aggregate?.avgGuesses
-      ? Number(aggregate.avgGuesses).toFixed(1)
-      : null,
-    userRank,
-    userGuessCount,
+  const analytics = buildDailyComparisonAnalytics({
+    date,
+    tier,
+    results: facts,
+    viewerUserId,
+    factionSlug: viewerFactionSlug,
+    trendWindowDays,
+    percentileMethod: "PERCENT_RANK",
   });
+
+  return NextResponse.json(analytics);
 }
