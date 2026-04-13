@@ -7,12 +7,24 @@ export interface UserSettings {
   silhouetteReveal: boolean;
   progressiveHints: boolean;
   autoUseLogPose: boolean;
+  notificationsOptIn: boolean;
+  installPrompt: {
+    dismissed: boolean;
+    dismissedAt: string | null;
+    completedDailiesCount: number;
+  };
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
   silhouetteReveal: false,
   progressiveHints: false,
   autoUseLogPose: true,
+  notificationsOptIn: false,
+  installPrompt: {
+    dismissed: false,
+    dismissedAt: null,
+    completedDailiesCount: 0,
+  },
 };
 
 const SETTINGS_KEY = "onepiecedle_settings";
@@ -28,7 +40,16 @@ export function loadSettings(): UserSettings {
     const raw = localStorage.getItem(SETTINGS_KEY);
     if (!raw) return { ...DEFAULT_SETTINGS };
     const parsed = JSON.parse(raw);
-    return { ...DEFAULT_SETTINGS, ...parsed };
+
+    const merged = { ...DEFAULT_SETTINGS, ...parsed };
+    if (parsed.installPrompt) {
+      merged.installPrompt = {
+        ...DEFAULT_SETTINGS.installPrompt,
+        ...parsed.installPrompt,
+      };
+    }
+
+    return merged;
   } catch {
     return { ...DEFAULT_SETTINGS };
   }

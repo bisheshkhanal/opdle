@@ -47,6 +47,12 @@ describe("settings", () => {
         silhouetteReveal: true,
         progressiveHints: false,
         autoUseLogPose: false,
+        notificationsOptIn: true,
+        installPrompt: {
+          dismissed: true,
+          dismissedAt: "2023-01-01T00:00:00.000Z",
+          completedDailiesCount: 5,
+        },
       };
       ls.store[SETTINGS_KEY] = JSON.stringify(saved);
 
@@ -68,6 +74,19 @@ describe("settings", () => {
       expect(result.silhouetteReveal).toBe(true);
       expect(result.progressiveHints).toBe(false);
       expect(result.autoUseLogPose).toBe(true);
+      expect(result.notificationsOptIn).toBe(false);
+      expect(result.installPrompt).toEqual(DEFAULT_SETTINGS.installPrompt);
+    });
+
+    it("merges nested installPrompt with defaults", () => {
+      ls.store[SETTINGS_KEY] = JSON.stringify({
+        installPrompt: { dismissed: true },
+      });
+
+      const result = loadSettings();
+      expect(result.installPrompt.dismissed).toBe(true);
+      expect(result.installPrompt.dismissedAt).toBe(null);
+      expect(result.installPrompt.completedDailiesCount).toBe(0);
     });
 
     it("defaults missing autoUseLogPose to true for legacy data", () => {
@@ -87,6 +106,12 @@ describe("settings", () => {
         silhouetteReveal: true,
         progressiveHints: false,
         autoUseLogPose: false,
+        notificationsOptIn: true,
+        installPrompt: {
+          dismissed: false,
+          dismissedAt: null,
+          completedDailiesCount: 0,
+        },
       };
       saveSettings(settings);
 
@@ -143,6 +168,12 @@ describe("settings", () => {
         silhouetteReveal: false,
         progressiveHints: true,
         autoUseLogPose: false,
+        notificationsOptIn: true,
+        installPrompt: {
+          dismissed: true,
+          dismissedAt: "time",
+          completedDailiesCount: 3,
+        },
       };
 
       saveSettings(settings);

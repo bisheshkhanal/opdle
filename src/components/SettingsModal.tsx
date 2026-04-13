@@ -13,7 +13,11 @@ interface SettingsModalProps {
 }
 
 const SETTINGS_CONFIG: {
-  key: keyof UserSettings;
+  key:
+    | "silhouetteReveal"
+    | "progressiveHints"
+    | "autoUseLogPose"
+    | "notificationsOptIn";
   label: string;
   description: string;
 }[] = [
@@ -33,6 +37,11 @@ const SETTINGS_CONFIG: {
     description:
       "When enabled, Log Pose charges are automatically consumed to protect your streak on the first missed day. Log Pose is non-retroactive — if no charge exists when a missed day is first evaluated, the streak breaks.",
   },
+  {
+    key: "notificationsOptIn",
+    label: "Daily Reminders",
+    description: "Enable daily reminder notifications so you never miss a day",
+  },
 ];
 
 export function SettingsModal({
@@ -41,6 +50,16 @@ export function SettingsModal({
   settings,
   onSettingsChange,
 }: SettingsModalProps) {
+  const handleInstallPromptReset = () => {
+    onSettingsChange(
+      updateSetting("installPrompt", {
+        dismissed: false,
+        dismissedAt: null,
+        completedDailiesCount: settings.installPrompt.completedDailiesCount,
+      })
+    );
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Settings">
       <div className="flex flex-col gap-6">
@@ -73,6 +92,28 @@ export function SettingsModal({
             </button>
           </div>
         ))}
+
+        <div className="flex items-start justify-between gap-4 border-t border-navy-200 pt-4 dark:border-navy-800">
+          <div className="flex-1">
+            <p className="font-semibold text-navy-900 dark:text-slate-100">
+              App Installation
+            </p>
+            <p className="mt-0.5 text-sm text-navy-500 dark:text-slate-400">
+              Show the install prompt again if you previously dismissed it
+            </p>
+          </div>
+          <button
+            onClick={handleInstallPromptReset}
+            disabled={!settings.installPrompt.dismissed}
+            className={`rounded-md px-3 py-1.5 text-sm font-semibold transition-colors ${
+              settings.installPrompt.dismissed
+                ? "bg-navy-100 text-navy-900 hover:bg-navy-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+                : "cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-navy-900 dark:text-navy-700"
+            }`}
+          >
+            {settings.installPrompt.dismissed ? "Reset" : "Active"}
+          </button>
+        </div>
       </div>
     </Modal>
   );
