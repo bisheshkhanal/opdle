@@ -114,6 +114,25 @@ describe("infinite.ts", () => {
       const uniqueSelections = new Set(selections);
       expect(uniqueSelections.size).toBeGreaterThan(1);
     });
+
+    describe("selectInfiniteCharacter - edge cases", () => {
+      it("singleton array always returns the only character", () => {
+        const singleCharacter = [mockCharacters[1]];
+        const selected = selectInfiniteCharacter(singleCharacter, "123-456");
+
+        expect(selected.id).toBe(mockCharacters[1].id);
+      });
+
+      it("same roundId always produces same character across multiple calls", () => {
+        const roundId = "repeatable-round-id";
+        const ids = Array.from(
+          { length: 5 },
+          () => selectInfiniteCharacter(mockCharacters, roundId).id
+        );
+
+        expect(new Set(ids).size).toBe(1);
+      });
+    });
   });
 
   describe("createCharacterSequence", () => {
@@ -150,6 +169,25 @@ describe("infinite.ts", () => {
         expect(validIds.has(char.id)).toBe(true);
       }
     });
+
+    describe("createCharacterSequence - edge cases", () => {
+      it("empty characters array returns empty array without crashing", () => {
+        expect(() => createCharacterSequence([], 12345, 0)).not.toThrow();
+        expect(createCharacterSequence([], 12345, 0)).toEqual([]);
+      });
+
+      it("count 0 returns empty array", () => {
+        const seq = createCharacterSequence(mockCharacters, 12345, 0);
+        expect(seq).toEqual([]);
+      });
+
+      it("sequence length matches count parameter", () => {
+        const count = 7;
+        const seq = createCharacterSequence(mockCharacters, 12345, count);
+
+        expect(seq.length).toBe(count);
+      });
+    });
   });
 
   describe("getNextSeed", () => {
@@ -168,6 +206,25 @@ describe("infinite.ts", () => {
     it("should return positive number", () => {
       const next = getNextSeed(12345);
       expect(next).toBeGreaterThan(0);
+    });
+
+    it("returns a positive number", () => {
+      const next = getNextSeed(99);
+      expect(next).toBeGreaterThan(0);
+    });
+
+    it("different inputs usually produce different seeds", () => {
+      const next1 = getNextSeed(12345);
+      const next2 = getNextSeed(12346);
+
+      expect(next1).not.toBe(next2);
+    });
+
+    it("seed 0 input produces valid output", () => {
+      const next = getNextSeed(0);
+
+      expect(Number.isFinite(next)).toBe(true);
+      expect(next).toBeGreaterThanOrEqual(0);
     });
   });
 });

@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { getArcFromChapter, validateArcRanges, ARC_CHAPTER_RANGES } from "../arcChapters";
+import {
+  getArcFromChapter,
+  validateArcRanges,
+  ARC_CHAPTER_RANGES,
+} from "../arcChapters";
 
 describe("arcChapters.ts", () => {
   describe("getArcFromChapter", () => {

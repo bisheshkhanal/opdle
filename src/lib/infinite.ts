@@ -35,6 +35,10 @@ export function selectInfiniteCharacter(
   characters: Character[],
   roundId: string
 ): Character {
+  if (characters.length === 0) {
+    throw new Error("No characters available for selection");
+  }
+
   const seed = roundIdToSeed(roundId);
   const rng = seededRandom(seed);
   const index = Math.floor(rng() * characters.length);

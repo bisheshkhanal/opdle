@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { formatShareText, getFlavorTitle } from "../share";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { formatShareText, getFlavorTitle, copyToClipboard } from "../share";
 import type { GuessResult, TileStatus } from "../types";
 
 // Helper to create mock guess results
@@ -24,6 +24,10 @@ function createMockGuess(
 }
 
 describe("share.ts", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   describe("formatShareText", () => {
     it("should format daily win correctly", () => {
       const guesses = [
@@ -183,6 +187,121 @@ describe("share.ts", () => {
 
     it("should return null for 7 guesses", () => {
       expect(getFlavorTitle(7)).toBeNull();
+    });
+
+    it("should return null for 8 guesses", () => {
+      expect(getFlavorTitle(8)).toBeNull();
+    });
+  });
+
+  describe("formatShareText - edge cases", () => {
+    it("loss in daily mode shows X/6 in header", () => {
+      const text = formatShareText([], "daily", false, "2024-06-15");
+      const headerLine = text.split("\n")[0];
+
+      expect(headerLine).toContain("X/6");
+    });
+
+    it("hint used adds 💡 emoji to header", () => {
+      const text = formatShareText(
+        [],
+        "daily",
+        false,
+        "2024-06-15",
+        undefined,
+        true
+      );
+      const headerLine = text.split("\n")[0];
+
+      expect(headerLine).toContain("💡");
+    });
+
+    it("streak > 0 in daily mode adds streak line", () => {
+      const guesses = [
+        createMockGuess("luffy", "Luffy", [
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+        ]),
+      ];
+      const text = formatShareText(guesses, "daily", true, "2024-06-15", 3);
+
+      expect(text).toContain("🔥 Streak: 3");
+    });
+
+    it("streak 0 or undefined does not add streak line", () => {
+      const guesses = [
+        createMockGuess("luffy", "Luffy", [
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+          "correct",
+        ]),
+      ];
+      const withZero = formatShareText(guesses, "daily", true, "2024-06-15", 0);
+      const withUndefined = formatShareText(
+        guesses,
+        "daily",
+        true,
+        "2024-06-15",
+        undefined
+      );
+
+      expect(withZero).not.toContain("🔥 Streak:");
+      expect(withUndefined).not.toContain("🔥 Streak:");
+    });
+
+    it("infinite mode header says OnePiecedle (Infinite)", () => {
+      const text = formatShareText([], "infinite", false);
+      const headerLine = text.split("\n")[0];
+
+      expect(headerLine).toContain("OnePiecedle (Infinite)");
+    });
+
+    it("daily mode header includes game number", () => {
+      const text = formatShareText([], "daily", false, "2024-06-15");
+      const headerLine = text.split("\n")[0];
+
+      expect(headerLine).toMatch(/OnePiecedle #\d+/);
+    });
+  });
+
+  describe("copyToClipboard", () => {
+    it("returns true when clipboard write succeeds", async () => {
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      Object.defineProperty(navigator, "clipboard", {
+        value: { writeText },
+        configurable: true,
+      });
+
+      await expect(copyToClipboard("yohoho")).resolves.toBe(true);
+    });
+
+    it("returns false when clipboard and fallback both fail", async () => {
+      const writeText = vi
+        .fn()
+        .mockRejectedValue(new Error("clipboard unavailable"));
+      Object.defineProperty(navigator, "clipboard", {
+        value: { writeText },
+        configurable: true,
+      });
+      Object.defineProperty(document, "execCommand", {
+        value: vi.fn(() => {
+          throw new Error("execCommand failed");
+        }),
+        configurable: true,
+      });
+
+      await expect(copyToClipboard("yohoho")).resolves.toBe(false);
     });
   });
 

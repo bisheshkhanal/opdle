@@ -79,7 +79,10 @@ const ARC_ALIASES: Record<string, string> = {
   "whole cake": "Whole Cake Island",
   wci: "Whole Cake Island",
   wano: "Wano Country",
+  "return to sabaody": "Return to Sabaody",
   "return sabaody": "Return to Sabaody",
+  "water seven": "Water 7",
+  reverie: "Levely",
   sabaody: "Sabaody Archipelago",
 };
 

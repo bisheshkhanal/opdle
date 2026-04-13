@@ -1,7 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { Character, GameMode, Tier, GuessResult, DailyState } from "@/lib/types";
+import type {
+  Character,
+  GameMode,
+  Tier,
+  GuessResult,
+  DailyState,
+} from "@/lib/types";
 import type { UserSettings } from "@/lib/settings";
 import { Autocomplete } from "@/components/Autocomplete";
 import { GuessRow, GuessRowHeader } from "@/components/GuessRow";

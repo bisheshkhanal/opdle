@@ -152,7 +152,9 @@ interface PageData {
   categories: string[];
 }
 
-async function fetchBatchPageData(titles: string[]): Promise<Map<string, PageData>> {
+async function fetchBatchPageData(
+  titles: string[]
+): Promise<Map<string, PageData>> {
   const data = await fetchApi({
     action: "query",
     prop: "revisions|categories",
@@ -238,7 +240,9 @@ function parseHeight(raw: string): number | null {
   if (cmMatch) return Math.round(parseFloat(cmMatch[1]));
   const ftInMatch = s.match(/(\d+)\s*['''′]\s*(\d+(?:\.\d+)?)\s*["″]?/);
   if (ftInMatch) {
-    return Math.round((parseInt(ftInMatch[1], 10) * 12 + parseFloat(ftInMatch[2])) * 2.54);
+    return Math.round(
+      (parseInt(ftInMatch[1], 10) * 12 + parseFloat(ftInMatch[2])) * 2.54
+    );
   }
   const numMatch = s.match(/^(\d+(?:\.\d+)?)$/);
   if (numMatch) {
@@ -258,7 +262,10 @@ function parseDevilFruitType(raw: string): DevilFruitType {
 
 function parseAffiliation(raw: string): string {
   if (!raw) return "Unknown";
-  const first = raw.split(/<br\s*\/?>/gi)[0].split("\n")[0].split(";")[0];
+  const first = raw
+    .split(/<br\s*\/?>/gi)[0]
+    .split("\n")[0]
+    .split(";")[0];
   return stripWiki(first).replace(/\s+/g, " ").trim() || "Unknown";
 }
 
@@ -366,7 +373,10 @@ function buildCharacter(
   const rawBounty = charBox.bounty ?? "";
   const bountyAmounts = parseBountyHistory(rawBounty);
   const latestBounty = parseBounty(rawBounty);
-  const bountyHistory = bountyAmounts.map((amount) => ({ amount, arc: firstArc }));
+  const bountyHistory = bountyAmounts.map((amount) => ({
+    amount,
+    arc: firstArc,
+  }));
   const heightCm = parseHeight(charBox.height ?? "");
   const origin = stripWiki(charBox.origin ?? "").trim() || "Unknown";
   const affiliationPrimary = parseAffiliation(charBox.affiliation ?? "");
@@ -396,11 +406,18 @@ function buildCharacter(
 async function main() {
   console.log("=== One Piece Character Scraper ===\n");
 
-  const existingPath = path.join(process.cwd(), "src", "data", "characters.v2.json");
+  const existingPath = path.join(
+    process.cwd(),
+    "src",
+    "data",
+    "characters.v2.json"
+  );
   const existingData = JSON.parse(
     fs.readFileSync(existingPath, "utf-8")
   ) as Array<{ name: string }>;
-  const existingNames = new Set(existingData.map((c) => c.name.toLowerCase().trim()));
+  const existingNames = new Set(
+    existingData.map((c) => c.name.toLowerCase().trim())
+  );
   console.log(`Loaded ${existingNames.size} existing characters to skip.\n`);
 
   console.log("Step 1: Parsing character list pages...");
@@ -450,7 +467,9 @@ async function main() {
   for (let b = 0; b < newEntries.length; b += BATCH_SIZE) {
     const batch = newEntries.slice(b, b + BATCH_SIZE);
     const batchNum = Math.floor(b / BATCH_SIZE) + 1;
-    process.stdout.write(`  Batch ${batchNum}/${totalBatches} (${batch.length} chars)... `);
+    process.stdout.write(
+      `  Batch ${batchNum}/${totalBatches} (${batch.length} chars)... `
+    );
 
     let batchMap: Map<string, PageData>;
     try {
@@ -465,7 +484,10 @@ async function main() {
     let batchScraped = 0;
     for (const entry of batch) {
       const pageData = batchMap.get(entry.name);
-      if (!pageData) { skipped++; continue; }
+      if (!pageData) {
+        skipped++;
+        continue;
+      }
       const firstArc = chapterToArc(entry.chapter);
       const char = buildCharacter(entry.name, firstArc, pageData);
       if (char) {
@@ -480,7 +502,11 @@ async function main() {
     await sleep(RATE_LIMIT_MS);
   }
 
-  const outputPath = path.join(process.cwd(), "scripts", "scraped-characters.json");
+  const outputPath = path.join(
+    process.cwd(),
+    "scripts",
+    "scraped-characters.json"
+  );
   fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), "utf-8");
 
   console.log(`\n=== Done ===`);

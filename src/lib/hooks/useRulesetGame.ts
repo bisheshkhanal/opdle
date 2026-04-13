@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import type { Character, Ruleset, Tier, RunKind } from "@/lib/types";
-import { getCharactersForTier } from "@/lib/tier";
+import type { RulesetDailyState, RulesetInfiniteState } from "@/lib/types";
 import { selectTarget } from "@/lib/selectors";
 import { getUTCDateString } from "@/lib/daily";
 import {
@@ -14,8 +14,80 @@ import { initSilhouetteState, applySilhouetteGuess } from "@/lib/silhouette";
 import { initWantedState, applyWantedGuess } from "@/lib/wanted";
 import { initQuoteState, applyQuoteGuess } from "@/lib/quote";
 import { initArcState, applyArcGuess } from "@/lib/arc";
+import type { SilhouetteState } from "@/lib/silhouette";
+import type { WantedState } from "@/lib/wanted";
+import type { QuoteState } from "@/lib/quote";
+import type { ArcState } from "@/lib/arc";
 
-export type RulesetState = any;
+export type RulesetState =
+  | SilhouetteState
+  | WantedState
+  | QuoteState
+  | ArcState;
+
+function normalizeRulesetDailyState(
+  ruleset: Exclude<Ruleset, "classic" | "four-seas">,
+  state: RulesetDailyState
+): RulesetState {
+  switch (ruleset) {
+    case "silhouette":
+      return {
+        ...initSilhouetteState(),
+        ...state,
+        revealStep: state.revealStep ?? 0,
+      };
+    case "wanted":
+      return {
+        ...initWantedState(),
+        ...state,
+        revealStep: state.revealStep ?? 0,
+      };
+    case "quote":
+      return {
+        ...initQuoteState(),
+        ...state,
+        clueIndex: state.clueIndex ?? 0,
+      };
+    case "arc":
+      return {
+        ...initArcState(),
+        ...state,
+        arcGuesses: [],
+      };
+  }
+}
+
+function normalizeRulesetInfiniteState(
+  ruleset: Exclude<Ruleset, "classic" | "four-seas">,
+  state: RulesetInfiniteState
+): RulesetState {
+  switch (ruleset) {
+    case "silhouette":
+      return {
+        ...initSilhouetteState(),
+        ...state,
+        revealStep: state.revealStep ?? 0,
+      };
+    case "wanted":
+      return {
+        ...initWantedState(),
+        ...state,
+        revealStep: state.revealStep ?? 0,
+      };
+    case "quote":
+      return {
+        ...initQuoteState(),
+        ...state,
+        clueIndex: state.clueIndex ?? 0,
+      };
+    case "arc":
+      return {
+        ...initArcState(),
+        ...state,
+        arcGuesses: [],
+      };
+  }
+}
 
 export function useRulesetGame(
   ruleset: Exclude<Ruleset, "classic" | "four-seas">,
@@ -55,16 +127,20 @@ export function useRulesetGame(
   }, [ruleset]);
 
   const applyGuess = useCallback(
-    (currentState: any, guess: Character, target: Character) => {
+    (currentState: RulesetState, guess: Character, target: Character) => {
       switch (ruleset) {
         case "silhouette":
-          return applySilhouetteGuess(currentState, guess, target);
+          return applySilhouetteGuess(
+            currentState as SilhouetteState,
+            guess,
+            target
+          );
         case "wanted":
-          return applyWantedGuess(currentState, guess, target);
+          return applyWantedGuess(currentState as WantedState, guess, target);
         case "quote":
-          return applyQuoteGuess(currentState, guess, target);
+          return applyQuoteGuess(currentState as QuoteState, guess, target);
         case "arc":
-          return applyArcGuess(currentState, guess, target);
+          return applyArcGuess(currentState as ArcState, guess, target);
         default:
           return currentState;
       }
@@ -76,14 +152,14 @@ export function useRulesetGame(
     if (runKind === "daily") {
       const saved = getRulesetDailyState(tier, ruleset);
       if (saved) {
-        setState(saved);
+        setState(normalizeRulesetDailyState(ruleset, saved));
       } else {
         setState(initState());
       }
     } else if (runKind === "infinite") {
       const saved = getRulesetInfiniteState(tier, ruleset);
-      if (saved && saved.roundId) {
-        setState(saved);
+      if (saved) {
+        setState(normalizeRulesetInfiniteState(ruleset, saved));
       } else {
         setState(initState());
       }

@@ -28,7 +28,10 @@ export function normalizeCharacterImage(character: Character): Character {
 }
 
 export function normalizeGuessImage(guess: GuessResult): GuessResult {
-  const imageUrl = normalizeCharacterImageUrl(guess.imageUrl, guess.characterId);
+  const imageUrl = normalizeCharacterImageUrl(
+    guess.imageUrl,
+    guess.characterId
+  );
   if (imageUrl === guess.imageUrl) {
     return guess;
   }

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   evaluateGuess,
+  isWinningGuess,
   getArrowIndicator,
   getStatusColorClass,
 } from "../evaluateGuess";
@@ -206,6 +207,213 @@ describe("evaluateGuess.ts", () => {
         (c) => c.key === "devilFruitType"
       );
       expect(dfResult?.status).toBe("wrong");
+    });
+
+    describe("evaluateGuess - firstArc comparison", () => {
+      it("returns higher when guess first arc is earlier than target", () => {
+        const laterArcTarget: Character = {
+          ...targetCharacter,
+          firstArc: "Marineford",
+        };
+        const result = evaluateGuess(exactMatchCharacter, laterArcTarget);
+        const firstArcResult = result.categories.find(
+          (c) => c.key === "firstArc"
+        );
+
+        expect(firstArcResult?.status).toBe("higher");
+      });
+
+      it("returns lower when guess first arc is later than target", () => {
+        const laterArcGuess: Character = {
+          ...exactMatchCharacter,
+          firstArc: "Marineford",
+        };
+        const result = evaluateGuess(laterArcGuess, targetCharacter);
+        const firstArcResult = result.categories.find(
+          (c) => c.key === "firstArc"
+        );
+
+        expect(firstArcResult?.status).toBe("lower");
+      });
+
+      it("returns correct when arcs are the same", () => {
+        const result = evaluateGuess(exactMatchCharacter, targetCharacter);
+        const firstArcResult = result.categories.find(
+          (c) => c.key === "firstArc"
+        );
+
+        expect(firstArcResult?.status).toBe("correct");
+      });
+    });
+
+    describe("evaluateGuess - devilFruitType edge cases", () => {
+      it("returns partial for overlapping fruit types", () => {
+        const multiFruitTarget: Character = {
+          ...targetCharacter,
+          devilFruitType: ["Logia", "Paramecia"],
+        };
+        const result = evaluateGuess(exactMatchCharacter, multiFruitTarget);
+        const dfResult = result.categories.find(
+          (c) => c.key === "devilFruitType"
+        );
+
+        expect(dfResult?.status).toBe("partial");
+      });
+
+      it("returns correct for ['None'] vs ['None']", () => {
+        const noneGuess: Character = {
+          ...exactMatchCharacter,
+          devilFruitType: ["None"],
+        };
+        const noneTarget: Character = {
+          ...targetCharacter,
+          devilFruitType: ["None"],
+        };
+        const result = evaluateGuess(noneGuess, noneTarget);
+        const dfResult = result.categories.find(
+          (c) => c.key === "devilFruitType"
+        );
+
+        expect(dfResult?.status).toBe("correct");
+      });
+
+      it("returns correct for [] vs []", () => {
+        const emptyGuess: Character = {
+          ...exactMatchCharacter,
+          devilFruitType: [],
+        };
+        const emptyTarget: Character = {
+          ...targetCharacter,
+          devilFruitType: [],
+        };
+        const result = evaluateGuess(emptyGuess, emptyTarget);
+        const dfResult = result.categories.find(
+          (c) => c.key === "devilFruitType"
+        );
+
+        expect(dfResult?.status).toBe("correct");
+      });
+
+      it("returns wrong for ['None'] vs ['Paramecia']", () => {
+        const noneGuess: Character = {
+          ...exactMatchCharacter,
+          devilFruitType: ["None"],
+        };
+        const parameciaTarget: Character = {
+          ...targetCharacter,
+          devilFruitType: ["Paramecia"],
+        };
+        const result = evaluateGuess(noneGuess, parameciaTarget);
+        const dfResult = result.categories.find(
+          (c) => c.key === "devilFruitType"
+        );
+
+        expect(dfResult?.status).toBe("wrong");
+      });
+
+      it("returns correct for ['None'] vs []", () => {
+        const noneGuess: Character = {
+          ...exactMatchCharacter,
+          devilFruitType: ["None"],
+        };
+        const emptyTarget: Character = {
+          ...targetCharacter,
+          devilFruitType: [],
+        };
+        const result = evaluateGuess(noneGuess, emptyTarget);
+        const dfResult = result.categories.find(
+          (c) => c.key === "devilFruitType"
+        );
+
+        expect(dfResult?.status).toBe("correct");
+      });
+
+      it("returns correct for [] vs ['None']", () => {
+        const emptyGuess: Character = {
+          ...exactMatchCharacter,
+          devilFruitType: [],
+        };
+        const noneTarget: Character = {
+          ...targetCharacter,
+          devilFruitType: ["None"],
+        };
+        const result = evaluateGuess(emptyGuess, noneTarget);
+        const dfResult = result.categories.find(
+          (c) => c.key === "devilFruitType"
+        );
+
+        expect(dfResult?.status).toBe("correct");
+      });
+
+      it("sets isCorrect true when only devil fruit differs as ['None'] vs []", () => {
+        const baseNoFruit: Character = {
+          ...exactMatchCharacter,
+          devilFruitType: [],
+        };
+        const noneFruitGuess: Character = {
+          ...baseNoFruit,
+          devilFruitType: ["None"],
+        };
+
+        const result = evaluateGuess(noneFruitGuess, baseNoFruit);
+        const dfResult = result.categories.find(
+          (c) => c.key === "devilFruitType"
+        );
+
+        expect(dfResult?.status).toBe("correct");
+        expect(result.isCorrect).toBe(true);
+      });
+    });
+
+    describe("evaluateGuess - image URL normalization", () => {
+      it("normalizes imageUrl to local character path", () => {
+        const customImageGuess: Character = {
+          ...exactMatchCharacter,
+          imageUrl: "https://another.cdn/custom-image.png",
+        };
+        const result = evaluateGuess(customImageGuess, targetCharacter);
+
+        expect(result.imageUrl).toBe(`/characters/${customImageGuess.id}.png`);
+      });
+    });
+
+    describe("evaluateGuess - all wrong guess stays not correct", () => {
+      it("returns isCorrect false and no category as correct", () => {
+        const allWrongGuess: Character = {
+          id: "bigmom",
+          name: "Charlotte Linlin",
+          aliases: ["Big Mom"],
+          imageUrl: "https://example.com/bigmom.png",
+          gender: "Female",
+          affiliationPrimary: "Big Mom Pirates",
+          devilFruitType: ["None"],
+          haki: [],
+          bounty: 9000000000,
+          heightCm: 880,
+          origin: "North Blue",
+          firstArc: "Marineford",
+          minTier: "casual",
+        };
+
+        const result = evaluateGuess(allWrongGuess, targetCharacter);
+
+        expect(result.isCorrect).toBe(false);
+        expect(
+          result.categories.every((category) => category.status !== "correct")
+        ).toBe(true);
+      });
+    });
+  });
+
+  describe("isWinningGuess", () => {
+    it("returns true when GuessResult is correct", () => {
+      const result = evaluateGuess(exactMatchCharacter, targetCharacter);
+      expect(isWinningGuess(result)).toBe(true);
+    });
+
+    it("returns false when GuessResult is not correct", () => {
+      const result = evaluateGuess(partialHakiCharacter, targetCharacter);
+      expect(isWinningGuess(result)).toBe(false);
     });
   });
 

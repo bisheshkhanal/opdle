@@ -21,7 +21,9 @@ export function HintButton({
   if (hintUsed) {
     return (
       <div className="game-card mx-auto max-w-sm px-4 py-3 text-center text-sm">
-        <span className="text-navy-600 dark:text-slate-400">💡 First Arc: </span>
+        <span className="text-navy-600 dark:text-slate-400">
+          💡 First Arc:{" "}
+        </span>
         <span className="font-semibold text-navy-800 dark:text-slate-100">
           {targetCharacter.firstArc}
         </span>

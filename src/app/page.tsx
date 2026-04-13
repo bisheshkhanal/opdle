@@ -14,10 +14,21 @@ import { SilhouetteBoard } from "@/components/SilhouetteBoard";
 import { WantedBoard } from "@/components/WantedBoard";
 import { QuoteBoard } from "@/components/QuoteBoard";
 import { ArcBoard } from "@/components/ArcBoard";
+import type { SilhouetteState } from "@/lib/silhouette";
+import type { WantedState } from "@/lib/wanted";
+import type { QuoteState } from "@/lib/quote";
+import type { ArcState } from "@/lib/arc";
 import { GameModalRegistry } from "@/components/GameModalRegistry";
 import { useGameController } from "@/lib/hooks/useGameController";
 import { useGameUiState } from "@/lib/hooks/useGameUiState";
 import { useRulesetGame } from "@/lib/hooks/useRulesetGame";
+import { useFourSeasGame } from "@/lib/hooks/useFourSeasGame";
+import { FourSeasBoard } from "@/components/FourSeasBoard";
+import {
+  isFourSeasWon,
+  isFourSeasFinished,
+  getFourSeasTotalGuesses,
+} from "@/lib/fourSeas";
 import charactersData from "@/data/characters.v2.json";
 
 const characters: Character[] = (charactersData as unknown[])
@@ -33,7 +44,13 @@ export default function Home() {
     activeRuleset === "classic" || activeRuleset === "four-seas"
       ? "silhouette"
       : activeRuleset,
-    game.mode === "challenge" ? "daily" : game.mode,
+    game.challengeMode ? "challenge" : game.mode,
+    game.tier,
+    characters
+  );
+
+  const fourSeasGame = useFourSeasGame(
+    game.challengeMode ? "challenge" : game.mode,
     game.tier,
     characters
   );
@@ -173,6 +190,7 @@ export default function Home() {
         />
       )}
       {activeRuleset !== "classic" &&
+        activeRuleset !== "four-seas" &&
         !challengeMode &&
         rulesetGame.state &&
         rulesetGame.targetCharacter && (
@@ -181,7 +199,7 @@ export default function Home() {
               <SilhouetteBoard
                 targetCharacter={rulesetGame.targetCharacter}
                 allCharacters={characters}
-                state={rulesetGame.state}
+                state={rulesetGame.state as SilhouetteState}
                 onGuess={rulesetGame.handleGuess}
               />
             )}
@@ -189,7 +207,7 @@ export default function Home() {
               <WantedBoard
                 targetCharacter={rulesetGame.targetCharacter}
                 allCharacters={characters}
-                state={rulesetGame.state}
+                state={rulesetGame.state as WantedState}
                 onGuess={rulesetGame.handleGuess}
               />
             )}
@@ -197,7 +215,7 @@ export default function Home() {
               <QuoteBoard
                 targetCharacter={rulesetGame.targetCharacter}
                 allCharacters={characters}
-                state={rulesetGame.state}
+                state={rulesetGame.state as QuoteState}
                 onGuess={rulesetGame.handleGuess}
               />
             )}
@@ -205,7 +223,7 @@ export default function Home() {
               <ArcBoard
                 targetCharacter={rulesetGame.targetCharacter}
                 allCharacters={characters}
-                state={rulesetGame.state}
+                state={rulesetGame.state as ArcState}
                 onGuess={rulesetGame.handleGuess}
               />
             )}
@@ -221,11 +239,7 @@ export default function Home() {
                   onPlayAgain={
                     mode === "infinite" ? handlePlayAgain : undefined
                   }
-                  streak={
-                    mode === "daily" && "streak" in rulesetGame.state
-                      ? rulesetGame.state.streak
-                      : undefined
-                  }
+                  streak={mode === "daily" ? dailyState?.streak : undefined}
                   ruleset={activeRuleset}
                 />
                 <ResultsShare
@@ -233,11 +247,53 @@ export default function Home() {
                   mode={mode}
                   isWon={rulesetGame.state.isWon}
                   dateString={mode === "daily" ? getUTCDateString() : undefined}
-                  streak={
-                    mode === "daily" && "streak" in rulesetGame.state
-                      ? rulesetGame.state.streak
-                      : undefined
+                  streak={mode === "daily" ? dailyState?.streak : undefined}
+                  hintUsed={false}
+                  ruleset={activeRuleset}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+      {activeRuleset === "four-seas" &&
+        !challengeMode &&
+        fourSeasGame.fourSeasState && (
+          <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center px-4 py-8 sm:py-10">
+            <FourSeasBoard
+              targetCharacters={fourSeasGame.targetCharacters}
+              allCharacters={characters}
+              state={fourSeasGame.fourSeasState}
+              onGuess={fourSeasGame.handleFourSeasGuess}
+            />
+
+            {isFourSeasFinished(fourSeasGame.fourSeasState) && (
+              <div className="mt-8 flex flex-col items-center gap-6">
+                <AnswerReveal
+                  character={
+                    fourSeasGame.targetCharacters[
+                      fourSeasGame.fourSeasState.boards["north"]
+                        .targetCharacterId
+                    ]
                   }
+                  isWon={isFourSeasWon(fourSeasGame.fourSeasState)}
+                  guessCount={getFourSeasTotalGuesses(
+                    fourSeasGame.fourSeasState
+                  )}
+                  mode={mode}
+                  silhouetteReveal={settings.silhouetteReveal}
+                  onPlayAgain={
+                    mode === "infinite" ? handlePlayAgain : undefined
+                  }
+                  streak={undefined}
+                  ruleset={activeRuleset}
+                />
+                <ResultsShare
+                  guesses={[]}
+                  mode={mode}
+                  isWon={isFourSeasWon(fourSeasGame.fourSeasState)}
+                  dateString={mode === "daily" ? getUTCDateString() : undefined}
+                  streak={undefined}
                   hintUsed={false}
                   ruleset={activeRuleset}
                 />

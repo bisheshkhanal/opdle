@@ -51,12 +51,14 @@ npm run format:check # Check formatting without changes
 ## Game Modes
 
 ### Daily Mode
+
 - New character every day at midnight UTC
 - Same character for all players worldwide
 - Streak tracking (consecutive days solved)
 - Share results showing daily game number
 
 ### Infinite Mode
+
 - Start a new round anytime with "Play Again"
 - Random character each round
 - Win/loss statistics tracked
@@ -77,17 +79,17 @@ npm run format:check # Check formatting without changes
 
 ## Categories
 
-| Category | Type | Description |
-|----------|------|-------------|
-| Gender | String | Male, Female, or Unknown |
-| Affiliation | Array | Pirate crew, organization, or faction |
-| Devil Fruit | String | Paramecia, Zoan, Logia, or None |
-| Haki | Array | Observation (O), Armament (A), Conqueror (C) |
-| Bounty | Number | Current/last known bounty in Berries |
-| Height | Number | Height in centimeters |
-| Age | Number | Current age or age at death |
-| Origin | String | Sea or region of origin |
-| First Arc | String | First story arc appearance |
+| Category    | Type   | Description                                  |
+| ----------- | ------ | -------------------------------------------- |
+| Gender      | String | Male, Female, or Unknown                     |
+| Affiliation | Array  | Pirate crew, organization, or faction        |
+| Devil Fruit | String | Paramecia, Zoan, Logia, or None              |
+| Haki        | Array  | Observation (O), Armament (A), Conqueror (C) |
+| Bounty      | Number | Current/last known bounty in Berries         |
+| Height      | Number | Height in centimeters                        |
+| Age         | Number | Current age or age at death                  |
+| Origin      | String | Sea or region of origin                      |
+| First Arc   | String | First story arc appearance                   |
 
 ## LocalStorage Keys
 

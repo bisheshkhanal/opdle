@@ -30,7 +30,7 @@ export function applySilhouetteGuess(
   const newGuesses = [...state.guesses, guessResult];
   const newGuessedIds = [...state.guessedIds, guess.id];
   const isFinished = isCorrect || newGuesses.length >= maxGuesses;
-  
+
   let newRevealStep = state.revealStep;
   if (!isFinished && !isCorrect) {
     newRevealStep = Math.min(newRevealStep + 1, maxGuesses - 1);

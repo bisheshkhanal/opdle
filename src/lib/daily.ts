@@ -47,6 +47,10 @@ export function selectDailyCharacter(
   dateString?: string,
   tier?: Tier
 ): Character {
+  if (characters.length === 0) {
+    throw new Error("No characters available for selection");
+  }
+
   const date = dateString || getUTCDateString();
   const seedInput = tier ? `${date}-${tier}` : date;
   const seed = dateToSeed(seedInput);

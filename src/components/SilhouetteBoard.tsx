@@ -43,18 +43,21 @@ export function SilhouetteBoard({
   const isFinished = state.isFinished;
   const isWon = state.isWon;
   const revealStep = state.revealStep || 0;
-  
+
   const targetImage = getLocalCharacterImageUrl(targetCharacter.id);
 
-  const blurStyle = isWon || (isFinished && !isWon) 
-    ? "brightness(1) blur(0px)" 
-    : getBlurForStep(revealStep);
+  const blurStyle =
+    isWon || (isFinished && !isWon)
+      ? "brightness(1) blur(0px)"
+      : getBlurForStep(revealStep);
 
   return (
-    <div data-testid="silhouette-board" className="mx-auto w-full max-w-lg space-y-6">
-      
+    <div
+      data-testid="silhouette-board"
+      className="mx-auto w-full max-w-lg space-y-6"
+    >
       {/* Target Silhouette Image */}
-      <div className="mx-auto flex h-64 w-64 items-center justify-center overflow-hidden rounded-xl border-4 border-parchment-300 bg-parchment-100 shadow-elevated dark:border-slate-600 dark:bg-slate-800">
+      <div className="shadow-elevated mx-auto flex h-64 w-64 items-center justify-center overflow-hidden rounded-xl border-4 border-parchment-300 bg-parchment-100 dark:border-slate-600 dark:bg-slate-800">
         {targetImage ? (
           <img
             src={targetImage}
@@ -93,14 +96,14 @@ export function SilhouetteBoard({
                 key={`${guess.characterId}-${idx}`}
                 className={`flex items-center justify-between rounded-lg px-4 py-3 shadow-sm ${
                   guess.isCorrect
-                    ? "bg-tile-correct/20 border border-tile-correct"
-                    : "bg-tile-wrong/10 border border-tile-wrong/30"
+                    ? "border border-tile-correct bg-tile-correct/20"
+                    : "border border-tile-wrong/30 bg-tile-wrong/10"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className="h-8 w-8 overflow-hidden rounded-full border border-parchment-300 dark:border-slate-600">
-                    <img 
-                      src={guess.imageUrl} 
+                    <img
+                      src={guess.imageUrl}
                       alt={guess.characterName}
                       className="h-full w-full object-cover"
                     />
@@ -109,9 +112,7 @@ export function SilhouetteBoard({
                     {guess.characterName}
                   </span>
                 </div>
-                <div className="text-lg">
-                  {guess.isCorrect ? "✅" : "❌"}
-                </div>
+                <div className="text-lg">{guess.isCorrect ? "✅" : "❌"}</div>
               </div>
             ))}
           </div>
@@ -120,12 +121,15 @@ export function SilhouetteBoard({
 
       {/* Game Over Message */}
       {isFinished && (
-        <div className="mt-6 text-center animate-in fade-in zoom-in duration-500">
-          <p className="font-pirata text-3xl text-navy-800 dark:text-gold-400 drop-shadow-sm">
+        <div className="animate-in fade-in zoom-in mt-6 text-center duration-500">
+          <p className="font-pirata text-3xl text-navy-800 drop-shadow-sm dark:text-gold-400">
             {isWon ? "Correct!" : "Game Over!"}
           </p>
-          <p className="mt-1 font-alegreya text-lg text-navy-600 dark:text-parchment-200">
-            The character was <strong className="text-gold-600 dark:text-gold-400">{targetCharacter.name}</strong>
+          <p className="font-alegreya mt-1 text-lg text-navy-600 dark:text-parchment-200">
+            The character was{" "}
+            <strong className="text-gold-600 dark:text-gold-400">
+              {targetCharacter.name}
+            </strong>
           </p>
         </div>
       )}

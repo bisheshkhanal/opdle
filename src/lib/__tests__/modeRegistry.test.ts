@@ -56,7 +56,7 @@ describe("modeRegistry", () => {
   });
 
   it("exhaustive switch over Ruleset is complete", () => {
-    const ruleset: Ruleset = "classic";
+    let ruleset: Ruleset = "classic" as Ruleset;
 
     const result = (() => {
       switch (ruleset) {

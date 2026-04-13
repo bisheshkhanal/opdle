@@ -8,8 +8,8 @@ import { Character } from "../../lib/types";
 vi.mock("../Autocomplete", () => ({
   Autocomplete: ({ onSelect, disabled }: any) => (
     <div data-testid="mock-autocomplete">
-      <button 
-        disabled={disabled} 
+      <button
+        disabled={disabled}
         onClick={() => onSelect({ id: "zoro", name: "Zoro" })}
       >
         Guess Zoro
@@ -34,7 +34,10 @@ const mockTarget: Character = {
   tier: "casual",
 };
 
-const mockCharacters = [mockTarget, { ...mockTarget, id: "zoro", name: "Zoro" }];
+const mockCharacters = [
+  mockTarget,
+  { ...mockTarget, id: "zoro", name: "Zoro" },
+];
 
 describe("SilhouetteBoard", () => {
   it("renders silhouette image with highest blur initially", () => {
@@ -47,7 +50,7 @@ describe("SilhouetteBoard", () => {
         onGuess={vi.fn()}
       />
     );
-    
+
     const img = screen.getByTestId("silhouette-image");
     expect(img).toBeInTheDocument();
     // Step 0 should have the highest blur style (brightness 0 and blur 10px)
@@ -65,7 +68,7 @@ describe("SilhouetteBoard", () => {
         onGuess={handleGuess}
       />
     );
-    
+
     fireEvent.click(screen.getByText("Guess Zoro"));
     expect(handleGuess).toHaveBeenCalledWith("zoro");
   });
@@ -85,7 +88,7 @@ describe("SilhouetteBoard", () => {
       ],
       revealStep: 1,
     };
-    
+
     render(
       <SilhouetteBoard
         targetCharacter={mockTarget}
@@ -94,11 +97,11 @@ describe("SilhouetteBoard", () => {
         onGuess={vi.fn()}
       />
     );
-    
+
     expect(screen.getByText("Guesses (1 / 6)")).toBeInTheDocument();
     expect(screen.getByText("Zoro")).toBeInTheDocument();
     expect(screen.getByText("❌")).toBeInTheDocument();
-    
+
     const img = screen.getByTestId("silhouette-image");
     expect(img).toHaveStyle({ filter: "brightness(0) blur(4px)" });
   });
@@ -110,7 +113,7 @@ describe("SilhouetteBoard", () => {
       isWon: true,
       revealStep: 0,
     };
-    
+
     render(
       <SilhouetteBoard
         targetCharacter={mockTarget}
@@ -119,13 +122,13 @@ describe("SilhouetteBoard", () => {
         onGuess={vi.fn()}
       />
     );
-    
+
     expect(screen.getByText("Correct!")).toBeInTheDocument();
     expect(screen.getByText("Luffy")).toBeInTheDocument();
-    
+
     const img = screen.getByTestId("silhouette-image");
     expect(img).toHaveStyle({ filter: "brightness(1) blur(0px)" });
-    
+
     // Autocomplete should be disabled/hidden
     expect(screen.queryByTestId("mock-autocomplete")).not.toBeInTheDocument();
   });

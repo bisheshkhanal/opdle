@@ -1,0 +1,92 @@
+- generic [active] [ref=e1]:
+    - main [ref=e2]:
+        - generic [ref=e4]:
+            - generic [ref=e5]:
+                - button "Leaderboard" [ref=e6] [cursor=pointer]:
+                    - img [ref=e7]
+                - button "Bounty Board" [ref=e8] [cursor=pointer]:
+                    - img [ref=e9]
+                - button "Show statistics" [ref=e11] [cursor=pointer]:
+                    - img [ref=e12]
+                - button "Switch to dark mode" [ref=e14] [cursor=pointer]:
+                    - img [ref=e15]
+                    - img
+                    - generic [ref=e17]: Switch to dark mode
+            - heading "OnePiecedle" [level=1] [ref=e18]
+            - paragraph [ref=e20]:
+                - text: Guess the character in 6 tries
+                - generic [ref=e21]: "#832"
+            - generic [ref=e22]:
+                - button "Daily" [pressed] [ref=e23] [cursor=pointer]:
+                    - generic [ref=e24]:
+                        - img [ref=e25]
+                        - generic [ref=e31]: Daily
+                - button "Infinite" [ref=e32] [cursor=pointer]:
+                    - generic [ref=e33]:
+                        - img [ref=e34]
+                        - generic [ref=e36]: Infinite
+        - generic [ref=e39]:
+            - generic [ref=e41]:
+                - generic [ref=e42]:
+                    - generic [ref=e44]:
+                        - img
+                        - textbox "Search for a character" [ref=e45]:
+                            - /placeholder: Search for a pirate...
+                    - generic [ref=e47]: Guess 1 of 6
+                - generic [ref=e48]:
+                    - heading "Start typing a character name" [level=2] [ref=e49]
+                    - paragraph [ref=e50]: Each guess reveals clues about the mystery character
+                    - generic [ref=e51]:
+                        - generic [ref=e52]: Correct
+                        - generic [ref=e54]: Partial
+                        - generic [ref=e56]: Wrong
+                        - generic [ref=e58]:
+                            - generic [ref=e59]: ↑↓
+                            - text: Higher/Lower
+            - generic [ref=e60]:
+                - img [ref=e61]
+                - heading "Navigation Guide" [level=3] [ref=e64]
+                - generic [ref=e65]:
+                    - generic [ref=e66]:
+                        - generic [ref=e67]: ✓
+                        - generic [ref=e68]:
+                            - generic [ref=e69]: Correct
+                            - generic [ref=e70]: Exact match
+                    - generic [ref=e71]:
+                        - generic [ref=e72]: ≈
+                        - generic [ref=e73]:
+                            - generic [ref=e74]: Partial
+                            - generic [ref=e75]: Some match (Haki)
+                    - generic [ref=e76]:
+                        - generic [ref=e77]: ✕
+                        - generic [ref=e78]:
+                            - generic [ref=e79]: Wrong
+                            - generic [ref=e80]: No match
+                    - generic [ref=e81]:
+                        - generic [ref=e82]: ↑
+                        - generic [ref=e83]:
+                            - generic [ref=e84]: Higher
+                            - generic [ref=e85]: Target value is higher
+                    - generic [ref=e86]:
+                        - generic [ref=e87]: ↓
+                        - generic [ref=e88]:
+                            - generic [ref=e89]: Lower
+                            - generic [ref=e90]: Target value is lower
+                    - generic [ref=e91]:
+                        - generic [ref=e92]: "?"
+                        - generic [ref=e93]:
+                            - generic [ref=e94]: Unknown
+                            - generic [ref=e95]: No data for target
+                - img [ref=e98]
+                - generic [ref=e101]:
+                    - generic [ref=e102]:
+                        - img [ref=e103]
+                        - paragraph [ref=e105]: Haki shows partial when some types match (O=Observation, A=Armament, C=Conqueror)
+                    - generic [ref=e106]:
+                        - img [ref=e107]
+                        - paragraph [ref=e109]: Arrows apply to Bounty and Height
+        - generic [ref=e111]:
+            - link "About / How to Play" [ref=e113] [cursor=pointer]:
+                - /url: /about
+            - generic [ref=e114]: Set sail across the Grand Line
+    - alert [ref=e115]

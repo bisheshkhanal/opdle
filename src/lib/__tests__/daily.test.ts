@@ -5,6 +5,8 @@ import {
   seededRandom,
   selectDailyCharacter,
   getDailyGameNumber,
+  isToday,
+  getTimeUntilReset,
 } from "../daily";
 import type { Character } from "../types";
 
@@ -143,6 +145,104 @@ describe("daily.ts", () => {
       const uniqueSelections = new Set(selections);
       expect(uniqueSelections.size).toBeGreaterThan(1);
     });
+
+    describe("selectDailyCharacter - tier-based selection", () => {
+      it("returns different character for same date with different tiers", () => {
+        const casual = selectDailyCharacter(
+          mockCharacters,
+          "2024-06-15",
+          "casual"
+        );
+        const nakama = selectDailyCharacter(
+          mockCharacters,
+          "2024-06-15",
+          "nakama"
+        );
+
+        expect(casual.id).not.toBe(nakama.id);
+      });
+
+      it("returns same character for same date and same tier", () => {
+        const first = selectDailyCharacter(
+          mockCharacters,
+          "2024-06-15",
+          "casual"
+        );
+        const second = selectDailyCharacter(
+          mockCharacters,
+          "2024-06-15",
+          "casual"
+        );
+
+        expect(first.id).toBe(second.id);
+      });
+    });
+
+    describe("selectDailyCharacter - edge cases", () => {
+      it("singleton array always returns the only character", () => {
+        const singleCharacter = [mockCharacters[0]];
+        const result = selectDailyCharacter(singleCharacter, "2024-06-15");
+
+        expect(result.id).toBe(mockCharacters[0].id);
+      });
+
+      it("does not crash on repeated calls", () => {
+        expect(() => {
+          for (let i = 0; i < 100; i++) {
+            selectDailyCharacter(mockCharacters, "2024-06-15");
+          }
+        }).not.toThrow();
+      });
+    });
+  });
+
+  describe("isToday", () => {
+    it("returns true for current UTC date string", () => {
+      const today = getUTCDateString();
+      expect(isToday(today)).toBe(true);
+    });
+
+    it("returns false for yesterday UTC date string", () => {
+      const date = new Date();
+      date.setUTCDate(date.getUTCDate() - 1);
+      const yesterday = getUTCDateString(date);
+
+      expect(isToday(yesterday)).toBe(false);
+    });
+
+    it("returns false for tomorrow UTC date string", () => {
+      const date = new Date();
+      date.setUTCDate(date.getUTCDate() + 1);
+      const tomorrow = getUTCDateString(date);
+
+      expect(isToday(tomorrow)).toBe(false);
+    });
+  });
+
+  describe("getTimeUntilReset", () => {
+    it("returns object with hours, minutes, and seconds", () => {
+      const result = getTimeUntilReset();
+
+      expect(result).toHaveProperty("hours");
+      expect(result).toHaveProperty("minutes");
+      expect(result).toHaveProperty("seconds");
+    });
+
+    it("returns non-negative values", () => {
+      const result = getTimeUntilReset();
+
+      expect(result.hours).toBeGreaterThanOrEqual(0);
+      expect(result.minutes).toBeGreaterThanOrEqual(0);
+      expect(result.seconds).toBeGreaterThanOrEqual(0);
+    });
+
+    it("returns values in valid ranges", () => {
+      const result = getTimeUntilReset();
+
+      expect(result.hours).toBeLessThan(24);
+      expect(result.minutes).toBeLessThan(60);
+      expect(result.seconds).toBeLessThan(60);
+    });
   });
 
   describe("getDailyGameNumber", () => {
@@ -160,6 +260,20 @@ describe("daily.ts", () => {
     it("should return 1 for reference date", () => {
       const num = getDailyGameNumber("2024-01-01");
       expect(num).toBe(1);
+    });
+
+    describe("getDailyGameNumber - edge cases", () => {
+      it("dates before reference date return zero or negative", () => {
+        const gameNum = getDailyGameNumber("2023-12-31");
+        expect(gameNum).toBeLessThanOrEqual(0);
+      });
+
+      it("consecutive dates increment by exactly 1", () => {
+        const num1 = getDailyGameNumber("2024-02-10");
+        const num2 = getDailyGameNumber("2024-02-11");
+
+        expect(num2 - num1).toBe(1);
+      });
     });
   });
 });

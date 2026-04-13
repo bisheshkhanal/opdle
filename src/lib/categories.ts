@@ -54,6 +54,11 @@ function formatDevilFruit(types: DevilFruitType[]): string {
   return types.join(", ");
 }
 
+function normalizeDevilFruitTypes(types: DevilFruitType[]): DevilFruitType[] {
+  if (!types || types.length === 0) return [];
+  return types.every((type) => type === "None") ? [] : types;
+}
+
 /**
  * Compare two sets using same logic as haki:
  * correct if equal, partial if intersects, wrong if disjoint
@@ -99,10 +104,19 @@ function compareHaki(guess: HakiType[], target: HakiType[]): TileStatus {
  */
 function compareNumber(
   guess: number | null,
-  target: number | null
+  target: number | null,
+  options?: { treatZeroAndNullAsEqual?: boolean }
 ): TileStatus {
   // Both null = correct (both have unknown value, but they match)
   if (guess === null && target === null) return "correct";
+
+  // Optional mode: treat 0 and null as equivalent "none/unknown" values
+  if (
+    options?.treatZeroAndNullAsEqual &&
+    ((guess === 0 && target === null) || (guess === null && target === 0))
+  ) {
+    return "correct";
+  }
 
   // One null, one number = unknown (can't compare, show "?")
   if (guess === null || target === null) return "unknown";
@@ -137,8 +151,11 @@ export const categories: CategoryConfig[] = [
     label: "Devil Fruit",
     type: "haki",
     renderValue: (v) => formatDevilFruit(v as DevilFruitType[]),
-    evaluate: (g, t) =>
-      compareSet(g as DevilFruitType[], t as DevilFruitType[]),
+    evaluate: (g, t) => {
+      const guessTypes = normalizeDevilFruitTypes(g as DevilFruitType[]);
+      const targetTypes = normalizeDevilFruitTypes(t as DevilFruitType[]);
+      return compareSet(guessTypes, targetTypes);
+    },
   },
   {
     key: "haki",
@@ -152,7 +169,10 @@ export const categories: CategoryConfig[] = [
     label: "Bounty",
     type: "number",
     renderValue: (v) => formatBounty(v as number | null),
-    evaluate: (g, t) => compareNumber(g as number | null, t as number | null),
+    evaluate: (g, t) =>
+      compareNumber(g as number | null, t as number | null, {
+        treatZeroAndNullAsEqual: true,
+      }),
   },
   {
     key: "heightCm",

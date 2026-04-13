@@ -9,7 +9,7 @@ interface HintImageProps {
 }
 
 function getBlurLevel(wrongGuessCount: number): number {
-  if (wrongGuessCount >= 7) return 3;
+  if (wrongGuessCount >= 6) return 3;
   if (wrongGuessCount >= 5) return 10;
   return 20;
 }
