@@ -94,8 +94,8 @@ export function ResultsShare({
             files: [file],
           });
           setShareStatus("success");
-        } catch (e: any) {
-          if (e.name === "AbortError") {
+        } catch (e: unknown) {
+          if (e instanceof Error && e.name === "AbortError") {
             setShareStatus("idle");
           } else {
             throw e;
