@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import type { Character, Ruleset } from "@/lib/types";
 import { validateCharacter } from "@/lib/types";
 import { normalizeCharacterImage } from "@/lib/images";
+import { updateSetting } from "@/lib/settings";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import { GamePageHeader } from "@/components/GamePageHeader";
 import { AnswerReveal } from "@/components/AnswerReveal";
 import { ResultsShare } from "@/components/ResultsShare";
@@ -38,23 +40,6 @@ const characters: Character[] = (charactersData as unknown[])
 export default function Home() {
   const game = useGameController();
   const ui = useGameUiState(game);
-  const [activeRuleset, setActiveRuleset] = useState<Ruleset>("classic");
-
-  const rulesetGame = useRulesetGame(
-    activeRuleset === "classic" || activeRuleset === "four-seas"
-      ? "silhouette"
-      : activeRuleset,
-    game.challengeMode ? "challenge" : game.mode,
-    game.tier,
-    characters
-  );
-
-  const fourSeasGame = useFourSeasGame(
-    game.challengeMode ? "challenge" : game.mode,
-    game.tier,
-    characters
-  );
-
   const {
     mode,
     tier,
@@ -87,6 +72,97 @@ export default function Home() {
     handleTierChange,
     handleModeChange,
   } = game;
+  const [activeRuleset, setActiveRuleset] = useState<Ruleset>("classic");
+  const [isOnline, setIsOnline] = useState(() => {
+    if (typeof navigator === "undefined") {
+      return true;
+    }
+
+    return navigator.onLine;
+  });
+  const [isOfflineBannerDismissed, setIsOfflineBannerDismissed] =
+    useState(false);
+
+  useEffect(() => {
+    const syncOnlineStatus = () => {
+      setIsOnline(navigator.onLine);
+    };
+
+    syncOnlineStatus();
+    window.addEventListener("online", syncOnlineStatus);
+    window.addEventListener("offline", syncOnlineStatus);
+
+    return () => {
+      window.removeEventListener("online", syncOnlineStatus);
+      window.removeEventListener("offline", syncOnlineStatus);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isOnline) {
+      setIsOfflineBannerDismissed(false);
+    }
+  }, [isOnline]);
+
+  const [installPromptEvent, setInstallPromptEvent] = useState<Event | null>(
+    null
+  );
+  const prevDailyWonRef = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setInstallPromptEvent(e);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const currentIsDailyWon = mode === "daily" && isWon;
+
+    if (prevDailyWonRef.current === null) {
+      prevDailyWonRef.current = currentIsDailyWon;
+      return;
+    }
+
+    if (currentIsDailyWon && !prevDailyWonRef.current) {
+      const newSettings = updateSetting("installPrompt", {
+        ...settings.installPrompt,
+        completedDailiesCount: settings.installPrompt.completedDailiesCount + 1,
+      });
+      handleSettingsChange(newSettings);
+    }
+
+    prevDailyWonRef.current = currentIsDailyWon;
+  }, [isLoaded, mode, isWon, settings.installPrompt, handleSettingsChange]);
+
+  const showOfflineBanner =
+    game.mode === "infinite" && !isOnline && !isOfflineBannerDismissed;
+
+  const rulesetGame = useRulesetGame(
+    activeRuleset === "classic" || activeRuleset === "four-seas"
+      ? "silhouette"
+      : activeRuleset,
+    game.challengeMode ? "challenge" : game.mode,
+    game.tier,
+    characters
+  );
+
+  const fourSeasGame = useFourSeasGame(
+    game.challengeMode ? "challenge" : game.mode,
+    game.tier,
+    characters
+  );
 
   const {
     showStats,
@@ -159,6 +235,29 @@ export default function Home() {
         onOpenStats={openStats}
         onSignInClick={openAuthModal}
       />
+
+      {showOfflineBanner && (
+        <div className="mx-auto w-full max-w-7xl px-4 pt-4">
+          <div
+            className="flex items-start justify-between gap-4 rounded-2xl border border-amber-300 bg-amber-100/95 px-4 py-3 text-sm text-amber-950 shadow-sm dark:border-amber-500/40 dark:bg-amber-950/70 dark:text-amber-100"
+            role="status"
+            aria-live="polite"
+          >
+            <p className="leading-6">
+              You&apos;re offline — infinite mode available, daily results
+              require connection.
+            </p>
+            <button
+              type="button"
+              className="rounded-full p-1 text-amber-900 transition hover:bg-amber-200/70 dark:text-amber-100 dark:hover:bg-amber-900/70"
+              aria-label="Dismiss offline notice"
+              onClick={() => setIsOfflineBannerDismissed(true)}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       {(activeRuleset === "classic" || challengeMode) && (
@@ -350,6 +449,11 @@ export default function Home() {
         closeHowToPlay={closeHowToPlay}
         showArchive={showArchive}
         closeArchive={closeArchive}
+      />
+      <InstallPrompt
+        settings={settings}
+        onSettingsChange={handleSettingsChange}
+        installPromptEvent={installPromptEvent}
       />
     </main>
   );
