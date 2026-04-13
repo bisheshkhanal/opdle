@@ -1,7 +1,0 @@
-Duplicate check for characters.v2.json
-========================================
-Total characters: 198
-Unique IDs: 198
-Unique names (case-insensitive): 198
-
-RESULT: No duplicates found. All IDs and names are unique.

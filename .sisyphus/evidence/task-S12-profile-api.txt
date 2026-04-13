@@ -1,6 +1,0 @@
-Task S12 evidence
-
-- Extended `GET /api/profile/[username]` with `factionSummary` and `challengeSummary`.
-- Kept the response public-safe by omitting internal IDs/invite metadata from the new summary blocks.
-- Verified with: `npm test -- --run src/app/api/profile`
-- Result: 4 tests passed

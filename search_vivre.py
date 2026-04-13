@@ -1,9 +1,0 @@
-import urllib.request
-import urllib.parse
-import json
-
-url = "https://onepiece.fandom.com/api.php?action=query&list=search&srsearch=Babanuki+height&format=json"
-req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-with urllib.request.urlopen(req) as response:
-    data = json.loads(response.read().decode('utf-8'))
-    print(json.dumps(data.get("query", {}).get("search", []), indent=2))

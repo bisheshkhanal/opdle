@@ -1,5 +1,9 @@
 // Service worker global types not included in the "dom" lib.
 // Declared here to avoid adding "webworker" to tsconfig (which conflicts with DOM).
+interface ExtendableEvent extends Event {
+  waitUntil(f: Promise<unknown>): void;
+}
+
 interface PushMessageData {
   json(): unknown;
   text(): string;
@@ -7,13 +11,6 @@ interface PushMessageData {
 
 interface PushEvent extends ExtendableEvent {
   readonly data: PushMessageData | null;
-}
-
-interface NotificationOptions {
-  body?: string;
-  icon?: string;
-  badge?: string;
-  data?: unknown;
 }
 
 interface Notification {
