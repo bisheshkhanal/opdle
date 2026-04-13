@@ -254,3 +254,109 @@ export const reminderDispatchSchema = z.object({
   sentAt: z.date(),
   status: z.enum(["sent", "failed", "skipped"]),
 });
+
+const factionSlugValues = [
+  "marines",
+  "pirates",
+  "revolutionary",
+  "warlords",
+  "cipher_pol",
+] as const;
+
+export const factionSlugSchema = z.enum(factionSlugValues);
+
+const packSlugSchema = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+
+const weekKeySchema = z
+  .string()
+  .regex(/^\d{4}-W\d{2}$/)
+  .refine((weekKey) => {
+    const weekNumber = Number(weekKey.slice(-2));
+    return weekNumber >= 1 && weekNumber <= 53;
+  }, "Week key must be an ISO week between 01 and 53");
+
+const queryBooleanSchema = z.preprocess((value) => {
+  if (typeof value === "string") {
+    if (value === "true") return true;
+    if (value === "false") return false;
+  }
+
+  return value;
+}, z.boolean());
+
+const serializedGuessesSchema = z
+  .string()
+  .min(2)
+  .refine((value) => {
+    try {
+      return Array.isArray(JSON.parse(value));
+    } catch {
+      return false;
+    }
+  }, "Guesses must be serialized as a JSON array");
+
+export const factionSelectionUpdateSchema = z.object({
+  factionSlug: factionSlugSchema,
+});
+
+export const weeklyLeaderboardFiltersSchema = z.object({
+  weekKey: weekKeySchema,
+  factionSlug: factionSlugSchema.optional(),
+  tier: tierSchema.optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+});
+
+export const challengeCreationSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().min(1),
+  tierLevel: tierSchema,
+  expiresAt: utcDateTimeSchema.optional(),
+});
+
+export const challengePlaySubmissionSchema = z.object({
+  challengeId: z.string().uuid(),
+  guessCount: z.number().int().min(1).max(10),
+  solvedAt: utcDateTimeSchema.optional(),
+  guessesSerialized: serializedGuessesSchema,
+});
+
+export const challengeHistoryQueryParamsSchema = z.object({
+  userId: z.string().min(1).optional(),
+  challengeId: z.string().min(1).optional(),
+  packSlug: packSlugSchema.optional(),
+  solved: queryBooleanSchema.optional(),
+  cursor: z.string().min(1).optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+});
+
+export const challengePackIdentifierSchema = z.object({
+  packSlug: packSlugSchema,
+  orderIndex: z.coerce.number().int(),
+});
+
+export const dailyComparisonAnalyticsQueryParamsSchema = z.object({
+  date: utcDateSchema,
+  factionSlug: factionSlugSchema.optional(),
+  includeHistoricalTrend: queryBooleanSchema.optional(),
+  trendWindowDays: z.coerce.number().int().min(7).max(30).optional(),
+});
+
+export function requireAuthenticatedMutation(
+  userId: string | null | undefined
+): string {
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  return userId;
+}
+
+export function parseAuthenticatedMutation<TSchema extends z.ZodTypeAny>(
+  schema: TSchema,
+  input: unknown,
+  userId: string | null | undefined
+): z.output<TSchema> {
+  requireAuthenticatedMutation(userId);
+
+  return schema.parse(input);
+}
