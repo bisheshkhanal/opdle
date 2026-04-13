@@ -200,3 +200,9 @@
 - `Challenges` dialog has multiple headings containing the word "Challenges", so role selectors should use `{ exact: true }` for the top modal heading to avoid strict-mode ambiguity.
 - In classic daily completion, `ResultsShare` can render text-only sharing (`Copy Results`) instead of `Share Card`; E2E should assert share-surface availability rather than assuming a specific button label.
 - Stable daily-comparison assertions are best anchored on `data-testid` hooks (`distribution-chart`, `percentile-messaging`, `trend-section`) with a mocked `/api/daily-results` payload where `sampleSize >= 5`.
+
+## [S17] Full Regression Hardening Pass
+- `npm test -- --run` held the expected baseline: **968 total / 945 passing / 23 failing**, with all failures confined to the known pre-existing `src/lib/__tests__/share.test.ts` contract mismatch set.
+- `npm run lint` completed with zero warnings/errors, so no new social/virality lint regressions were introduced.
+- `npm run build` failed at the known pre-existing service worker typing issue (`PushEvent` in `src/lib/sw.ts`), matching the accepted failure profile for this plan.
+- When this pass is clean, the hardening task can be completed without source edits beyond evidence/notepad updates; no additional scope fixes should be introduced.
