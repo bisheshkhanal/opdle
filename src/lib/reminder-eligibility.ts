@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
   dailyResults,
@@ -116,27 +116,6 @@ function hasCompletedDaily(
   return dailyResultRows.some((row) => row.date === date);
 }
 
-function chooseActiveSubscription(
-  subscriptions: EligibleSubscription[]
-): EligibleSubscription | null {
-  if (subscriptions.length === 0) {
-    return null;
-  }
-
-  return (
-    [...subscriptions].sort((left, right) => {
-      const leftTime = left.updatedAt.getTime();
-      const rightTime = right.updatedAt.getTime();
-
-      if (leftTime !== rightTime) {
-        return rightTime - leftTime;
-      }
-
-      return left.id.localeCompare(right.id);
-    })[0] ?? null
-  );
-}
-
 export function computeEligibility(
   userId: string | null | undefined,
   date: string,
@@ -152,8 +131,7 @@ export function computeEligibility(
     return { eligible: false, reason: "no-subscription" };
   }
 
-  const activeSubscription = chooseActiveSubscription(subscriptions);
-  if (!activeSubscription || !activeSubscription.appOptIn) {
+  if (!subscriptions.some((subscription) => subscription.appOptIn)) {
     return { eligible: false, reason: "app-opt-out" };
   }
 

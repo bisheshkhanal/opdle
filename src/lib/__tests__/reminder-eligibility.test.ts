@@ -27,97 +27,121 @@ type Condition =
   | { type: "eq"; left: string; right: unknown }
   | { type: "and"; conditions: Condition[] };
 
-const { mockEq, mockDb, audits, subscriptions, results } = vi.hoisted(() => {
-  const audits: ReminderAuditRow[] = [];
-  const subscriptions: SubscriptionRow[] = [];
-  const results: DailyResultRow[] = [];
+const { mockEq, mockDb, audits, subscriptions, results, tables } = vi.hoisted(
+  () => {
+    const audits: ReminderAuditRow[] = [];
+    const subscriptions: SubscriptionRow[] = [];
+    const results: DailyResultRow[] = [];
+    const tables = {
+      pushSubscriptions: {
+        id: "id",
+        userId: "userId",
+        appOptIn: "appOptIn",
+        updatedAt: "updatedAt",
+      },
+      dailyResults: {
+        userId: "userId",
+        date: "date",
+        tier: "tier",
+      },
+      reminderAudit: {
+        id: "id",
+        userId: "userId",
+        subscriptionId: "subscriptionId",
+        date: "date",
+        tier: "tier",
+        sentAt: "sentAt",
+        status: "status",
+      },
+    };
 
-  const mockEq = vi.fn(
-    (left: string, right: unknown): Condition => ({
-      type: "eq",
-      left,
-      right,
-    })
-  );
+    const mockEq = vi.fn(
+      (left: string, right: unknown): Condition => ({
+        type: "eq",
+        left,
+        right,
+      })
+    );
 
-  const mockAnd = vi.fn(
-    (...conditions: Condition[]): Condition => ({
-      type: "and",
-      conditions,
-    })
-  );
+    const mockAnd = vi.fn(
+      (...conditions: Condition[]): Condition => ({
+        type: "and",
+        conditions,
+      })
+    );
 
-  const matches = (
-    row: Record<string, unknown>,
-    condition: Condition
-  ): boolean => {
-    if (condition.type === "eq") {
-      return row[condition.left] === condition.right;
-    }
+    const matches = (
+      row: Record<string, unknown>,
+      condition: Condition
+    ): boolean => {
+      if (condition.type === "eq") {
+        return row[condition.left] === condition.right;
+      }
 
-    return condition.conditions.every((item) => matches(row, item));
-  };
+      return condition.conditions.every((item) => matches(row, item));
+    };
 
-  const cloneAudit = (row: ReminderAuditRow): ReminderAuditRow => ({
-    ...row,
-    sentAt: new Date(row.sentAt),
-  });
+    const cloneAudit = (row: ReminderAuditRow): ReminderAuditRow => ({
+      ...row,
+      sentAt: new Date(row.sentAt),
+    });
 
-  const mockDb = {
-    select: vi.fn(() => ({
-      from: vi.fn((table: unknown) => ({
-        where: vi.fn(async (condition: Condition) => {
-          if (table === "pushSubscriptions") {
-            return subscriptions.filter((row) => matches(row, condition));
-          }
-
-          if (table === "dailyResults") {
-            return results.filter((row) => matches(row, condition));
-          }
-
-          if (table === "reminderAudit") {
-            return audits
-              .filter((row) => matches(row, condition))
-              .map(cloneAudit);
-          }
-
-          return [];
-        }),
-      })),
-    })),
-    insert: vi.fn((table: unknown) => ({
-      values: vi.fn((values: ReminderAuditRow) => ({
-        onConflictDoNothing: vi.fn(() => ({
-          returning: vi.fn(async () => {
-            if (table !== "reminderAudit") {
-              return [];
+    const mockDb = {
+      select: vi.fn(() => ({
+        from: vi.fn((table: unknown) => ({
+          where: vi.fn(async (condition: Condition) => {
+            if (table === tables.pushSubscriptions) {
+              return subscriptions.filter((row) => matches(row, condition));
             }
 
-            const existingIndex = audits.findIndex(
-              (row) =>
-                row.userId === values.userId &&
-                row.date === values.date &&
-                row.tier === values.tier
-            );
-
-            if (existingIndex >= 0) {
-              return [];
+            if (table === tables.dailyResults) {
+              return results.filter((row) => matches(row, condition));
             }
 
-            const nextRow: ReminderAuditRow = {
-              id: `audit-${audits.length + 1}`,
-              ...values,
-            };
-            audits.push(nextRow);
-            return [cloneAudit(nextRow)];
+            if (table === tables.reminderAudit) {
+              return audits
+                .filter((row) => matches(row, condition))
+                .map(cloneAudit);
+            }
+
+            return [];
           }),
         })),
       })),
-    })),
-  };
+      insert: vi.fn((table: unknown) => ({
+        values: vi.fn((values: Omit<ReminderAuditRow, "id">) => ({
+          onConflictDoNothing: vi.fn(() => ({
+            returning: vi.fn(async () => {
+              if (table !== tables.reminderAudit) {
+                return [];
+              }
 
-  return { mockEq, mockDb, audits, subscriptions, results };
-});
+              const existingIndex = audits.findIndex(
+                (row) =>
+                  row.userId === values.userId &&
+                  row.date === values.date &&
+                  row.tier === values.tier
+              );
+
+              if (existingIndex >= 0) {
+                return [];
+              }
+
+              const nextRow: ReminderAuditRow = {
+                id: `audit-${audits.length + 1}`,
+                ...values,
+              };
+              audits.push(nextRow);
+              return [cloneAudit(nextRow)];
+            }),
+          })),
+        })),
+      })),
+    };
+
+    return { mockEq, mockDb, audits, subscriptions, results, tables };
+  }
+);
 
 vi.mock("drizzle-orm", () => ({
   eq: mockEq,
@@ -130,20 +154,9 @@ vi.mock("@/lib/db", () => ({
 }));
 
 vi.mock("@/lib/db/schema", () => ({
-  dailyResults: "dailyResults",
-  pushSubscriptions: {
-    appOptIn: "appOptIn",
-    updatedAt: "updatedAt",
-  },
-  reminderAudit: {
-    id: "id",
-    userId: "userId",
-    subscriptionId: "subscriptionId",
-    date: "date",
-    tier: "tier",
-    sentAt: "sentAt",
-    status: "status",
-  },
+  dailyResults: tables.dailyResults,
+  pushSubscriptions: tables.pushSubscriptions,
+  reminderAudit: tables.reminderAudit,
 }));
 
 describe("reminder eligibility", () => {

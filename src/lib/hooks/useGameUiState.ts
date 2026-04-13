@@ -15,6 +15,7 @@ export interface GameUiState {
   showSettings: boolean;
   showHowToPlay: boolean;
   showArchive: boolean;
+  showChallenges: boolean;
 
   // Compass animation
   compassState: CompassState;
@@ -38,6 +39,8 @@ export interface GameUiState {
   closeHowToPlay: () => void;
   openArchive: () => void;
   closeArchive: () => void;
+  openChallenges: () => void;
+  closeChallenges: () => void;
 }
 
 export function useGameUiState(game: GameControllerState): GameUiState {
@@ -56,6 +59,7 @@ export function useGameUiState(game: GameControllerState): GameUiState {
   const [showSettings, setShowSettings] = useState(false);
   const [showHowToPlay, setShowHowToPlay] = useState(false);
   const [showArchive, setShowArchive] = useState(false);
+  const [showChallenges, setShowChallenges] = useState(false);
 
   const [compassState, setCompassState] = useState<CompassState>("idle");
   const previousGuessCountRef = useRef(0);

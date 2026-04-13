@@ -137,7 +137,7 @@ function main(): void {
   const incomingRaw = readJsonFile<RawCharacter[]>(options.incomingPath);
 
   const existingIds = new Set(existing.map((character) => character.id));
-  const stagedIncoming = incomingRaw
+  const stagedIncoming: StagedCandidate[] = incomingRaw
     .map((raw) => ({ raw, normalized: toCharacter(raw) }))
     .filter((candidate) => !existingIds.has(candidate.normalized.id));
 
@@ -147,9 +147,9 @@ function main(): void {
 
   const batches = chunk(stagedIncoming, options.batchSize);
 
-  const invalidStaged = stagedCharacters.filter(
-    (character) => !validateCharacter(character)
-  );
+  const invalidStaged = stagedIncoming
+    .filter((candidate) => !validateCharacter(candidate.normalized as unknown))
+    .map((candidate) => candidate.normalized);
   const wrongIncomingImageConvention = stagedIncoming.filter(
     (candidate) =>
       candidate.raw.imageUrl !==
