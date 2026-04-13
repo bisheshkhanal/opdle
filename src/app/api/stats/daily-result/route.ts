@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { dailyResults } from "@/lib/db/schema";
 import { dailyResultSchema } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {

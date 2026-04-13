@@ -5,6 +5,8 @@ import { db } from "@/lib/db";
 import { challengeAttempts, challengeEntities } from "@/lib/db/schema";
 import { challengePlaySubmissionSchema } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 function jsonError(error: string, status: number): NextResponse {
   return NextResponse.json({ error }, { status });
 }

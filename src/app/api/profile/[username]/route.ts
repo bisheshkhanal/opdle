@@ -22,6 +22,8 @@ import type {
 } from "@/lib/types";
 import { getAchievementDef } from "@/lib/progression/achievementCatalog";
 
+export const dynamic = "force-dynamic";
+
 function toIsoString(value: Date | string | null | undefined): string | null {
   if (!value) {
     return null;

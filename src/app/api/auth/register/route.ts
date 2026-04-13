@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { registerSchema } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   let body: unknown;
   try {

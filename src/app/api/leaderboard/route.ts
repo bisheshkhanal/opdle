@@ -10,6 +10,8 @@ import { eq, desc, and } from "drizzle-orm";
 import { tierSchema, modeSchema } from "@/lib/validators";
 import { getFactionBySlug } from "@/lib/factions";
 
+export const dynamic = "force-dynamic";
+
 // 60-second revalidation via Next.js cache
 export const revalidate = 60;
 

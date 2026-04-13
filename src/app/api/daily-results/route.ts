@@ -11,6 +11,8 @@ import {
 } from "@/lib/daily-comparison-analytics";
 import type { Tier } from "@/lib/types";
 
+export const dynamic = "force-dynamic";
+
 export const revalidate = 60;
 
 const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);

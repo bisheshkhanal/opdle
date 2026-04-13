@@ -8,6 +8,8 @@ import {
   challengeHistoryQueryParamsSchema,
 } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 function slugify(value: string): string {
   const slug = value
     .toLowerCase()

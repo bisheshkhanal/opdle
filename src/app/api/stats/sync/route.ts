@@ -5,6 +5,8 @@ import { userStats } from "@/lib/db/schema";
 import { sql } from "drizzle-orm";
 import { statsSyncSchema } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 const TIERS = ["casual", "fan", "nakama"] as const;
 const MODES = ["daily", "infinite"] as const;
 

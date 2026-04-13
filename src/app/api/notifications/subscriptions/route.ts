@@ -10,6 +10,8 @@ import {
 } from "@/lib/validators";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 type SessionLike = {
   user?: {
     id?: string;

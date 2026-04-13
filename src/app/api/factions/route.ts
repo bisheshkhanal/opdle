@@ -10,6 +10,8 @@ import {
 } from "@/lib/factions";
 import { factionUpdateSchema } from "@/lib/validators";
 
+export const dynamic = "force-dynamic";
+
 const CACHE_HEADERS = {
   "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
 };

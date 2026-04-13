@@ -8,6 +8,8 @@ import {
   challengePacks,
 } from "@/lib/db/schema";
 
+export const dynamic = "force-dynamic";
+
 function jsonError(error: string, status: number): NextResponse {
   return NextResponse.json({ error }, { status });
 }

@@ -22,6 +22,44 @@ interface NotificationEvent extends ExtendableEvent {
   readonly notification: Notification;
 }
 
+interface Client {
+  readonly id: string;
+  readonly url: string;
+  focus?(): Promise<WindowClient>;
+}
+
+interface WindowClient extends Client {
+  readonly focused: boolean;
+  readonly visibilityState: "hidden" | "visible" | "prerender";
+  focus(): Promise<WindowClient>;
+  navigate(url: string): Promise<WindowClient>;
+}
+
+interface Clients {
+  claim(): Promise<void>;
+  get(id: string): Promise<Client | undefined>;
+  matchAll(options?: {
+    type?: string;
+    includeUncontrolled?: boolean;
+  }): Promise<Client[]>;
+  openWindow(url: string): Promise<WindowClient | undefined>;
+}
+
+declare const clients: Clients;
+
+interface ServiceWorkerGlobalRegistration {
+  showNotification(
+    title: string,
+    options?: Record<string, unknown>
+  ): Promise<void>;
+}
+
+declare global {
+  interface Window {
+    registration: ServiceWorkerGlobalRegistration;
+  }
+}
+
 export const SW_CACHE_VERSION = "v1";
 export const STATIC_CACHE_NAME = `onepiecedle-static-${SW_CACHE_VERSION}`;
 export const APP_SHELL_CACHE_NAME = `onepiecedle-shell-${SW_CACHE_VERSION}`;
