@@ -3,6 +3,8 @@
  */
 
 import type { Character } from "./types";
+import { getSagaForArc } from "./progression/sagaCatalog";
+import type { SagaId } from "./progression/types";
 import { seededRandom } from "./daily";
 
 /**
@@ -33,16 +35,24 @@ export function roundIdToSeed(roundId: string): number {
  */
 export function selectInfiniteCharacter(
   characters: Character[],
-  roundId: string
+  roundId: string,
+  sagaId?: SagaId | null
 ): Character {
-  if (characters.length === 0) {
+  const pool =
+    sagaId === undefined || sagaId === null
+      ? characters
+      : characters.filter(
+          (character) => getSagaForArc(character.firstArc) === sagaId
+        );
+
+  if (pool.length === 0) {
     throw new Error("No characters available for selection");
   }
 
   const seed = roundIdToSeed(roundId);
   const rng = seededRandom(seed);
-  const index = Math.floor(rng() * characters.length);
-  return characters[index];
+  const index = Math.floor(rng() * pool.length);
+  return pool[index];
 }
 
 /**
