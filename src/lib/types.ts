@@ -33,7 +33,7 @@ export type HakiType = "O" | "A" | "C";
 export type DevilFruitType = "Paramecia" | "Zoan" | "Logia" | "None";
 
 // Character status
-export type CharacterStatus = "Alive" | "Deceased" | "Unknown";
+export type CharacterStatus = "Alive" | "Deceased" | "Unknown" | null;
 
 // Gender
 export type Gender = "Male" | "Female" | "Unknown" | "Other";
@@ -51,6 +51,19 @@ export interface CharacterClue {
   arc?: string;
 }
 
+export interface CharacterCrewHistoryEntry {
+  crew: string;
+  role?: string;
+  fromArc?: string;
+  toArc?: string;
+}
+
+export interface CharacterProvenance {
+  source: string;
+  scrapedAt: string;
+  version: number;
+}
+
 /**
  * Character schema for Classic mode
  * Required fields are enforced at runtime validation
@@ -66,6 +79,12 @@ export interface Character {
   haki: HakiType[];
   bounty: number | null;
   heightCm: number | null;
+  age?: number | null;
+  status?: CharacterStatus;
+  crewHistory?: CharacterCrewHistoryEntry[];
+  epithet?: string | null;
+  quotesOrLaughs?: string[];
+  provenance?: CharacterProvenance;
   origin: string;
   firstArc: string;
   minTier: Tier;
@@ -240,7 +259,129 @@ export interface StorageSchema {
   metaInbox?: MetaInboxEntry[];
 }
 
+export interface FactionSnapshot {
+  factionId: string;
+  factionName: string;
+  factionSlug: string;
+}
+
+export interface ShareCardPayload {
+  title: string;
+  mode: GameMode;
+  runKind: RunKind;
+  ruleset: Ruleset;
+  shareText: string;
+  textFallback: string;
+  shareUrl?: string | null;
+  createdAtUtc: string;
+}
+
+export interface FactionMembership {
+  userId: string;
+  username: string;
+  factionId: string;
+  factionName: string;
+  factionSlug: string;
+  visibility: "public";
+  joinedAtUtc: string;
+  updatedAtUtc: string;
+}
+
+export interface WeeklyFactionRankingRow {
+  weekStartUtc: string;
+  weekEndUtc: string;
+  factionId: string;
+  factionName: string;
+  factionSlug: string;
+  points: number;
+  avgGuesses: number | null;
+  participantCount: number;
+  rank: number;
+  percentile: number | null;
+}
+
+export interface ChallengeEntity {
+  challengeId: string;
+  packId: string;
+  slug: string;
+  title: string;
+  targetCharacterId: string;
+  ruleset: Ruleset;
+  runKind: RunKind;
+  weekStartUtc: string;
+  scheduledAtUtc: string;
+  createdAtUtc: string;
+  isActive: boolean;
+  factionSnapshot: FactionSnapshot;
+}
+
+export interface ChallengeAttempt {
+  attemptId: string;
+  challengeId: string;
+  userId: string;
+  username: string;
+  guessCount: number;
+  isSolved: boolean;
+  solvedAtUtc: string | null;
+  completedAtUtc: string;
+  factionSnapshot: FactionSnapshot;
+}
+
+export interface ChallengePack {
+  packId: string;
+  slug: string;
+  title: string;
+  description: string;
+  challengeIds: string[];
+  startsAtUtc: string;
+  endsAtUtc: string;
+  publishedAtUtc: string;
+  visibility: "public";
+}
+
+export interface ChallengeHistoryRow {
+  challengeId: string;
+  packId: string;
+  userId: string;
+  username: string;
+  result: "solved" | "failed" | "skipped";
+  guessCount: number | null;
+  solvedAtUtc: string | null;
+  completedAtUtc: string;
+  challengeStreak: number;
+  summaryVisibility: "public";
+  factionSnapshot: FactionSnapshot;
+}
+
+export interface ChallengeLeaderboardRow {
+  challengeId: string;
+  userId: string;
+  username: string;
+  factionSnapshot: FactionSnapshot;
+  points: number;
+  avgGuesses: number | null;
+  participantCount: number;
+  rank: number;
+  percentile: number | null;
+}
+
+export interface DailyComparisonDTO {
+  date: string;
+  tier: Tier;
+  totalPlayers: number;
+  totalWins: number;
+  avgGuesses: number | null;
+  userRank: number | null;
+  userGuessCount: number | null;
+  percentRank: number | null;
+}
+
 const VALID_GENDERS: Gender[] = ["Male", "Female", "Unknown", "Other"];
+const VALID_CHARACTER_STATUSES: Exclude<CharacterStatus, null>[] = [
+  "Alive",
+  "Deceased",
+  "Unknown",
+];
 const VALID_DEVIL_FRUITS: DevilFruitType[] = [
   "Paramecia",
   "Zoan",
@@ -303,6 +444,77 @@ export function validateCharacter(obj: unknown): obj is Character {
     (typeof c.heightCm !== "number" || !Number.isFinite(c.heightCm))
   )
     return false;
+
+  if (c.age !== undefined && c.age !== null) {
+    if (typeof c.age !== "number" || !Number.isFinite(c.age)) return false;
+  }
+
+  if (c.status !== undefined && c.status !== null) {
+    if (
+      typeof c.status !== "string" ||
+      !VALID_CHARACTER_STATUSES.includes(
+        c.status as Exclude<CharacterStatus, null>
+      )
+    )
+      return false;
+  }
+
+  if (c.crewHistory !== undefined) {
+    if (!Array.isArray(c.crewHistory)) return false;
+    for (const entry of c.crewHistory) {
+      if (typeof entry !== "object" || entry === null) return false;
+      const crewHistoryEntry = entry as Record<string, unknown>;
+      if (
+        typeof crewHistoryEntry.crew !== "string" ||
+        crewHistoryEntry.crew.length === 0
+      )
+        return false;
+      if (
+        crewHistoryEntry.role !== undefined &&
+        typeof crewHistoryEntry.role !== "string"
+      )
+        return false;
+      if (
+        crewHistoryEntry.fromArc !== undefined &&
+        typeof crewHistoryEntry.fromArc !== "string"
+      )
+        return false;
+      if (
+        crewHistoryEntry.toArc !== undefined &&
+        typeof crewHistoryEntry.toArc !== "string"
+      )
+        return false;
+    }
+  }
+
+  if (c.epithet !== undefined && c.epithet !== null) {
+    if (typeof c.epithet !== "string") return false;
+  }
+
+  if (c.quotesOrLaughs !== undefined) {
+    if (!Array.isArray(c.quotesOrLaughs)) return false;
+    for (const quote of c.quotesOrLaughs) {
+      if (typeof quote !== "string") return false;
+    }
+  }
+
+  if (c.provenance !== undefined) {
+    if (typeof c.provenance !== "object" || c.provenance === null) return false;
+    const provenance = c.provenance as Record<string, unknown>;
+    if (typeof provenance.source !== "string" || provenance.source.length === 0)
+      return false;
+    if (
+      typeof provenance.scrapedAt !== "string" ||
+      provenance.scrapedAt.length === 0
+    )
+      return false;
+    if (
+      typeof provenance.version !== "number" ||
+      !Number.isFinite(provenance.version) ||
+      !Number.isInteger(provenance.version)
+    )
+      return false;
+  }
 
   // Optional clues array
   if (c.clues !== undefined) {
