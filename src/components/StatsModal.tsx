@@ -1,7 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
-import type { DailyStats, InfiniteStats, Tier, GameMode } from "@/lib/types";
+import React, { useEffect, useState } from "react";
+import { ACHIEVEMENT_CATALOG } from "@/lib/progression/achievementCatalog";
+import { getAchievementProgress } from "@/lib/storage";
+import type { AchievementKind } from "@/lib/progression/types";
+import type {
+  AchievementProgress,
+  DailyStats,
+  GameMode,
+  InfiniteStats,
+  Tier,
+} from "@/lib/types";
 
 interface StatsModalProps {
   dailyStats: DailyStats;
@@ -24,6 +33,47 @@ export const BADGES = [
   { threshold: 50, title: "Yonko", emoji: "🏆" },
 ];
 
+const ACHIEVEMENT_KIND_ORDER: AchievementKind[] = [
+  "streak",
+  "first-guess",
+  "unique-solve",
+  "saga-complete",
+  "monthly-complete",
+];
+
+const ACHIEVEMENT_KIND_LABELS: Record<AchievementKind, string> = {
+  streak: "Streaks",
+  "first-guess": "Perfect Runs",
+  "unique-solve": "Collection",
+  "saga-complete": "Saga Progress",
+  "monthly-complete": "Monthly",
+};
+
+function getAchievementTitle(
+  achievementId: string,
+  label: string,
+  visibility: "visible" | "hidden" | "secret",
+  status: "locked" | "revealed" | "unlocked"
+): string {
+  if (visibility !== "visible" && status === "locked") {
+    return "???";
+  }
+
+  return label || achievementId;
+}
+
+function getAchievementDescription(
+  description: string,
+  visibility: "visible" | "hidden" | "secret",
+  status: "locked" | "revealed" | "unlocked"
+): string {
+  if (visibility !== "visible" && status === "locked") {
+    return "Hidden achievement";
+  }
+
+  return description;
+}
+
 export function StatsModal({
   dailyStats,
   infiniteStats,
@@ -31,6 +81,13 @@ export function StatsModal({
   mode = "daily",
 }: StatsModalProps) {
   const [activeTab, setActiveTab] = useState<GameMode>(mode);
+  const [achievementProgress, setAchievementProgress] = useState<
+    Record<string, AchievementProgress>
+  >({});
+
+  useEffect(() => {
+    setAchievementProgress(getAchievementProgress());
+  }, []);
 
   const isDaily = activeTab === "daily";
   const distribution = isDaily
@@ -127,41 +184,87 @@ export function StatsModal({
         <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-navy-600 dark:text-slate-300">
           Milestones
         </h3>
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-          {BADGES.map((badge) => {
-            const streak = isDaily
-              ? dailyStats.maxStreak
-              : infiniteStats.maxStreak || 0;
-            const isEarned = streak >= badge.threshold;
+        <div className="flex w-full flex-col gap-4">
+          {ACHIEVEMENT_KIND_ORDER.map((kind) => {
+            const achievements = ACHIEVEMENT_CATALOG.filter(
+              (achievement) => achievement.kind === kind
+            );
 
-            const earnedBadges = BADGES.filter((b) => streak >= b.threshold);
-            const currentBadge = earnedBadges[earnedBadges.length - 1];
-            const isCurrent = currentBadge?.threshold === badge.threshold;
+            if (achievements.length === 0) {
+              return null;
+            }
 
             return (
-              <div
-                key={badge.threshold}
-                className={`flex w-[60px] flex-col items-center justify-center rounded-lg p-2 text-center transition-all sm:w-[70px] ${
-                  isEarned
-                    ? isCurrent
-                      ? "bg-gold-100 ring-2 ring-gold-400 dark:bg-gold-900/40 dark:ring-gold-500"
-                      : "bg-gold-50 ring-1 ring-gold-300 dark:bg-gold-900/20 dark:ring-gold-700"
-                    : "bg-slate-100 opacity-40 grayscale dark:bg-slate-800"
-                }`}
-                title={`${badge.title} (${badge.threshold} streak)`}
-              >
-                <div className="relative mb-1 text-2xl">
-                  {badge.emoji}
-                  {!isEarned && (
-                    <div className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-slate-700 text-[8px] text-white">
-                      🔒
-                    </div>
-                  )}
+              <section key={kind} className="flex flex-col gap-2">
+                <div className="text-center text-[11px] font-bold uppercase tracking-[0.2em] text-navy-500 dark:text-slate-400">
+                  {ACHIEVEMENT_KIND_LABELS[kind]}
                 </div>
-                <div className="text-[10px] font-bold leading-tight text-navy-800 dark:text-slate-200">
-                  {badge.title}
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+                  {achievements.map((achievement) => {
+                    const progress: AchievementProgress = achievementProgress[
+                      achievement.id
+                    ] ?? {
+                      progress: 0,
+                      target: achievement.target,
+                      status: "locked",
+                      lastUpdatedAt: "",
+                      seasonKey: null,
+                    };
+                    const isHiddenLocked =
+                      achievement.visibility !== "visible" &&
+                      progress.status === "locked";
+                    const isUnlocked = progress.status === "unlocked";
+                    const isRevealed = progress.status === "revealed";
+
+                    return (
+                      <div
+                        key={achievement.id}
+                        className={`flex w-[130px] flex-col rounded-lg p-3 text-left transition-all sm:w-[150px] ${
+                          isUnlocked
+                            ? "bg-gold-100 ring-2 ring-gold-400 dark:bg-gold-900/40 dark:ring-gold-500"
+                            : isRevealed
+                              ? "bg-gold-50 ring-1 ring-gold-300 dark:bg-gold-900/20 dark:ring-gold-700"
+                              : "bg-slate-100 opacity-80 ring-1 ring-slate-200 grayscale dark:bg-slate-800 dark:ring-slate-700"
+                        }`}
+                        title={
+                          isHiddenLocked
+                            ? "Hidden achievement"
+                            : `${achievement.label} — ${achievement.description}`
+                        }
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-500 dark:text-slate-400">
+                            {ACHIEVEMENT_KIND_LABELS[achievement.kind]}
+                          </div>
+                          <div className="text-[11px] font-bold text-navy-700 dark:text-slate-200">
+                            {isUnlocked ? "✓" : isRevealed ? "◇" : "🔒"}
+                          </div>
+                        </div>
+                        <div className="mt-2 text-sm font-bold leading-tight text-navy-900 dark:text-slate-100">
+                          {getAchievementTitle(
+                            achievement.id,
+                            achievement.label,
+                            achievement.visibility,
+                            progress.status
+                          )}
+                        </div>
+                        <div className="mt-1 text-[10px] leading-snug text-navy-600 dark:text-slate-400">
+                          {getAchievementDescription(
+                            achievement.description,
+                            achievement.visibility,
+                            progress.status
+                          )}
+                        </div>
+                        <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.16em] text-navy-500 dark:text-slate-400">
+                          {isHiddenLocked
+                            ? "???"
+                            : `${progress.progress}/${progress.target}`}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
+              </section>
             );
           })}
         </div>
