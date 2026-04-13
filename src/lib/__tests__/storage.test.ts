@@ -581,7 +581,7 @@ describe("storage.ts", () => {
         revealStep: 3,
       };
 
-      saveRulesetDailyState(state, "casual", "silhouette");
+      saveRulesetDailyState(state, "casual", "silhouette", date);
       const loaded = getRulesetDailyState("casual", "silhouette", date);
 
       expect(loaded.guesses).toHaveLength(1);
@@ -601,7 +601,7 @@ describe("storage.ts", () => {
         clueIndex: 2,
       };
 
-      saveRulesetDailyState(state, "fan", "four-seas");
+      saveRulesetDailyState(state, "fan", "four-seas", date);
       const loaded = getRulesetDailyState("fan", "four-seas", date);
 
       expect(loaded.guessedIds).toEqual(["zoro"]);

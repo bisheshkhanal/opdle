@@ -589,10 +589,12 @@ export function getRulesetDailyState(
 export function saveRulesetDailyState(
   state: RulesetDailyState,
   tier: Tier,
-  ruleset: Ruleset
+  ruleset: Ruleset,
+  dateString?: string
 ): void {
   const storage = loadStorage();
-  const key = buildRulesetDailyKey(tier, ruleset, getUTCDateString());
+  const date = dateString || getUTCDateString();
+  const key = buildRulesetDailyKey(tier, ruleset, date);
   if (!storage.rulesetDaily) {
     storage.rulesetDaily = {};
   }
