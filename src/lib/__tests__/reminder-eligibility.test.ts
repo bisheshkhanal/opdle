@@ -63,13 +63,6 @@ const { mockEq, mockDb, audits, subscriptions, results, tables } = vi.hoisted(
       })
     );
 
-    const mockAnd = vi.fn(
-      (...conditions: Condition[]): Condition => ({
-        type: "and",
-        conditions,
-      })
-    );
-
     const matches = (
       row: Record<string, unknown>,
       condition: Condition
@@ -145,8 +138,6 @@ const { mockEq, mockDb, audits, subscriptions, results, tables } = vi.hoisted(
 
 vi.mock("drizzle-orm", () => ({
   eq: mockEq,
-  and: vi.fn((...conditions: Condition[]) => ({ type: "and", conditions })),
-  desc: vi.fn(),
 }));
 
 vi.mock("@/lib/db", () => ({

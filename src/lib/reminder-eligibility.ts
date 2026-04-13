@@ -221,7 +221,9 @@ export async function dispatchReminders(
   const auditLookup = buildAuditLookup(auditRows);
   const dispatched: ReminderDispatchRecord[] = [];
 
-  for (const [userId, subscription] of activeSubscriptionByUser) {
+  for (const [userId, subscription] of Array.from(
+    activeSubscriptionByUser.entries()
+  )) {
     for (const tier of tiers) {
       const dailyRows =
         dailyResultLookup.get(`${userId}:${tier}`) ??
