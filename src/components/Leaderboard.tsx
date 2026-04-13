@@ -53,10 +53,14 @@ export function Leaderboard() {
   const [viewType, setViewType] = useState<ViewType>("individual");
   const [tier, setTier] = useState<Tier>("casual");
   const [mode, setMode] = useState<GameMode>("daily");
-  
-  const [individualEntries, setIndividualEntries] = useState<LeaderboardEntry[]>([]);
-  const [factionRankings, setFactionRankings] = useState<FactionLeaderboardResponse["rankings"]>([]);
-  
+
+  const [individualEntries, setIndividualEntries] = useState<
+    LeaderboardEntry[]
+  >([]);
+  const [factionRankings, setFactionRankings] = useState<
+    FactionLeaderboardResponse["rankings"]
+  >([]);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -212,8 +216,11 @@ export function Leaderboard() {
                         ? "🥉"
                         : String(rank);
 
-                const factionIcon = entry.factionMembership 
-                  ? FACTIONS.find(f => f.factionSlug === entry.factionMembership?.factionSlug)?.icon 
+                const factionIcon = entry.factionMembership
+                  ? FACTIONS.find(
+                      (f) =>
+                        f.factionSlug === entry.factionMembership?.factionSlug
+                    )?.icon
                   : null;
 
                 return (
@@ -229,14 +236,17 @@ export function Leaderboard() {
                       {rankDisplay}
                     </span>
                     <span
-                      className={`truncate font-bold flex items-center gap-1.5 ${
+                      className={`flex items-center gap-1.5 truncate font-bold ${
                         isCurrentUser
                           ? "text-gold-700 dark:text-gold-400"
                           : "text-navy-800 dark:text-slate-100"
                       }`}
                     >
                       {factionIcon && (
-                        <span className="text-sm" title={entry.factionMembership?.factionName}>
+                        <span
+                          className="text-sm"
+                          title={entry.factionMembership?.factionName}
+                        >
                           {factionIcon}
                         </span>
                       )}
@@ -295,25 +305,31 @@ export function Leaderboard() {
                         ? "🥉"
                         : String(rank);
 
-                const factionIcon = FACTIONS.find(f => f.factionSlug === entry.factionSlug)?.icon;
+                const factionIcon = FACTIONS.find(
+                  (f) => f.factionSlug === entry.factionSlug
+                )?.icon;
 
                 return (
                   <div
                     key={entry.factionSlug}
-                    className="grid grid-cols-[2rem_1fr_4rem_4rem] items-center gap-2 rounded-lg px-3 py-2.5 text-sm transition-colors bg-parchment-50/80 hover:bg-parchment-100/80 dark:bg-slate-800/80 dark:hover:bg-slate-700/80"
+                    className="grid grid-cols-[2rem_1fr_4rem_4rem] items-center gap-2 rounded-lg bg-parchment-50/80 px-3 py-2.5 text-sm transition-colors hover:bg-parchment-100/80 dark:bg-slate-800/80 dark:hover:bg-slate-700/80"
                   >
                     <span className="text-center text-xs font-bold text-navy-500 dark:text-slate-400">
                       {rankDisplay}
                     </span>
-                    <span className="truncate font-bold text-navy-800 dark:text-slate-100 flex items-center gap-1.5">
-                      {factionIcon && <span className="text-sm">{factionIcon}</span>}
+                    <span className="flex items-center gap-1.5 truncate font-bold text-navy-800 dark:text-slate-100">
+                      {factionIcon && (
+                        <span className="text-sm">{factionIcon}</span>
+                      )}
                       {entry.factionName}
                     </span>
                     <span className="text-right font-mono text-sm font-bold text-navy-700 dark:text-slate-200">
                       {entry.points}
                     </span>
                     <span className="text-right font-mono text-sm text-navy-500 dark:text-slate-400">
-                      {entry.avgGuesses !== null ? entry.avgGuesses.toFixed(1) : "-"}
+                      {entry.avgGuesses !== null
+                        ? entry.avgGuesses.toFixed(1)
+                        : "-"}
                     </span>
                   </div>
                 );

@@ -45,7 +45,7 @@ const mockGuesses: GuessResult[] = [
 describe("ResultsShare", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Mock navigator.clipboard
     Object.assign(navigator, {
       clipboard: {
@@ -57,10 +57,11 @@ describe("ResultsShare", () => {
     global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: true,
-        blob: () => Promise.resolve(new Blob(["mock-image"], { type: "image/png" })),
+        blob: () =>
+          Promise.resolve(new Blob(["mock-image"], { type: "image/png" })),
       })
     ) as any;
-    
+
     // Default buildShareCardPayload return
     vi.mocked(buildShareCardPayload).mockReturnValue({
       template: "dossier",
@@ -79,7 +80,14 @@ describe("ResultsShare", () => {
   });
 
   it("renders buttons when target is provided", () => {
-    render(<ResultsShare guesses={mockGuesses} mode="daily" isWon={true} target={mockTarget} />);
+    render(
+      <ResultsShare
+        guesses={mockGuesses}
+        mode="daily"
+        isWon={true}
+        target={mockTarget}
+      />
+    );
     expect(screen.getByText("Share Card")).toBeInTheDocument();
   });
 
@@ -90,40 +98,74 @@ describe("ResultsShare", () => {
   });
 
   it("handles text share fallback via shareResults", async () => {
-    vi.mocked(shareResults).mockResolvedValue({ success: true, text: "copied" });
-    render(<ResultsShare guesses={mockGuesses} mode="daily" isWon={true} target={mockTarget} />);
-    
+    vi.mocked(shareResults).mockResolvedValue({
+      success: true,
+      text: "copied",
+    });
+    render(
+      <ResultsShare
+        guesses={mockGuesses}
+        mode="daily"
+        isWon={true}
+        target={mockTarget}
+      />
+    );
+
     const textButton = screen.getByTitle("Copy Text Only");
     fireEvent.click(textButton);
-    
+
     await waitFor(() => {
-      expect(shareResults).toHaveBeenCalledWith(mockGuesses, "daily", true, undefined, undefined, undefined, undefined);
+      expect(shareResults).toHaveBeenCalledWith(
+        mockGuesses,
+        "daily",
+        true,
+        undefined,
+        undefined,
+        undefined,
+        undefined
+      );
     });
   });
 
   it("shows loading state and triggers image generation on Share Card click", async () => {
-    render(<ResultsShare guesses={mockGuesses} mode="daily" isWon={true} target={mockTarget} />);
-    
+    render(
+      <ResultsShare
+        guesses={mockGuesses}
+        mode="daily"
+        isWon={true}
+        target={mockTarget}
+      />
+    );
+
     const shareCardButton = screen.getByText("Share Card");
     fireEvent.click(shareCardButton);
-    
+
     expect(screen.getByText("Generating...")).toBeInTheDocument();
-    
+
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalled();
       expect(navigator.clipboard.write).toHaveBeenCalled();
     });
-    
+
     expect(screen.getByText("Shared!")).toBeInTheDocument();
   });
 
   it("shows error state when fetch fails", async () => {
-    global.fetch = vi.fn(() => Promise.reject(new Error("Network error"))) as any;
-    
-    render(<ResultsShare guesses={mockGuesses} mode="daily" isWon={true} target={mockTarget} />);
+    global.fetch = vi.fn(() =>
+      Promise.reject(new Error("Network error"))
+    ) as any;
+
+    render(
+      <ResultsShare
+        guesses={mockGuesses}
+        mode="daily"
+        isWon={true}
+        target={mockTarget}
+      />
+    );
     const shareCardButton = screen.getByText("Share Card");
     fireEvent.click(shareCardButton);
-    
+
     await waitFor(() => {
       expect(screen.getByText("Error! Try text")).toBeInTheDocument();
     });
