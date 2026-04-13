@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import {
   initFourSeasState,
   applyFourSeasGuess,
@@ -11,8 +11,15 @@ import {
   BOARD_ORDER,
   FOUR_SEAS_MAX_GUESSES,
 } from "../fourSeas";
-import type { Character } from "../types";
+import type { Character, Tier } from "../types";
 import { selectFourSeasTargets } from "../selectors";
+import {
+  saveRulesetDailyState,
+  getRulesetDailyState,
+  saveRulesetInfiniteState,
+  getRulesetInfiniteState,
+  clearStorage,
+} from "../storage";
 import { runModeContractTests } from "./modeContract";
 import sampleData from "../../data/characters.v2.json";
 
@@ -530,6 +537,210 @@ describe("Four Seas Engine", () => {
       expect(state.boards.south.guesses).toHaveLength(0);
       expect(state.boards.west.guesses).toHaveLength(0);
     });
+  });
+});
+
+describe("Four Seas persistence integration", () => {
+  const ace = findChar("ace");
+  const akainu = findChar("akainu");
+  const arlong = findChar("arlong");
+  const buggy = findChar("buggy");
+  const bigMom = findChar("big-mom");
+  const alvida = findChar("alvida");
+  const aokiji = findChar("aokiji");
+  const apoo = findChar("apoo");
+  const blackbeard = findChar("blackbeard");
+  const bellamy = findChar("bellamy");
+  const targets = [ace, akainu, arlong, buggy];
+  const targetMap = makeTargetMap(targets);
+  const wrongPool = [bigMom, alvida, aokiji, apoo, blackbeard, bellamy];
+
+  beforeEach(() => {
+    clearStorage();
+  });
+
+  it("round-trips through daily storage: serialize → save → load → deserialize", () => {
+    let state = initFourSeasState(targets);
+    state = applyFourSeasGuess(state, "north", ace, targetMap);
+    state = applyFourSeasGuess(state, "east", bigMom, targetMap);
+
+    const serialized = serializeFourSeasState(state);
+    const tier: Tier = "casual";
+    saveRulesetDailyState(
+      serialized as unknown as Parameters<typeof saveRulesetDailyState>[0],
+      tier,
+      "four-seas"
+    );
+
+    const loaded = getRulesetDailyState(tier, "four-seas");
+    const restored = deserializeFourSeasState(loaded);
+
+    expect(restored).toBeDefined();
+    expect(restored!.boards.north.isWon).toBe(true);
+    expect(restored!.boards.north.guesses).toHaveLength(1);
+    expect(restored!.boards.east.guesses).toHaveLength(1);
+    expect(restored!.boards.east.isWon).toBe(false);
+    expect(restored!.boards.south.guesses).toHaveLength(0);
+    expect(restored!.boards.west.guesses).toHaveLength(0);
+  });
+
+  it("round-trips through infinite storage", () => {
+    let state = initFourSeasState(targets);
+    state = applyFourSeasGuess(state, "west", buggy, targetMap);
+
+    const serialized = serializeFourSeasState(state);
+    const tier: Tier = "casual";
+    saveRulesetInfiniteState(
+      serialized as unknown as Parameters<typeof saveRulesetInfiniteState>[0],
+      tier,
+      "four-seas"
+    );
+
+    const loaded = getRulesetInfiniteState(tier, "four-seas");
+    const restored = deserializeFourSeasState(loaded);
+
+    expect(restored).toBeDefined();
+    expect(restored!.boards.west.isWon).toBe(true);
+    expect(restored!.boards.west.guesses).toHaveLength(1);
+  });
+
+  it("restores partially-finished boards correctly", () => {
+    let state = initFourSeasState(targets);
+
+    // Win north
+    state = applyFourSeasGuess(state, "north", ace, targetMap);
+    // Lose east (6 wrong guesses)
+    for (const wrongChar of wrongPool) {
+      state = applyFourSeasGuess(state, "east", wrongChar, targetMap);
+    }
+    // south: 2 guesses (still playing)
+    state = applyFourSeasGuess(state, "south", bigMom, targetMap);
+    state = applyFourSeasGuess(state, "south", alvida, targetMap);
+    // west: untouched
+
+    const serialized = serializeFourSeasState(state);
+    const tier: Tier = "casual";
+    saveRulesetDailyState(
+      serialized as unknown as Parameters<typeof saveRulesetDailyState>[0],
+      tier,
+      "four-seas"
+    );
+
+    const loaded = getRulesetDailyState(tier, "four-seas");
+    const restored = deserializeFourSeasState(loaded)!;
+
+    // north: won
+    expect(restored.boards.north.isFinished).toBe(true);
+    expect(restored.boards.north.isWon).toBe(true);
+    expect(restored.boards.north.guesses).toHaveLength(1);
+
+    // east: lost (exhausted guesses)
+    expect(restored.boards.east.isFinished).toBe(true);
+    expect(restored.boards.east.isWon).toBe(false);
+    expect(restored.boards.east.guesses).toHaveLength(6);
+
+    // south: in progress
+    expect(restored.boards.south.isFinished).toBe(false);
+    expect(restored.boards.south.isWon).toBe(false);
+    expect(restored.boards.south.guesses).toHaveLength(2);
+    expect(restored.boards.south.guessedIds).toEqual(["big-mom", "alvida"]);
+
+    // west: untouched
+    expect(restored.boards.west.isFinished).toBe(false);
+    expect(restored.boards.west.isWon).toBe(false);
+    expect(restored.boards.west.guesses).toHaveLength(0);
+
+    // Overall state
+    expect(isFourSeasFinished(restored)).toBe(false);
+    expect(isFourSeasWon(restored)).toBe(false);
+    expect(getFourSeasTotalGuesses(restored)).toBe(9);
+  });
+
+  it("restores full-win state with correct board counts", () => {
+    let state = initFourSeasState(targets);
+    state = applyFourSeasGuess(state, "north", ace, targetMap);
+    state = applyFourSeasGuess(state, "east", akainu, targetMap);
+    state = applyFourSeasGuess(state, "south", arlong, targetMap);
+    state = applyFourSeasGuess(state, "west", buggy, targetMap);
+
+    const serialized = serializeFourSeasState(state);
+    const tier: Tier = "fan";
+    saveRulesetDailyState(
+      serialized as unknown as Parameters<typeof saveRulesetDailyState>[0],
+      tier,
+      "four-seas"
+    );
+
+    const loaded = getRulesetDailyState(tier, "four-seas");
+    const restored = deserializeFourSeasState(loaded)!;
+
+    expect(isFourSeasFinished(restored)).toBe(true);
+    expect(isFourSeasWon(restored)).toBe(true);
+    expect(getFourSeasTotalGuesses(restored)).toBe(4);
+
+    const share = getFourSeasShareData(restored);
+    expect(share.boardsWon).toBe(4);
+    expect(share.boardsCompleted).toBe(4);
+  });
+
+  it("restores partial-failure state (some won, some lost)", () => {
+    let state = initFourSeasState(targets);
+
+    // Win north and south
+    state = applyFourSeasGuess(state, "north", ace, targetMap);
+    state = applyFourSeasGuess(state, "south", arlong, targetMap);
+    // Lose east and west
+    for (const boardId of ["east", "west"] as const) {
+      for (const wrongChar of wrongPool) {
+        state = applyFourSeasGuess(state, boardId, wrongChar, targetMap);
+      }
+    }
+
+    const serialized = serializeFourSeasState(state);
+    const tier: Tier = "nakama";
+    saveRulesetDailyState(
+      serialized as unknown as Parameters<typeof saveRulesetDailyState>[0],
+      tier,
+      "four-seas"
+    );
+
+    const loaded = getRulesetDailyState(tier, "four-seas");
+    const restored = deserializeFourSeasState(loaded)!;
+
+    expect(isFourSeasFinished(restored)).toBe(true);
+    expect(isFourSeasWon(restored)).toBe(false);
+    expect(getFourSeasTotalGuesses(restored)).toBe(14); // 1+6+1+6
+
+    const share = getFourSeasShareData(restored);
+    expect(share.boardsWon).toBe(2);
+    expect(share.boardsCompleted).toBe(2);
+    expect(share.totalGuesses).toBe(14);
+  });
+
+  it("storage for four-seas does not affect classic daily state", () => {
+    let state = initFourSeasState(targets);
+    state = applyFourSeasGuess(state, "north", ace, targetMap);
+
+    const serialized = serializeFourSeasState(state);
+    const tier: Tier = "casual";
+    saveRulesetDailyState(
+      serialized as unknown as Parameters<typeof saveRulesetDailyState>[0],
+      tier,
+      "four-seas"
+    );
+
+    // Classic state should be unaffected
+    const classicState = getRulesetDailyState(tier, "classic");
+    expect(classicState.guesses).toEqual([]);
+    expect(classicState.isFinished).toBe(false);
+  });
+
+  it("deserialize returns undefined for empty ruleset state", () => {
+    clearStorage();
+    const tier: Tier = "casual";
+    const loaded = getRulesetDailyState(tier, "four-seas");
+    const restored = deserializeFourSeasState(loaded);
+    expect(restored).toBeUndefined();
   });
 });
 
