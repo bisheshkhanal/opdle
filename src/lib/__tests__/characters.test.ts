@@ -19,8 +19,83 @@ function toCharacterArray(): Character[] {
 describe("characters.v2.json dataset invariants", () => {
   const dataset = toCharacterArray();
 
+  const sample = dataset[0];
+
   test("all characters pass runtime validation", () => {
     expect(dataset.length).toBeGreaterThan(0);
+  });
+
+  test("accepts optional enrichment fields when they are valid", () => {
+    expect(
+      validateCharacter({
+        ...sample,
+        age: 53,
+        status: "Deceased",
+        crewHistory: [
+          {
+            crew: "Whitebeard Pirates",
+            role: "Division Commander",
+            fromArc: "Arabasta",
+            toArc: "Marineford",
+          },
+        ],
+        epithet: "Fire Fist",
+        quotesOrLaughs: ["Puhahaha", "I'm not going to run away."],
+        provenance: {
+          source: "wiki",
+          scrapedAt: "2026-04-12T00:00:00.000Z",
+          version: 1,
+        },
+      })
+    ).toBe(true);
+  });
+
+  test("rejects invalid optional enrichment values", () => {
+    expect(
+      validateCharacter({
+        ...sample,
+        age: "53",
+      })
+    ).toBe(false);
+
+    expect(
+      validateCharacter({
+        ...sample,
+        status: "Missing",
+      })
+    ).toBe(false);
+
+    expect(
+      validateCharacter({
+        ...sample,
+        crewHistory: [{ crew: "Whitebeard Pirates", role: 123 }],
+      })
+    ).toBe(false);
+
+    expect(
+      validateCharacter({
+        ...sample,
+        epithet: 123,
+      })
+    ).toBe(false);
+
+    expect(
+      validateCharacter({
+        ...sample,
+        quotesOrLaughs: ["valid", 123],
+      })
+    ).toBe(false);
+
+    expect(
+      validateCharacter({
+        ...sample,
+        provenance: {
+          source: "wiki",
+          scrapedAt: "2026-04-12T00:00:00.000Z",
+          version: "1",
+        },
+      })
+    ).toBe(false);
   });
 
   test('no character has affiliationPrimary typo "Alabasta Kingdom"', () => {

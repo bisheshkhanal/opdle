@@ -87,9 +87,17 @@ npm run format:check # Check formatting without changes
 | Haki        | Array  | Observation (O), Armament (A), Conqueror (C) |
 | Bounty      | Number | Current/last known bounty in Berries         |
 | Height      | Number | Height in centimeters                        |
-| Age         | Number | Current age or age at death                  |
 | Origin      | String | Sea or region of origin                      |
 | First Arc   | String | First story arc appearance                   |
+
+Optional enrichment fields supported by the runtime schema:
+
+- `age`: Current age or age at death
+- `status`: Alive, Deceased, or Unknown
+- `crewHistory`: Previous crew membership and optional arc metadata
+- `epithet`: Character nickname or epithet
+- `quotesOrLaughs`: Notable quotes or laughs
+- `provenance`: Source metadata for the character entry
 
 ## LocalStorage Keys
 
@@ -123,10 +131,32 @@ Characters are stored in `src/data/characters.v2.json`. To add a new character:
   "haki": ["Observation", "Armament", "Conqueror"],
   "bounty": 1000000000,
   "height": 180,
-  "age": 30,
   "origin": "East Blue",
-  "status": "Alive" | "Deceased" | "Unknown",
   "firstArc": "Arc Name"
+}
+```
+
+Optional enrichment fields may also be added when available:
+
+```json
+{
+  "age": 30,
+  "status": "Alive" | "Deceased" | "Unknown" | null,
+  "crewHistory": [
+    {
+      "crew": "Crew Name",
+      "role": "Captain",
+      "fromArc": "Arc Name",
+      "toArc": "Arc Name"
+    }
+  ],
+  "epithet": "Nickname",
+  "quotesOrLaughs": ["Quote", "Laugh"],
+  "provenance": {
+    "source": "wiki",
+    "scrapedAt": "2026-04-12T00:00:00.000Z",
+    "version": 1
+  }
 }
 ```
 
