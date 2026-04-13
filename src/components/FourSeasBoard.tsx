@@ -37,7 +37,10 @@ export function FourSeasBoard({
   }
 
   return (
-    <div className="mx-auto my-6 grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2">
+    <div
+      data-testid="four-seas-board"
+      className="mx-auto my-6 grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-2"
+    >
       {BOARD_ORDER.map((boardId) => {
         const board = state.boards[boardId];
         if (!board) return null;
@@ -49,6 +52,7 @@ export function FourSeasBoard({
         return (
           <div
             key={boardId}
+            role="region"
             className="flex flex-col gap-4 rounded-xl border border-parchment-300 bg-parchment-50 p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
             aria-label={`${BOARD_NAMES[boardId]} Board`}
           >

@@ -54,6 +54,8 @@ export function SilhouetteBoard({
   return (
     <div
       data-testid="silhouette-board"
+      role="region"
+      aria-label="Silhouette game board"
       className="mx-auto w-full max-w-lg space-y-6"
     >
       {/* Target Silhouette Image */}
@@ -121,7 +123,10 @@ export function SilhouetteBoard({
 
       {/* Game Over Message */}
       {isFinished && (
-        <div className="animate-in fade-in zoom-in mt-6 text-center duration-500">
+        <div
+          aria-live="polite"
+          className="animate-in fade-in zoom-in mt-6 text-center duration-500"
+        >
           <p className="font-pirata text-3xl text-navy-800 drop-shadow-sm dark:text-gold-400">
             {isWon ? "Correct!" : "Game Over!"}
           </p>

@@ -67,4 +67,84 @@ describe("RulesetTabs", () => {
       screen.queryByTestId("ruleset-tab-four-seas")
     ).not.toBeInTheDocument();
   });
+
+  it("has aria-label on tablist for screen readers", () => {
+    render(
+      <RulesetTabs activeRuleset="classic" onRulesetChange={mockOnChange} />
+    );
+
+    expect(screen.getByTestId("ruleset-tabs")).toHaveAttribute(
+      "aria-label",
+      "Game mode"
+    );
+  });
+
+  it("uses roving tabindex — only active tab is in tab order", () => {
+    render(
+      <RulesetTabs activeRuleset="wanted" onRulesetChange={mockOnChange} />
+    );
+
+    expect(screen.getByTestId("ruleset-tab-wanted")).toHaveAttribute(
+      "tabIndex",
+      "0"
+    );
+    expect(screen.getByTestId("ruleset-tab-classic")).toHaveAttribute(
+      "tabIndex",
+      "-1"
+    );
+    expect(screen.getByTestId("ruleset-tab-silhouette")).toHaveAttribute(
+      "tabIndex",
+      "-1"
+    );
+  });
+
+  it("ArrowRight navigates to next tab", () => {
+    render(
+      <RulesetTabs activeRuleset="classic" onRulesetChange={mockOnChange} />
+    );
+
+    const tablist = screen.getByTestId("ruleset-tabs");
+    fireEvent.keyDown(tablist, { key: "ArrowRight" });
+    expect(mockOnChange).toHaveBeenCalledWith("silhouette");
+  });
+
+  it("ArrowLeft wraps to last tab from first", () => {
+    render(
+      <RulesetTabs activeRuleset="classic" onRulesetChange={mockOnChange} />
+    );
+
+    const tablist = screen.getByTestId("ruleset-tabs");
+    fireEvent.keyDown(tablist, { key: "ArrowLeft" });
+    expect(mockOnChange).toHaveBeenCalledWith("arc");
+  });
+
+  it("Home key navigates to first tab", () => {
+    render(<RulesetTabs activeRuleset="arc" onRulesetChange={mockOnChange} />);
+
+    const tablist = screen.getByTestId("ruleset-tabs");
+    fireEvent.keyDown(tablist, { key: "Home" });
+    expect(mockOnChange).toHaveBeenCalledWith("classic");
+  });
+
+  it("End key navigates to last tab", () => {
+    render(
+      <RulesetTabs activeRuleset="classic" onRulesetChange={mockOnChange} />
+    );
+
+    const tablist = screen.getByTestId("ruleset-tabs");
+    fireEvent.keyDown(tablist, { key: "End" });
+    expect(mockOnChange).toHaveBeenCalledWith("arc");
+  });
+
+  it("decorative SVG icons have aria-hidden", () => {
+    render(
+      <RulesetTabs activeRuleset="classic" onRulesetChange={mockOnChange} />
+    );
+
+    const svgs = screen.getByTestId("ruleset-tabs").querySelectorAll("svg");
+    expect(svgs.length).toBeGreaterThan(0);
+    svgs.forEach((svg) => {
+      expect(svg).toHaveAttribute("aria-hidden", "true");
+    });
+  });
 });

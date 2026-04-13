@@ -51,6 +51,8 @@ export function WantedBoard({
   return (
     <div
       data-testid="wanted-board"
+      role="region"
+      aria-label="Wanted poster game board"
       className="mx-auto w-full max-w-lg space-y-6"
     >
       <div className="shadow-elevated mx-auto flex h-64 w-64 items-center justify-center overflow-hidden rounded-xl border-4 border-parchment-300 bg-parchment-100 dark:border-slate-600 dark:bg-slate-800">
@@ -114,7 +116,10 @@ export function WantedBoard({
       )}
 
       {isFinished && (
-        <div className="animate-in fade-in zoom-in mt-6 text-center duration-500">
+        <div
+          aria-live="polite"
+          className="animate-in fade-in zoom-in mt-6 text-center duration-500"
+        >
           <p className="font-pirata text-3xl text-navy-800 drop-shadow-sm dark:text-gold-400">
             {isWon ? "Correct!" : "Game Over!"}
           </p>

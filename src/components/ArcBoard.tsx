@@ -43,7 +43,12 @@ export function ArcBoard({
   const isWon = state.isWon;
 
   return (
-    <div data-testid="arc-board" className="mx-auto w-full max-w-lg space-y-6">
+    <div
+      data-testid="arc-board"
+      role="region"
+      aria-label="Arc proximity game board"
+      className="mx-auto w-full max-w-lg space-y-6"
+    >
       <div className="text-center">
         <p className="font-pirata text-2xl text-navy-800 dark:text-gold-400">
           Guess the character by their debut arc!
@@ -111,7 +116,10 @@ export function ArcBoard({
       )}
 
       {isFinished && (
-        <div className="animate-in fade-in zoom-in mt-6 text-center duration-500">
+        <div
+          aria-live="polite"
+          className="animate-in fade-in zoom-in mt-6 text-center duration-500"
+        >
           <p className="font-pirata text-3xl text-navy-800 drop-shadow-sm dark:text-gold-400">
             {isWon ? "Correct!" : "Game Over!"}
           </p>

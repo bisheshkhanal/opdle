@@ -44,10 +44,14 @@ export function QuoteBoard({
   return (
     <div
       data-testid="quote-board"
+      role="region"
+      aria-label="Quote game board"
       className="mx-auto w-full max-w-lg space-y-6"
     >
       <div
         data-testid="starter-clue"
+        role="note"
+        aria-label="Starting clue"
         className="shadow-elevated rounded-xl border-2 border-gold-400 bg-parchment-100 p-4 dark:border-gold-500 dark:bg-slate-800"
       >
         <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">
@@ -127,7 +131,10 @@ export function QuoteBoard({
       )}
 
       {isFinished && (
-        <div className="animate-in fade-in zoom-in mt-6 text-center duration-500">
+        <div
+          aria-live="polite"
+          className="animate-in fade-in zoom-in mt-6 text-center duration-500"
+        >
           <p className="font-pirata text-3xl text-navy-800 drop-shadow-sm dark:text-gold-400">
             {isWon ? "Correct!" : "Game Over!"}
           </p>
