@@ -44,7 +44,22 @@ export const metadata: Metadata = {
     "Daily Puzzle",
   ],
   authors: [{ name: "OnePiecedle" }],
-  icons: { icon: "/favicon.svg" },
+  manifest: "/manifest.webmanifest",
+  icons: [
+    {
+      rel: "icon",
+      url: "/icon-192x192.png",
+      sizes: "192x192",
+      type: "image/png",
+    },
+    {
+      rel: "icon",
+      url: "/icon-512x512.png",
+      sizes: "512x512",
+      type: "image/png",
+    },
+    { rel: "icon", url: "/favicon.svg", type: "image/svg+xml" },
+  ],
   openGraph: {
     title: "OnePiecedle",
     description: "Guess the One Piece character in 6 tries!",
@@ -58,7 +73,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#15294A",
+  themeColor: "#D4A520",
   colorScheme: "light dark",
 };
 
